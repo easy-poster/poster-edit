@@ -1,0 +1,11 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Mogra-Regular
+font link: https://fonts.google.com/specimen/Mogra
+font author: Lipi Raval
+font author site: http://cargocollective.com/lipi
+
+
+{"bg":"#E1F0F0","icon-gradient-0":"#01648B","icon-gradient-1":"#5BD0A4","font":"#10312F","slogan":"#244543"}
+      

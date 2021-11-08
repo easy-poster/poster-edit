@@ -23,6 +23,7 @@ export default defineConfig([
         wrappers: ['@/wrappers/auth'],
         component: '@/pages/User',
       },
+      { path: '/myproject', exact: true, component: '@/pages/MyProject' },
       { path: '/brand', exact: true, component: '@/pages/Brand' },
       { path: '/template', exact: true, component: '@/pages/Template' },
       { path: '/setting', exact: true, component: '@/pages/Setting' },

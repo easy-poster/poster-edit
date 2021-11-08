@@ -1,9 +1,9 @@
 module.exports = {
-  mode: 'jit',
-  // jit document: https://tailwindcss.com/docs/just-in-time-mode
-  purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.ts'],
+  purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.jsx'],
   darkMode: false, // or 'media' or 'class'
-  theme: {},
+  theme: {
+    extend: {},
+  },
   variants: {
     extend: {},
   },
