@@ -13,7 +13,6 @@ const IconFont = createFromIconfontCN({
 
 const Menu = () => {
   const history = useHistory();
-  console.log(history);
 
   const activeMenu = useMemo(() => {
     return history.location.pathname;
