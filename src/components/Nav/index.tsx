@@ -1,7 +1,33 @@
 import React from 'react';
-import { history } from 'umi';
+import { Link, history } from 'umi';
+import { Avatar, Divider, Dropdown, Menu, message } from 'antd';
+import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
 import './index.less';
+
+const menu = () => {
+  const handleLogOut = () => {
+    history.push('/login');
+  };
+
+  return (
+    <Menu>
+      <Menu.Item>
+        <Link to="/user">
+          MOMO
+          <p style={{ color: 'rgb(111, 111, 125)' }}>418788724@qq.com</p>
+        </Link>
+      </Menu.Item>
+      <div className="line"></div>
+      <Menu.Item>
+        <Link to="/setting">Setting</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <div onClick={handleLogOut}>log out</div>
+      </Menu.Item>
+    </Menu>
+  );
+};
 
 const Nav = () => {
   const handleNewProject = () => {
@@ -10,20 +36,26 @@ const Nav = () => {
 
   return (
     <header className="header">
-      <div className="flex flex-row justify-between header-content">
+      <div className="header-content">
         <SearchHeader />
-        <div className="header-right flex">
-          <div className="rounded-full cursor-pointer bg-gray-50 px-9 py-3 mr-2 hover:bg-gray-200 upgrade-btn">
-            升级
+        <div className="header-right">
+          <div className="header-update">
+            <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
+            <span className="update-text">升级</span>
           </div>
-          <div
-            className="rounded-full cursor-pointer bg-gray-50 px-9 py-3 mr-2 hover:bg-gray-200 header-create"
-            onClick={handleNewProject}
-          >
-            新建海报
+          <div className="header-create" onClick={handleNewProject}>
+            <IconFont type="icon-jiahao" style={{ fontSize: '28px' }} />
+            <span className="create-text">新建海报</span>
           </div>
-          <div className="rounded-full cursor-pointer bg-gray-50 p-3 hover:bg-gray-200 header-user">
-            user
+          <div className="header-user">
+            <Dropdown
+              overlay={menu}
+              trigger={['click']}
+              overlayClassName="avatar-dropdown"
+              placement="bottomRight"
+            >
+              <Avatar src="https://joeschmoe.io/api/v1/random" />
+            </Dropdown>
           </div>
         </div>
       </div>

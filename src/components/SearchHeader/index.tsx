@@ -54,7 +54,7 @@ const SearchHeader = () => {
     <div className="search-header">
       <AutoComplete
         dropdownMatchSelectWidth={252}
-        style={{ minWidth: 300, maxWidth: 600 }}
+        style={{ minWidth: 300, maxWidth: 500 }}
         allowClear
         backfill
         options={options}

@@ -1,9 +1,6 @@
+import { createFromIconfontCN } from '@ant-design/icons';
+
 // 展示页菜单
-// import HomeIcon from '@/assets/home_icon.svg';
-// import BrandIcon from '@/assets/brand_icon.svg';
-// import PosterIcon from '@/assets/poster_icon.svg';
-// import TemplateIcon from '@/assets/template_icon.svg';
-// icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
 
 export const MENU_LAYOUT = [
   {
@@ -31,3 +28,9 @@ export const MENU_LAYOUT = [
     route: '/template',
   },
 ];
+
+export const IconFont = createFromIconfontCN({
+  scriptUrl: [
+    '//at.alicdn.com/t/font_2919693_ng6xieno0np.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+  ],
+});

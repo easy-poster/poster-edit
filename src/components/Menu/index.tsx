@@ -2,14 +2,8 @@ import React, { useMemo } from 'react';
 import { Link, useHistory } from 'umi';
 import LogoColor from '@/assets/logo/color.svg';
 import { MENU_LAYOUT } from '@/const';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { IconFont } from '@/const';
 import './index.less';
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: [
-    '//at.alicdn.com/t/font_2919693_ebagwhw8h5t.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
-  ],
-});
 
 const Menu = () => {
   const history = useHistory();

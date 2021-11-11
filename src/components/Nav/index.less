@@ -7,5 +7,70 @@
   margin-bottom: 20px;
 
   .header-content {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    .header-right {
+      margin-left: 40px;
+      display: flex;
+      font-weight: 500;
+      & > div:not(:last-of-type) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: row nowrap;
+        margin-right: 20px;
+        border-radius: 25px;
+        padding: 0 20px;
+        height: 50px;
+        cursor: pointer;
+      }
+      .header-update {
+        min-width: 120px;
+        background: rgb(242, 242, 242);
+        .update-text {
+          margin-left: 10px;
+        }
+        &:hover {
+          background: rgb(228, 228, 235);
+        }
+      }
+
+      .header-create {
+        min-width: 150px;
+        background-image: linear-gradient(
+          to right,
+          rgb(20, 120, 126),
+          rgb(77, 201, 145)
+        );
+        color: #fff;
+        .create-text {
+          margin-left: 10px;
+        }
+        &:hover {
+          background-image: linear-gradient(
+            to right,
+            rgb(32, 159, 165),
+            rgb(95, 213, 160)
+          );
+        }
+      }
+
+      .header-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(242, 242, 242);
+        height: 50px;
+        width: 50px;
+        border-radius: 25px;
+        cursor: pointer;
+        &:hover {
+          background: rgb(228, 228, 235);
+        }
+      }
+    }
   }
 }
