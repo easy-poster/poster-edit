@@ -45,7 +45,7 @@ const Nav = () => {
           </div>
           <div className="header-create" onClick={handleNewProject}>
             <IconFont type="icon-jiahao" style={{ fontSize: '28px' }} />
-            <span className="create-text">新建海报</span>
+            <span className="create-text">创建设计</span>
           </div>
           <div className="header-user">
             <Dropdown

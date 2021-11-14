@@ -10,7 +10,7 @@ export const MENU_LAYOUT = [
     route: '/',
   },
   {
-    name: '我的海报',
+    name: '我的设计',
     id: 2,
     icon: 'icon-haibaozujian',
     route: '/myproject',

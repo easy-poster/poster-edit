@@ -31,7 +31,7 @@ const Menu = () => {
                 <div className="menu-icon">
                   <IconFont type={item.icon} style={{ fontSize: '24px' }} />
                 </div>
-                <p>{item.name}</p>
+                <span>{item.name}</span>
               </Link>
             );
           })}
@@ -47,7 +47,7 @@ const Menu = () => {
           <div className="setting-icon">
             <IconFont type="icon-shezhi" style={{ fontSize: '24px' }} />
           </div>
-          <p>设置</p>
+          <span>设置</span>
         </Link>
       </div>
     </div>

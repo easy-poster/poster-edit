@@ -8,11 +8,4 @@ export default defineConfig({
   routes: routes,
   fastRefresh: {},
   mfsu: {},
-  extraPostCSSPlugins: [
-    require('postcss-import'),
-    require('tailwindcss')({
-      config: './tailwind.config.js',
-    }),
-    require('postcss-nested'),
-  ],
 });
