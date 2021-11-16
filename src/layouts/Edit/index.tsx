@@ -7,7 +7,11 @@ const EditLayout = (props: IRouteComponentProps) => {
   return (
     <div className="edit-wrap">
       <EditMenu />
-      <div className="edit-content">{props.children}</div>
+      <div className="edit-content">
+        <div className="edit-left">left model</div>
+        <div className="edit-midline"></div>
+        <div className="edit-right">{props.children}</div>
+      </div>
     </div>
   );
 };
