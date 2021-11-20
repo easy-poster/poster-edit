@@ -1,24 +1,83 @@
 .edit-wrap {
   display: flex;
-  .edit-content {
-    display: flex;
-    width: 100%;
-    .edit-left {
-      min-width: 300px;
-      max-width: 50%;
-    }
+  height: 100%;
+  user-select: none;
 
-    .edit-midline {
-      padding: 0 2px;
-      border-right: 2px solid #f00;
-      cursor: col-resize;
-      &:hover {
-        border-color: rgb(77, 201, 145);
+  .edit-left {
+    display: flex;
+    height: 100%;
+    position: relative;
+
+    .edit-resouce {
+      position: relative;
+      height: 100%;
+      background: #f2f2f8;
+
+      .resouce-wrap {
+        position: relative;
+        height: 100%;
+        transition: width ease 0.2s;
+
+        .resouce-list {
+          position: relative;
+          box-sizing: border-box;
+          will-change: width;
+          user-select: auto;
+          height: 100%;
+          max-width: 40vw;
+          min-width: 280px;
+          padding: 20px;
+        }
+
+        .edit-line {
+          position: absolute;
+          z-index: 1;
+          top: 0px;
+          bottom: 0px;
+          right: -3px;
+          width: 6px;
+          cursor: ew-resize;
+          border-left: 4px solid rgb(77, 201, 145);
+          opacity: 0;
+          transition: opacity 200ms ease-in-out 0s;
+          height: 100%;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+
+      .edit-btn {
+        position: absolute;
+        left: 100%;
+        top: 40%;
+        height: 40px;
+        width: 15px;
+        border-radius: 0 5px 5px 0;
+        margin-top: -20px;
+        color: #000;
+        background: #f2f2f8;
+        transition: color 150ms ease-out 0s;
+        cursor: pointer;
+        line-height: 40px;
+
+        &:hover {
+          background: rgb(77, 201, 145);
+          color: #fff;
+        }
+
+        & > span {
+          transition: transform ease 0.4s;
+        }
       }
     }
+  }
 
-    .edit-right {
-      flex: 1;
-    }
+  .edit-content {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    overflow: hidden;
   }
 }
