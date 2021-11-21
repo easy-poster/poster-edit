@@ -61,13 +61,13 @@ const EditLayout = (props: IRouteComponentProps) => {
         resouceWrapDOM.style.width = `${resouceDOM.clientWidth}px`;
         timer = setTimeout(() => {
           resouceWrapDOM.style.width = 'auto';
-        }, 210);
+        }, 510);
       } else {
         resouceWrapDOM.style.width = `${resouceWrapDOM.clientWidth}px`;
         timer = setTimeout(() => {
           resouceWrapDOM.style.width = '4px';
           resouceWrapDOM.style.overflow = 'hidden';
-        }, 210);
+        }, 200);
       }
     }
     return () => {

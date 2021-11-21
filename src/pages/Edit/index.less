@@ -8,6 +8,13 @@
   .header-bar {
     flex: 1 1 0%;
     overflow-x: hidden;
+
+    .bar-content {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      overflow-x: auto;
+    }
   }
 
   .header-right {
@@ -15,6 +22,49 @@
     margin-left: 8px;
     -webkit-box-align: center;
     align-items: center;
+    font-weight: 500;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: row nowrap;
+      margin-right: 20px;
+      border-radius: 25px;
+      padding: 0 20px;
+      height: 50px;
+      cursor: pointer;
+    }
+
+    .header-update {
+      min-width: 120px;
+      background: rgb(242, 242, 242);
+
+      .update-text {
+        margin-left: 10px;
+      }
+
+      &:hover {
+        background: rgb(228, 228, 235);
+      }
+    }
+
+    .header-export {
+      min-width: 150px;
+      background-image: linear-gradient(
+        to right,
+        rgb(20, 120, 126),
+        rgb(77, 201, 145)
+      );
+      color: #fff;
+
+      &:hover {
+        background-image: linear-gradient(
+          to right,
+          rgb(32, 159, 165),
+          rgb(95, 213, 160)
+        );
+      }
+    }
   }
 }
 
