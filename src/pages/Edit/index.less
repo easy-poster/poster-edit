@@ -1,5 +1,5 @@
 .edit-header {
-  padding: 20px 20px 0px;
+  padding: 20px 20px 10px;
   display: flex;
   -webkit-box-pack: end;
   justify-content: flex-end;
@@ -37,14 +37,15 @@
 
     .header-update {
       min-width: 120px;
-      background: rgb(242, 242, 242);
+      background-color: rgb(44, 44, 56);
+      color: #fff;
 
       .update-text {
         margin-left: 10px;
       }
 
       &:hover {
-        background: rgb(228, 228, 235);
+        background-color: rgb(60, 60, 72);
       }
     }
 
@@ -73,4 +74,29 @@
   display: flex;
   flex-direction: column;
   overflow: hidden scroll;
+
+  .edit-main {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .edit-footer {
+    padding-bottom: env(safe-area-inset-bttom, 0);
+    background-color: rgb(23, 23, 30);
+
+    .edit-tool-bar {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 8px;
+      border-bottom: 1px solid rgb(48, 48, 58);
+    }
+
+    .edit-list-bar {
+      height: 120px;
+      display: flex;
+      flex-flow: row nowrap;
+    }
+  }
 }

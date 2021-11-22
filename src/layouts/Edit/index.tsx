@@ -35,6 +35,7 @@ const EditLayout = (props: IRouteComponentProps) => {
           evt?.stopPropagation();
           document.onmousemove = null;
           document.onmouseup = null;
+          lineDropDOM.style.borderColor = '';
           lineDropDOM.style.opacity = '0';
         };
       };

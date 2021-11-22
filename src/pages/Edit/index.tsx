@@ -23,7 +23,13 @@ const Edit = () => {
           </div>
         </div>
       </div>
-      <div className="edit-content">edit content</div>
+      <div className="edit-content">
+        <div className="edit-main">main</div>
+        <div className="edit-footer">
+          <div className="edit-tool-bar">tool bar</div>
+          <div className="edit-list-bar">list bar</div>
+        </div>
+      </div>
     </>
   );
 };
