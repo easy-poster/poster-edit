@@ -1,5 +1,5 @@
 .edit-header {
-  padding: 20px 20px 10px;
+  padding: 12px 20px;
   display: flex;
   -webkit-box-pack: end;
   justify-content: flex-end;
@@ -78,10 +78,15 @@
   .edit-main {
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    position: relative;
+    background-color: #eef2f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .edit-footer {
+    position: relative;
     padding-bottom: env(safe-area-inset-bttom, 0);
     background-color: rgb(23, 23, 30);
 
@@ -94,9 +99,36 @@
     }
 
     .edit-list-bar {
-      height: 120px;
+      height: 0;
+      will-change: height;
       display: flex;
       flex-flow: row nowrap;
+      transition: height 500ms ease-in-out 0s;
+    }
+
+    .edit-footer-btn {
+      position: absolute;
+      left: 50%;
+      top: 1%;
+      height: 16px;
+      width: 60px;
+      margin-top: -16px;
+      border-radius: 8px 8px 0 0;
+      color: rgb(234, 234, 250);
+      background-color: rgb(23, 23, 30);
+      transition: color 150ms ease-out 0s;
+      cursor: pointer;
+      text-align: center;
+      line-height: 16px;
+
+      &:hover {
+        background: rgb(77, 201, 145);
+        color: #fff;
+      }
+
+      & > span {
+        transition: transform 0.5s ease 0.2s;
+      }
     }
   }
 }

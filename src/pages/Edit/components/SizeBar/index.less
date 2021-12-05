@@ -1,0 +1,27 @@
+.sizebar {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 40px;
+  border-radius: 20px;
+  padding: 4px 10px;
+  background-color: #1c1c26;
+
+  .sizemid {
+    width: 40px;
+    text-align: center;
+    margin: 0 10px;
+  }
+
+  span {
+    cursor: pointer;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

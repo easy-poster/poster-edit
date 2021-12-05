@@ -7,5 +7,6 @@ export default defineConfig({
   },
   routes: routes,
   fastRefresh: {},
-  mfsu: {},
+  dynamicImport: {},
+  // mfsu: {},
 });

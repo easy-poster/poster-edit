@@ -65,6 +65,6 @@ export const MENU_EDIT = [
 
 export const IconFont = createFromIconfontCN({
   scriptUrl: [
-    '//at.alicdn.com/t/font_2919693_c9kfe3utwor.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+    '//at.alicdn.com/t/font_2919693_3ekmo4l7yi5.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
   ],
 });
