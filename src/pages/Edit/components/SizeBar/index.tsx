@@ -3,8 +3,12 @@ import { Tooltip } from 'antd';
 import { IconFont } from '@/const';
 import './index.less';
 
+const MAX_SIZE = 400;
+const MIN_SIZE = 25;
+const STEP = 25;
+
 const SizeBar = () => {
-  const [size, setSize] = useState(25);
+  const [size, setSize] = useState(50);
   const [isAutoSize, setIsAutoSize] = useState(false);
 
   const handleAutoSizeOver = () => {
@@ -18,8 +22,12 @@ const SizeBar = () => {
   const handleChangeSize = (toAdd: boolean) => {
     if (toAdd) {
       // 加
+      if (size >= MAX_SIZE) return;
+      setSize(size + STEP);
     } else {
       // 减
+      if (size <= MIN_SIZE) return;
+      setSize(size - STEP);
     }
   };
 
@@ -27,7 +35,10 @@ const SizeBar = () => {
     <div className="sizebar">
       <IconFont
         type="icon-jian"
-        style={{ fontSize: '28px' }}
+        style={{
+          fontSize: '28px',
+          cursor: size <= MIN_SIZE ? 'not-allowed' : 'pointer',
+        }}
         onClick={() => handleChangeSize(false)}
       />
       <span
@@ -50,7 +61,10 @@ const SizeBar = () => {
       </span>
       <IconFont
         type="icon-tianjia_huaban"
-        style={{ fontSize: '28px' }}
+        style={{
+          fontSize: '28px',
+          cursor: size >= MAX_SIZE ? 'not-allowed' : 'pointer',
+        }}
         onClick={() => handleChangeSize(true)}
       />
     </div>

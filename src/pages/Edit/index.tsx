@@ -3,6 +3,8 @@ import { dynamic } from 'umi';
 import SizeBar from './components/SizeBar';
 import { IconFont } from '@/const';
 import './index.less';
+import { useSize } from 'ahooks';
+import Stage from './components/Stage';
 
 const AsyncStage = dynamic({
   loader: async function () {
@@ -15,6 +17,7 @@ const AsyncStage = dynamic({
 });
 
 const Edit = () => {
+  // 底部伸缩
   const listRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,7 +55,9 @@ const Edit = () => {
       </div>
       <div className="edit-content">
         <div className="edit-main">
-          <AsyncStage />
+          <div className="edit-container">
+            <AsyncStage />
+          </div>
           <SizeBar />
         </div>
         <div className="edit-footer">

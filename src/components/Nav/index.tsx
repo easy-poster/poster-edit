@@ -31,7 +31,7 @@ const menu = () => {
 
 const Nav = () => {
   const handleNewProject = () => {
-    history.push(`/edit/${new Date().getTime()}`);
+    history.replace(`/edit/${new Date().getTime()}`);
   };
 
   return (
