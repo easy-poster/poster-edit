@@ -12,17 +12,17 @@ const menu = () => {
 
   return (
     <Menu>
-      <Menu.Item>
+      <Menu.Item key="1">
         <Link to="/user">
           MOMO
           <p style={{ color: 'rgb(111, 111, 125)' }}>418788724@qq.com</p>
         </Link>
       </Menu.Item>
-      <div className="line"></div>
-      <Menu.Item>
+      <Menu.Item key="2" className="line"></Menu.Item>
+      <Menu.Item key="3">
         <Link to="/setting">Setting</Link>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="4">
         <div onClick={handleLogOut}>log out</div>
       </Menu.Item>
     </Menu>

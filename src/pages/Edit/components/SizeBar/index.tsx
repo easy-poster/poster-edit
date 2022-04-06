@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Tooltip } from 'antd';
+import { Slider, Tooltip } from 'antd';
 import { IconFont } from '@/const';
 import './index.less';
 
 const MAX_SIZE = 400;
 const MIN_SIZE = 25;
-const STEP = 25;
 
 const SizeBar = () => {
-  const [size, setSize] = useState(50);
+  const [size, setSize] = useState(100);
   const [isAutoSize, setIsAutoSize] = useState(false);
 
   const handleAutoSizeOver = () => {
@@ -17,29 +16,21 @@ const SizeBar = () => {
 
   const handleChangeAutoSize = () => {
     // 自适应屏幕
+    setSize(200);
   };
 
-  const handleChangeSize = (toAdd: boolean) => {
-    if (toAdd) {
-      // 加
-      if (size >= MAX_SIZE) return;
-      setSize(size + STEP);
-    } else {
-      // 减
-      if (size <= MIN_SIZE) return;
-      setSize(size - STEP);
-    }
+  const handleChangeSize = (value: number) => {
+    setSize(value);
   };
 
   return (
     <div className="sizebar">
-      <IconFont
-        type="icon-jian"
-        style={{
-          fontSize: '28px',
-          cursor: size <= MIN_SIZE ? 'not-allowed' : 'pointer',
-        }}
-        onClick={() => handleChangeSize(false)}
+      <Slider
+        tipFormatter={null}
+        min={MIN_SIZE}
+        max={MAX_SIZE}
+        value={size}
+        onChange={handleChangeSize}
       />
       <span
         className="sizemid"
@@ -59,14 +50,6 @@ const SizeBar = () => {
           `${size}%`
         )}
       </span>
-      <IconFont
-        type="icon-tianjia_huaban"
-        style={{
-          fontSize: '28px',
-          cursor: size >= MAX_SIZE ? 'not-allowed' : 'pointer',
-        }}
-        onClick={() => handleChangeSize(true)}
-      />
     </div>
   );
 };

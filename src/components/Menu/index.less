@@ -5,6 +5,8 @@
   height: 100vh;
   flex-flow: column nowrap;
   justify-content: space-between;
+  position: sticky;
+  top: 0px;
   overflow-y: auto;
   background: white;
   border-right: 1px solid rgb(242, 242, 242);
@@ -28,9 +30,10 @@
         border-radius: 8px;
         margin-bottom: 4px;
         color: #000;
-        &:hover,
-        &:active {
-          background: rgb(242, 242, 248);
+        font-size: 18px;
+        &:not(.active-item):hover,
+        &:not(.active-item):active {
+          background: rgba(77, 201, 145, 0.1);
           color: rgb(77, 201, 145);
         }
 
@@ -41,6 +44,7 @@
 
       .active-item {
         color: rgb(20, 120, 126);
+        background: rgba(77, 201, 145, 0.3);
       }
     }
   }
@@ -56,9 +60,10 @@
       border-radius: 8px;
       margin-bottom: 4px;
       color: #000;
-      &:hover,
-      &:active {
-        background: #eee;
+      font-size: 18px;
+      &:not(.active-item):hover,
+      &:not(.active-item):active {
+        background: rgba(77, 201, 145, 0.1);
         color: rgb(77, 201, 145);
       }
 
@@ -69,6 +74,7 @@
 
     .active-item {
       color: rgb(20, 120, 126);
+      background: rgba(77, 201, 145, 0.3);
     }
   }
 }

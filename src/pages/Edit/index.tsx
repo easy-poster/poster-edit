@@ -33,8 +33,58 @@ const Edit = () => {
     }
   };
 
+  const downloadRecording = (chunks) => {
+    let blob = new Blob(chunks, { type: 'video/webm' });
+    var url = URL.createObjectURL(blob);
+    console.log('url', url);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'animockup.webm';
+    document.body.appendChild(a);
+    a.click();
+    // window.ysFixWebmDuration(new Blob(chunks,{type: "video/webm"}), 5000, {logger: false}).then(function(blob){
+    //   var url = URL.createObjectURL(blob);
+    //   debugger
+    //   const a = document.createElement('a');
+    //   a.style.display = 'none';
+    //   a.href = url;;
+    //   a.download = "animockup.webm";
+    //   document.body.appendChild(a);
+    //   a.click();
+    // });
+  };
+
   const handleExport = () => {
-    console.log('导出');
+    console.log('导出', MediaRecorder.isTypeSupported('video/mp4'));
+    const stageDom = document.getElementById('stage');
+    const fps = 60; //24 30;
+    const multiplier = 1;
+    const bitrate = 1000000; // 1000000 360p; 2500000 720p; 1080p 8000000;
+    if (stageDom && stageDom.childNodes[0]) {
+      const stageStream = stageDom.childNodes[0].captureStream(60);
+      let chunks = [];
+      console.log('stageStream', stageStream);
+      var recorder = new MediaRecorder(stageStream, {
+        videoBitsPerSecond: bitrate,
+        mimeType: 'video/webm;codecs=vp9',
+        audioBitsPerSecond: 0,
+      });
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = (e) => {
+        console.log('chunks', chunks);
+        downloadRecording(chunks);
+      };
+
+      setTimeout(function () {
+        recorder.start(10);
+      }, 100);
+
+      setTimeout(function () {
+        // recording = false;
+        recorder.stop();
+      }, 10000);
+    }
   };
 
   return (
@@ -67,7 +117,7 @@ const Edit = () => {
           </div>
           <div className="edit-footer-btn" onClick={handleBtnClick}>
             <IconFont
-              type="icon-xiangzuo1"
+              type="icon-xiangzuo"
               style={{
                 fontSize: '14px',
                 transform: `${isOpen ? `rotate(270deg)` : `rotate(90deg)`}`,

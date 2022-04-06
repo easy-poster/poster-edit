@@ -89,7 +89,7 @@ const EditLayout = (props: IRouteComponentProps) => {
           </div>
           <div className="edit-btn" onClick={handleClick}>
             <IconFont
-              type="icon-xiangzuo1"
+              type="icon-xiangzuo"
               style={{
                 fontSize: '14px',
                 transform: `${isOpen ? `rotate(0deg)` : `rotate(-180deg)`}`,

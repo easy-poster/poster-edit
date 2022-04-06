@@ -20,8 +20,8 @@ const Stage = () => {
       const stageDOM = stageRef.current;
       if (stageDOM) {
         let options = {
-          width: 4320, // default: 800 宽度
-          height: 2580, // default: 600 高度
+          width: 1920, // default: 800 宽度
+          height: 1080, // default: 600 高度
           antialias: true, // default: false 反锯齿
           transparent: false, // default: false 透明度
           backgroundColor: 0x000000,
@@ -33,21 +33,37 @@ const Stage = () => {
           var loader = PIXI.Loader.shared;
           var ticker = PIXI.Ticker.shared;
           var resources = loader.resources;
+
           let texture = resources['demoImg']?.texture;
           stageDOM.appendChild(window.app.view);
           var raf;
-          console.log('texture', texture);
+          console.log('texture123', texture);
+
           if (!texture) {
             loader.add('demoImg', demoImg);
           }
           loader.load(() => {
             var loader = PIXI.Loader.shared;
             var ticker = PIXI.Ticker.shared;
+            ticker.maxFPS = 1;
             var resources = loader.resources;
             let texture = resources['demoImg']?.texture;
             if (texture) {
               const demoSprite = new PIXI.Sprite(texture);
+              demoSprite.width = 1920;
+              demoSprite.height = 1080;
+
               const container = new PIXI.Container();
+              const blurFilter1 = new PIXI.filters.BlurFilter();
+              demoSprite.filters = [blurFilter1];
+              let count = 1;
+              // ticker.add(() => {
+              //   count += 1;
+              //   // const blurAmount = Math.cos(count);
+              //   blurFilter1.blur = count;
+              //   // console.log(blurFilter1.blur)
+              // })
+
               container.addChild(demoSprite);
               window.app.stage.addChild(container);
               window.app.render();

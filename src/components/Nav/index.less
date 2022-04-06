@@ -3,7 +3,8 @@
   top: 0;
   z-index: 1;
   padding: 20px;
-  // border-bottom: 1px solid rgb(242, 242, 242);
+  background: #fff;
+  border-bottom: 1px solid #f2f2f2;
   margin-bottom: 20px;
 
   .header-content {
@@ -72,6 +73,36 @@
         &:hover {
           background: rgb(228, 228, 235);
         }
+      }
+    }
+  }
+}
+
+// 头像下拉框
+.avatar-dropdown {
+  padding: 20px;
+  .ant-dropdown-menu {
+    padding: 20px;
+    border-radius: 20px 0 20px 20px;
+
+    .line {
+      padding: 0 !important;
+      width: 100%;
+      border-bottom: 2px solid #eee;
+      margin-bottom: 8px;
+    }
+    .ant-dropdown-menu-item {
+      border-radius: 8px;
+      background-color: none;
+      padding: 12px;
+      color: rgb(60, 60, 72);
+      &:first-of-type:hover,
+      .ant-dropdown-menu-submenu-title:first-of-type:hover {
+        background-color: #fff !important;
+      }
+      &:not(:first-of-type):hover,
+      .ant-dropdown-menu-submenu-title:not(:first-of-type):hover {
+        background-color: rgb(242, 242, 242) !important;
       }
     }
   }

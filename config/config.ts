@@ -5,6 +5,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  // mfsu: {},
   routes: routes,
   fastRefresh: {},
   dynamicImportSyntax: {},

@@ -4,61 +4,68 @@ import { SelectProps } from 'antd/es/select';
 
 import './index.less';
 
-function getRandomInt(max: number, min: number = 0) {
-  return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
-}
+const renderTitle = (title: string) => (
+  <span>
+    {title}
+    <a
+      style={{ float: 'right' }}
+      href="https://www.google.com/search?q=antd"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      more
+    </a>
+  </span>
+);
 
-const searchResult = (query: string) =>
-  new Array(getRandomInt(5))
-    .join('.')
-    .split('.')
-    .map((_, idx) => {
-      const category = `${query}${idx}`;
-      return {
-        value: category,
-        label: (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span>
-              Found {query} on{' '}
-              <a
-                href={`https://s.taobao.com/search?q=${query}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {category}
-              </a>
-            </span>
-            <span>{getRandomInt(200, 100)} results</span>
-          </div>
-        ),
-      };
-    });
+const renderItem = (title: string, count: number) => ({
+  value: title,
+  label: (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      {title}
+      <span>{count}</span>
+    </div>
+  ),
+});
+
+const options = [
+  {
+    label: renderTitle('Libraries'),
+    options: [
+      renderItem('AntDesign', 10000),
+      renderItem('AntDesign UI', 10600),
+    ],
+  },
+  {
+    label: renderTitle('Solutions'),
+    options: [
+      renderItem('AntDesign UI FAQ', 60100),
+      renderItem('AntDesign FAQ', 30010),
+    ],
+  },
+  {
+    label: renderTitle('Articles'),
+    options: [renderItem('AntDesign design language', 100000)],
+  },
+];
 
 const SearchHeader = () => {
-  const [options, setOptions] = useState<SelectProps<object>['options']>([]);
-
-  const handleSearch = (value: string) => {
-    setOptions(value ? searchResult(value) : []);
-  };
-
-  const onSelect = (value: string) => {
-    console.log('onSelect', value);
-  };
+  const handleSearch = (value: string) => {};
 
   return (
     <div className="search-header">
       <AutoComplete
+        dropdownClassName="search-drop-wrap"
         dropdownMatchSelectWidth={252}
         style={{ minWidth: 300, maxWidth: 500 }}
         allowClear
         backfill
         options={options}
-        onSelect={onSelect}
         onSearch={handleSearch}
         placeholder="搜索模板"
       ></AutoComplete>
