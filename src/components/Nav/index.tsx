@@ -22,8 +22,8 @@ const menu = () => {
       <Menu.Item key="3">
         <Link to="/setting">设置</Link>
       </Menu.Item>
-      <Menu.Item key="4">
-        <div onClick={handleLogOut}>退出</div>
+      <Menu.Item key="4" onClick={handleLogOut}>
+        退出
       </Menu.Item>
     </Menu>
   );
