@@ -14,12 +14,12 @@ export const MENU_LAYOUT = [
     icon: 'icon-pinpai',
     route: '/brand',
   },
-  {
-    name: '模板库',
-    id: 3,
-    icon: 'icon-zaixianmoban',
-    route: '/template',
-  },
+  // {
+  //   name: '模板库',
+  //   id: 3,
+  //   icon: 'icon-zaixianmoban',
+  //   route: '/template',
+  // },
 ];
 
 // 编辑页菜单
@@ -59,6 +59,6 @@ export const MENU_EDIT = [
 
 export const IconFont = createFromIconfontCN({
   scriptUrl: [
-    '//at.alicdn.com/t/font_2919693_q0v8icf6mls.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+    '//at.alicdn.com/t/font_2919693_7ji4jtfx7mb.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
   ],
 });

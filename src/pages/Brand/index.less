@@ -1,0 +1,205 @@
+.brand-wrap {
+  padding-left: 40px;
+  .brand-title {
+    font-size: 28px;
+  }
+  .brand-banner {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    margin: 20px 40px 80px 0;
+    padding: 40px;
+    height: 350px;
+    min-width: 550px;
+    border-radius: 20px;
+    background: #209fa5;
+    background-image: url('~@/assets/bg/demo.jpg');
+    background-repeat: no-repeat;
+    background-position: 50% 30%;
+    background-size: 100% auto;
+    object-fit: cover;
+    color: #fff;
+    & > h4 {
+      font-size: 26px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .banner-list {
+      margin-top: 20px;
+      padding-left: 0;
+      list-style: none;
+      .banner-li {
+        font-size: 18px;
+        font-weight: 500;
+        .li-content {
+          padding-left: 10px;
+        }
+      }
+    }
+    .banner-btn {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      min-height: 48px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      background-image: linear-gradient(to right, #209fa5, #5fd5a0);
+      &:hover {
+        background-image: linear-gradient(to right, #25b8c0, #66e9ae);
+      }
+    }
+  }
+  .brand-content {
+    margin-bottom: 40px;
+    margin-right: 40px;
+    & > h4 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .item-content {
+      display: flex;
+      border: 1px solid rgba(57, 76, 96, 0.15);
+      border-radius: 10px;
+      min-height: 100px;
+      // logo
+      .logo-list {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        min-height: 200px;
+        .upload-wrap {
+        }
+
+        .logo-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 200px;
+          height: 200px;
+          border-radius: 20px;
+          border: 2px solid #eee;
+          cursor: pointer;
+          margin: 20px 0 20px 20px;
+          position: relative;
+
+          .del {
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            cursor: pointer;
+            display: none;
+          }
+          & > img {
+            width: 90%;
+            height: auto;
+            object-fit: cover;
+            transition: width 0.4s ease;
+          }
+          &:hover {
+            & > img {
+              width: 100%;
+            }
+            & > .del {
+              display: inline-block;
+            }
+          }
+        }
+      }
+
+      // colors
+      .color-list {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        min-height: 100px;
+        .color-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100px;
+          height: 100px;
+          border-radius: 20px;
+          border: 2px solid #eee;
+          cursor: pointer;
+          margin: 20px 0 20px 20px;
+          position: relative;
+          .color-bg {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            transition: width, height 0.4s ease;
+          }
+
+          .del {
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            cursor: pointer;
+            display: none;
+          }
+
+          &:hover {
+            & > .color-bg {
+              width: 90%;
+              height: 90%;
+            }
+            & > .del {
+              display: inline-block;
+            }
+          }
+        }
+      }
+
+      // font
+      .font-list {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        min-height: 200px;
+        .upload-wrap {
+        }
+        .font-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 300px;
+          height: 160px;
+          border-radius: 20px;
+          border: 2px solid #eee;
+          cursor: pointer;
+          margin: 20px 0 20px 20px;
+          position: relative;
+
+          .font-bg {
+            font-size: 32px;
+            font-weight: 400;
+            .tip {
+              font-size: 20px;
+              text-align: center;
+            }
+          }
+
+          .del {
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            cursor: pointer;
+            display: none;
+          }
+          &:hover {
+            & > .del {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+  }
+}

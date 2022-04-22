@@ -6,15 +6,15 @@ import './index.less';
 import { useSize } from 'ahooks';
 import Stage from './components/Stage';
 
-const AsyncStage = dynamic({
-  loader: async function () {
-    // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
-    const { default: Stage } = await import(
-      /* webpackChunkName: "external_A" */ './components/Stage'
-    );
-    return Stage;
-  },
-});
+// const AsyncStage = dynamic({
+//   loader: async function () {
+//     // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
+//     const { default: Stage } = await import(
+//       /* webpackChunkName: "external_A" */ './components/Stage'
+//     );
+//     return Stage;
+//   },
+// });
 
 const Edit = () => {
   // 底部伸缩
@@ -106,7 +106,8 @@ const Edit = () => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            <AsyncStage />
+            {/* <AsyncStage /> */}
+            <Stage />
           </div>
           <SizeBar />
         </div>
