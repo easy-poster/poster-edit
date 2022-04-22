@@ -14,12 +14,12 @@ export const MENU_LAYOUT = [
     icon: 'icon-pinpai',
     route: '/brand',
   },
-  // {
-  //   name: '模板库',
-  //   id: 3,
-  //   icon: 'icon-zaixianmoban',
-  //   route: '/template',
-  // },
+  {
+    name: '模板库',
+    id: 3,
+    icon: 'icon-zaixianmoban',
+    route: '/template',
+  },
 ];
 
 // 编辑页菜单

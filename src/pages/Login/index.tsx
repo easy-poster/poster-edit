@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useHistory } from 'umi';
 import { Divider, Form, Input, Tabs } from 'antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import './index.less';
@@ -9,6 +10,7 @@ import { IconFont } from '@/const';
 const { TabPane } = Tabs;
 
 const Login = () => {
+  const history = useHistory();
   const [loginType, setLoginType] = useUrlState({ type: 'log' });
 
   const [form] = Form.useForm();
@@ -41,6 +43,7 @@ const Login = () => {
       console.log('form', form);
       const values = await form.validateFields();
       console.log('values', values);
+      history.push('/');
     } catch (errInfo) {
       console.log('Save failed:', errInfo);
     }
