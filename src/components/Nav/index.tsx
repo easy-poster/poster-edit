@@ -20,10 +20,10 @@ const menu = () => {
       </Menu.Item>
       <Menu.Item key="2" className="line"></Menu.Item>
       <Menu.Item key="3">
-        <Link to="/setting">Setting</Link>
+        <Link to="/setting">设置</Link>
       </Menu.Item>
       <Menu.Item key="4">
-        <div onClick={handleLogOut}>log out</div>
+        <div onClick={handleLogOut}>退出</div>
       </Menu.Item>
     </Menu>
   );
