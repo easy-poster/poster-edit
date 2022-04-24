@@ -25,6 +25,7 @@ export default defineConfig([
       },
       { path: '/brand', exact: true, component: '@/pages/Brand' },
       { path: '/template', exact: true, component: '@/pages/Template' },
+      { path: '/search', exact: true, component: '@/pages/Search' },
       { path: '/setting', exact: true, component: '@/pages/Setting' },
       { component: '@/pages/404' },
     ],

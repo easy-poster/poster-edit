@@ -179,6 +179,8 @@ const Home = () => {
             ></AutoComplete>
             <Select
               dropdownClassName="card-filter-wrap"
+              dropdownMatchSelectWidth={false}
+              placement="bottomRight"
               defaultValue="1"
               style={{ width: 100 }}
               bordered={false}

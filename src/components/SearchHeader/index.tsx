@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Input, AutoComplete } from 'antd';
+import { useHistory } from 'umi';
 import { SelectProps } from 'antd/es/select';
 
 import './index.less';
@@ -55,7 +56,10 @@ const options = [
 ];
 
 const SearchHeader = () => {
-  const handleSearch = (value: string) => {};
+  const history = useHistory();
+  const handleSearch = (value: string) => {
+    history.push(`/search?q=${encodeURIComponent(value)}`);
+  };
 
   return (
     <div className="search-header">

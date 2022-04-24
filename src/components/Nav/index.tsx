@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, history } from 'umi';
+import { Link, history, useModel } from 'umi';
 import { Avatar, Divider, Dropdown, Menu, message } from 'antd';
 import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
@@ -34,12 +34,17 @@ const Nav = () => {
     history.replace(`/edit/${new Date().getTime()}`);
   };
 
+  const { setShowBuy } = useModel('buy');
+  const handleUpdate = () => {
+    setShowBuy(true);
+  };
+
   return (
     <header className="header">
       <div className="header-content">
         <SearchHeader />
         <div className="header-right">
-          <div className="header-update">
+          <div className="header-update" onClick={handleUpdate}>
             <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
             <span className="update-text">升级</span>
           </div>
