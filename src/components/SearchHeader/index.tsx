@@ -71,6 +71,7 @@ const SearchHeader = () => {
         backfill
         options={options}
         onSearch={handleSearch}
+        onSelect={handleSearch}
         placeholder="搜索模板"
       ></AutoComplete>
     </div>

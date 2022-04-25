@@ -200,7 +200,7 @@ const Home = () => {
               md: 1,
               lg: 2,
               xl: 2,
-              xxl: 4,
+              xxl: 3,
             }}
             dataSource={LIST}
             renderItem={(item) => (

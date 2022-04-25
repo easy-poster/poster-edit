@@ -59,7 +59,7 @@ const Nav = () => {
               overlayClassName="avatar-dropdown"
               placement="bottomRight"
             >
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
+              <Avatar src="https://joeschmoe.io/api/v1/random" size={50} />
             </Dropdown>
           </div>
         </div>
