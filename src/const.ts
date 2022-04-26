@@ -38,7 +38,7 @@ export const MENU_EDIT = [
     route: '/myproject',
   },
   {
-    name: '素材',
+    name: '图形',
     id: 3,
     icon: 'icon-sucaiku-1',
     route: '/brand',

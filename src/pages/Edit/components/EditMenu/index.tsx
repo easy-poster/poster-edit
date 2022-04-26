@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { MENU_EDIT } from '@/const';
-import { Link, useHistory } from 'umi';
+import { Link, useHistory, useModel } from 'umi';
 import { IconFont } from '@/const';
 import LogoColor from '@/assets/logo/color.svg';
 import './index.less';
@@ -8,7 +8,7 @@ import './index.less';
 const EditMenu = () => {
   const history = useHistory();
 
-  const [activeTab, setActiveTab] = useState(1);
+  const { activeTab, setActiveTab } = useModel('switchEditTab');
 
   return (
     <div className="edit-menu">
@@ -27,7 +27,7 @@ const EditMenu = () => {
                 onClick={() => setActiveTab(item.id)}
               >
                 <div className="edit-menu-icon">
-                  <IconFont type={item.icon} style={{ fontSize: '22px' }} />
+                  <IconFont type={item.icon} style={{ fontSize: '18px' }} />
                 </div>
                 <span>{item.name}</span>
               </div>

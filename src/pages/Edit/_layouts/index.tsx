@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IRouteComponentProps } from 'umi';
-import EditMenu from '@/components/EditMenu';
+import { IRouteComponentProps, useModel } from 'umi';
+import EditMenu from '@/pages/Edit/components/EditMenu';
 import { IconFont } from '@/const';
+import UploadPage from '../Upload';
+import ImagePage from '../Image';
+import GraphicalPage from '../Graphical';
+import TextPage from '../Text';
+import BackgroundPage from '../Background';
 import './index.less';
 
 const EditLayout = (props: IRouteComponentProps) => {
@@ -76,6 +81,25 @@ const EditLayout = (props: IRouteComponentProps) => {
     };
   }, [isOpen]);
 
+  const { activeTab } = useModel('switchEditTab');
+
+  const renderItem = () => {
+    switch (+activeTab) {
+      case 1:
+        return <UploadPage />;
+      case 2:
+        return <ImagePage />;
+      case 3:
+        return <GraphicalPage />;
+      case 4:
+        return <TextPage />;
+      case 5:
+        return <BackgroundPage />;
+      default:
+        return <UploadPage />;
+    }
+  };
+
   return (
     <div className="edit-wrap">
       <div className="edit-left">
@@ -83,7 +107,7 @@ const EditLayout = (props: IRouteComponentProps) => {
         <div className="edit-resouce">
           <div className="resouce-wrap" ref={resouceWrapRef}>
             <div className="resouce-list" ref={resouceRef}>
-              资源列表
+              {renderItem()}
             </div>
             {isOpen && <div className="edit-line" ref={lineDropRef}></div>}
           </div>

@@ -4,7 +4,7 @@ export default defineConfig([
   { path: '/login', component: '@/pages/Login' },
   {
     path: '/edit',
-    component: '@/layouts/Edit',
+    component: '@/pages/Edit/_layouts',
     wrappers: ['@/wrappers/auth'],
     routes: [
       { path: '/edit/:id', exact: true, component: '@/pages/Edit' },
