@@ -3,6 +3,7 @@ import { Link, history, useModel } from 'umi';
 import { Avatar, Divider, Dropdown, Menu, message } from 'antd';
 import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
+import { db } from '@/utils/db';
 import './index.less';
 
 const menu = () => {
@@ -30,8 +31,20 @@ const menu = () => {
 };
 
 const Nav = () => {
-  const handleNewProject = () => {
-    history.replace(`/edit/${new Date().getTime()}`);
+  const handleNewProject = async () => {
+    try {
+      const id = await db.epProject.add({
+        title: 'title',
+        userId: 1,
+        blob: new Blob(['123'], { type: 'text/html' }),
+      });
+      console.log('id', id);
+      if (id) {
+        history.replace(`/edit/${new Date().getTime()}`);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const { setShowBuy } = useModel('buy');

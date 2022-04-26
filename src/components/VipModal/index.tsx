@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Divider, Modal } from 'antd';
 import { useModel } from 'umi';
 import QRCode from 'qrcode.react';
 import { IconFont } from '@/const';
@@ -127,6 +127,7 @@ const VipModal = ({ visible }: VipModalProps) => {
           onCancel={handlePayCancel}
         >
           <div className="pay-wrap">
+            <Divider className="divider-line" dashed />
             <div className="qrcode-wrap">
               <div className="qrcode">
                 <QRCode
@@ -152,6 +153,7 @@ const VipModal = ({ visible }: VipModalProps) => {
                 </div>
               </div>
             </div>
+            <Divider className="divider-line" dashed />
             <p className="tips">
               订阅即表示你同意
               <a href="#">eposter使用条款</a>和<a href="#">自动续订服务</a>
