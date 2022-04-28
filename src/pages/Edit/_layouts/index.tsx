@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { IRouteComponentProps, useModel } from 'umi';
 import EditMenu from '@/pages/Edit/components/EditMenu';
 import { IconFont } from '@/const';
@@ -58,6 +64,13 @@ const EditLayout = (props: IRouteComponentProps) => {
     setIsOpen(!isOpen);
   };
 
+  useLayoutEffect(() => {
+    const resouceDOM = resouceRef.current;
+    if (resouceDOM) {
+      resouceDOM.style.width = '296px';
+    }
+  }, []);
+
   useEffect(() => {
     const resouceWrapDOM = resouceWrapRef.current;
     const resouceDOM = resouceRef.current;
@@ -106,7 +119,7 @@ const EditLayout = (props: IRouteComponentProps) => {
         <EditMenu />
         <div className="edit-resouce">
           <div className="resouce-wrap" ref={resouceWrapRef}>
-            <div className="resouce-list" ref={resouceRef}>
+            <div className="resouce-content" ref={resouceRef}>
               {renderItem()}
             </div>
             {isOpen && <div className="edit-line" ref={lineDropRef}></div>}
@@ -122,7 +135,7 @@ const EditLayout = (props: IRouteComponentProps) => {
           </div>
         </div>
       </div>
-      <div className="edit-content">{props.children}</div>
+      <div className="edit-right">{props.children}</div>
     </div>
   );
 };

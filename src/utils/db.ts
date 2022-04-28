@@ -11,21 +11,27 @@ export interface epProject extends commonProps {
   id?: number;
   title: string;
   blob: Blob;
+  cover: string;
 }
 
 export interface epImage extends commonProps {
   userId: number;
-  title: string;
+  name: string;
+  size: number;
+  type: string;
   blob: Blob;
+  cover?: string;
 }
 
 export class EposterDexie extends Dexie {
   epProject!: Table<epProject>;
+  epImage!: Table<epImage>;
 
   constructor(name: string) {
     super(name);
     this.version(1).stores({
-      epProject: '++id, title, blob',
+      epImage: '++id, userId, name, size, type, blob, cover',
+      epProject: '++id, title, blob, cover',
     });
   }
 }
