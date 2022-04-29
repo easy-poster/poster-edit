@@ -20,7 +20,7 @@ export interface epImage extends commonProps {
   size: number;
   type: string;
   blob: Blob;
-  cover?: string;
+  cover?: Blob;
 }
 
 export class EposterDexie extends Dexie {

@@ -55,6 +55,12 @@ export const MENU_EDIT = [
     icon: 'icon-background',
     route: '/template',
   },
+  {
+    name: '品牌',
+    id: 6,
+    icon: 'icon-pinpai',
+    route: '/template',
+  },
 ];
 
 export const IconFont = createFromIconfontCN({

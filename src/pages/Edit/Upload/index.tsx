@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { List } from 'antd';
+import { List, message } from 'antd';
 import demoImg from '@/assets/demo.png';
 import './index.less';
 import { db } from '@/utils/db';
@@ -11,49 +11,6 @@ const UploadPage = () => {
 
   const [images, setImages] = useState([]);
 
-  const compressImg = (imgProps: any, width: number, height: number) => {
-    return new Promise<string>((resolve, reject) => {
-      let img = new Image();
-      let base64 = '',
-        blob,
-        type = 'image/jpg';
-      blob = imgProps.blob;
-      type = imgProps.type;
-
-      img.src = URL.createObjectURL(blob);
-      img.onload = () => {
-        if (img.width * img.height > width * height) {
-          let canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          let imgAspectRatio = img.width / img.height;
-          let Maxbd =
-            img.width / width > img.height / height ? 'width' : 'height';
-          switch (Maxbd) {
-            case 'width':
-              canvas.width = width;
-              canvas.height = canvas.width / imgAspectRatio;
-              break;
-            case 'height':
-              canvas.height = height;
-              canvas.width = canvas.height * imgAspectRatio;
-              break;
-            default:
-              break;
-          }
-          if (ctx) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          }
-          base64 = canvas.toDataURL(type, 1) || '';
-          resolve(base64);
-        }
-      };
-      img.onerror = () => {
-        reject();
-      };
-    });
-  };
-
   const getImage = async () => {
     let result = [];
     result = await db.epImage
@@ -63,8 +20,11 @@ const UploadPage = () => {
       .reverse()
       .sortBy('id');
     if (result.length > 0) {
-      setImages(result);
+      result = result.map((it) => {
+        return { ...it, coverBlob: tools.getWebUrl(it.cover || '') };
+      });
     }
+    setImages(result);
   };
 
   useEffect(() => {
@@ -79,7 +39,7 @@ const UploadPage = () => {
           type: file.type,
           blob: new Blob([file], { type: file.type }),
         };
-        let base64 = await compressImg(images, 240, 140);
+        let coverBlob = await tools.compressImg(images, 240, 140);
         let result = await db.epImage.add({
           userId: 123,
           createTime: new Date(),
@@ -88,7 +48,7 @@ const UploadPage = () => {
           size: file.size,
           type: file.type,
           blob: images.blob,
-          cover: base64,
+          cover: coverBlob,
         });
         return result;
       } catch (error) {
@@ -109,11 +69,7 @@ const UploadPage = () => {
     setIsOver(false);
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsOver(false);
-    let files = e.dataTransfer.files;
-
+  const uploadQueue = (files: Array<any>) => {
     let promiseAry = [];
 
     for (const key in files) {
@@ -130,43 +86,39 @@ const UploadPage = () => {
       }
     }
 
-    Promise.all(promiseAry)
+    Promise.allSettled(promiseAry)
       .then((result) => {
         console.log('result', result);
         // 重新请求数据
         getImage();
+        message.success('添加成功');
+        // message.success({
+        //   content: '添加成功',
+        //   // className: 'custom-class',
+        // });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const inputImageChange = (e) => {
-    if (e?.target?.files.length === 0) {
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsOver(false);
+    let files = e.dataTransfer.files || [];
+    if (files?.length === 0) {
       return false;
     }
-    let promiseAry = [];
-    // 批量上传
-    for (const key in e.target.files) {
-      if (Object.hasOwnProperty.call(e.target.files, key)) {
-        const file = e.target.files[key];
-        promiseAry.push(
-          new Promise(async (resolve, reject) => {
-            let result = await addImage(file);
-            resolve({ key, result });
-          }),
-        );
-      }
+    uploadQueue(files);
+  };
+
+  const inputImageChange = (e) => {
+    let files = e?.target?.files || [];
+    if (files?.length === 0) {
+      return false;
     }
 
-    Promise.allSettled(promiseAry)
-      .then((result) => {
-        // 重新请求数据
-        getImage();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    uploadQueue(files);
   };
 
   const handleClickUpload = () => {
@@ -176,12 +128,17 @@ const UploadPage = () => {
   };
 
   const handleDel = async (item: any) => {
-    console.log('item del', item);
     if (item.id) {
       try {
-        await db.epImage.delete(item.id);
-        // 重新请求数据
-        getImage();
+        let res = await db.epImage
+          .where('id')
+          .equals(+item.id)
+          .delete();
+        if (res) {
+          debugger;
+          // 重新请求数据
+          getImage();
+        }
       } catch (error) {
         console.log('error', error);
       }
@@ -226,7 +183,7 @@ const UploadPage = () => {
           return (
             <div className="img-item" key={item.id}>
               <div className="img-wrap">
-                <img className="img-cover" alt="example" src={item.cover} />
+                <img className="img-cover" alt="example" src={item.coverBlob} />
                 <div className="edit-wrap">
                   <div
                     className="img-btn edit-del"

@@ -1,9 +1,93 @@
-export default {
+const tools = {
   randomColor: () => {
     let color = '#';
-    for (var i = 0; i < 6; i++)
-      color += parseInt(Math.random() * 16).toString(16);
+    for (var i = 0; i < 6; i++) {
+      color += parseInt(Math.random() * 16 + '').toString(16);
+    }
     return color;
+  },
+  getWebUrl: (file) => {
+    let url = null;
+    if (window.createObjectURL != undefined) {
+      // basic
+      url = window.createObjectURL(file);
+    } else if (window.URL != undefined) {
+      // mozilla(firefox)
+      url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+      // webkit or chrome
+      url = window.webkitURL.createObjectURL(file);
+    }
+    return url;
+  },
+  // base64转blob
+  dataURLtoBlob: (dataurl: string) => {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  },
+  // blob转base64
+  blobToDataURI(blob: Blob) {
+    return new Promise((resovle, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = function (e) {
+        resovle(e?.target?.result);
+      };
+    });
+  },
+  // 等比压缩图片
+  compressImg: (imgProps: any, width: number, height: number) => {
+    return new Promise<Blob | undefined>((resolve, reject) => {
+      let img = new Image();
+      let blob,
+        type = 'image/jpg';
+      blob = imgProps.blob;
+      type = imgProps.type;
+
+      img.src = URL.createObjectURL(blob);
+      img.onload = () => {
+        let canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        let imgAspectRatio = img.width / img.height;
+        let Maxbd =
+          img.width / width > img.height / height ? 'width' : 'height';
+        switch (Maxbd) {
+          case 'width':
+            canvas.width = width;
+            canvas.height = canvas.width / imgAspectRatio;
+            break;
+          case 'height':
+            canvas.height = height;
+            canvas.width = canvas.height * imgAspectRatio;
+            break;
+          default:
+            break;
+        }
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+        // base64 = canvas.toDataURL(type, 1) || '';
+        // coverBlob = tools.dataURLtoBlob(base64)
+        canvas.toBlob(
+          (coverBlob) => {
+            resolve(coverBlob || undefined);
+          },
+          type,
+          1,
+        );
+      };
+      img.onerror = () => {
+        reject();
+      };
+    });
   },
   // 判断资源名字是否重复，如果重复则增加index
   resourceRepeat: (resources, curTitle) => {
@@ -33,57 +117,6 @@ export default {
       return curTitle;
     }
   },
-  compressImg: (img, type) => {
-    // 获取base64的文件大小
-    function getBase64ImgSize(base64DataStr) {
-      var tag = 'base64,';
-      // 截取字符串 获取"base64,"后面的字符串
-      base64DataStr = base64DataStr.substring(
-        base64DataStr.indexOf(tag) + tag.length,
-      );
-
-      // 根据末尾等号（'='）来再次确认真实base64图片字符串
-      var eqTagIndex = base64DataStr.indexOf('=');
-      base64DataStr =
-        eqTagIndex != -1
-          ? base64DataStr.substring(0, eqTagIndex)
-          : base64DataStr;
-
-      // 计算大小
-      var strLen = base64DataStr.length;
-      var fileSize = strLen - (strLen / 8) * 2;
-      return fileSize;
-    }
-
-    // 图片等比缩放
-    let canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    let imgAspectRatio = img.width / img.height;
-    let Maxbd = img.width / 1920 > img.height / 1080 ? 'width' : 'height';
-    switch (Maxbd) {
-      case 'width':
-        canvas.width = 1920;
-        canvas.height = canvas.width / imgAspectRatio;
-        break;
-      case 'height':
-        canvas.height = 1080;
-        canvas.width = canvas.height * imgAspectRatio;
-        break;
-      default:
-        break;
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    let base64 = canvas.toDataURL(type, 1);
-    let cutBlob = tools.dataURLtoBlob(base64);
-    let fileSize = getBase64ImgSize(base64);
-
-    return {
-      base64,
-      fileSize,
-      width: canvas.width,
-      height: canvas.height,
-      cutBlob,
-    };
-  },
 };
+
+export default tools;

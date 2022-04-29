@@ -13,6 +13,7 @@ import ImagePage from '../Image';
 import GraphicalPage from '../Graphical';
 import TextPage from '../Text';
 import BackgroundPage from '../Background';
+import BrandPage from '../Brand';
 import './index.less';
 
 const EditLayout = (props: IRouteComponentProps) => {
@@ -108,6 +109,8 @@ const EditLayout = (props: IRouteComponentProps) => {
         return <TextPage />;
       case 5:
         return <BackgroundPage />;
+      case 6:
+        return <BrandPage />;
       default:
         return <UploadPage />;
     }
