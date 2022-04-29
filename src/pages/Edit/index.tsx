@@ -1,20 +1,21 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { dynamic } from 'umi';
+import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont } from '@/const';
 import './index.less';
 import { useSize } from 'ahooks';
 import Stage from './components/Stage';
 
-// const AsyncStage = dynamic({
-//   loader: async function () {
-//     // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
-//     const { default: Stage } = await import(
-//       /* webpackChunkName: "external_A" */ './components/Stage'
-//     );
-//     return Stage;
-//   },
-// });
+const AsyncStage = dynamic({
+  loader: async function () {
+    // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
+    const { default: Stage } = await import(
+      /* webpackChunkName: "external_A" */ './components/Stage'
+    );
+    return Stage;
+  },
+});
 
 const Edit = () => {
   // 底部伸缩
@@ -90,8 +91,8 @@ const Edit = () => {
   return (
     <>
       <div className="edit-header">
-        <div className="header-bar">
-          <div className="bar-content">headbarheadbar</div>
+        <div className="header-left">
+          <HeaderBar />
         </div>
         <div className="header-right">
           <div className="header-update">
@@ -106,8 +107,8 @@ const Edit = () => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            {/* <AsyncStage /> */}
-            <Stage />
+            <AsyncStage />
+            {/* <Stage /> */}
           </div>
           <SizeBar />
         </div>
