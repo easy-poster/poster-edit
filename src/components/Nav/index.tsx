@@ -4,43 +4,58 @@ import { Avatar, Divider, Dropdown, Menu, message } from 'antd';
 import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
 import { db } from '@/utils/db';
+import { v4 as uuidv4 } from 'uuid';
 import './index.less';
+import tools from '@/utils/tools';
 
 const menu = () => {
   const handleLogOut = () => {
     history.push('/login');
   };
 
-  return (
-    <Menu>
-      <Menu.Item key="1">
+  const items = [
+    {
+      label: (
         <Link to="/user">
           MOMO
           <p style={{ color: 'rgb(111, 111, 125)' }}>418788724@qq.com</p>
         </Link>
-      </Menu.Item>
-      <Menu.Item key="2" className="line"></Menu.Item>
-      <Menu.Item key="3">
-        <Link to="/setting">设置</Link>
-      </Menu.Item>
-      <Menu.Item key="4" onClick={handleLogOut}>
-        退出
-      </Menu.Item>
-    </Menu>
-  );
+      ),
+      key: 1,
+    },
+    {
+      label: <Link to="/setting">设置</Link>,
+      key: 2,
+    },
+    {
+      label: <div onClick={handleLogOut}>退出</div>,
+      key: 3,
+    },
+  ];
+
+  return <Menu items={items} />;
 };
 
 const Nav = () => {
   const handleNewProject = async () => {
     try {
+      let count = await db.epProject
+        .where({
+          userId: 1,
+        })
+        .count();
+
+      let uuid = uuidv4();
       const id = await db.epProject.add({
-        title: 'title',
+        title: `title_${count + 1}`,
         userId: 1,
-        blob: new Blob(['123'], { type: 'text/html' }),
+        uuid: uuid,
+        createTime: new Date(),
+        updateTime: new Date(),
       });
       console.log('id', id);
       if (id) {
-        history.replace(`/edit/${new Date().getTime()}`);
+        history.push(`/edit/${uuid}`);
       }
     } catch (error) {
       console.log('error', error);

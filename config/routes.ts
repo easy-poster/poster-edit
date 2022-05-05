@@ -14,15 +14,11 @@ export default defineConfig([
   {
     path: '/',
     component: '@/layouts/index',
+    wrappers: ['@/wrappers/auth'],
     routes: [
       { path: '/', component: '@/pages/Home' },
       { path: '/home', exact: true, rediract: '/' },
-      {
-        path: '/user',
-        exact: true,
-        wrappers: ['@/wrappers/auth'],
-        component: '@/pages/User',
-      },
+      { path: '/user', exact: true, component: '@/pages/User' },
       { path: '/brand', exact: true, component: '@/pages/Brand' },
       { path: '/template', exact: true, component: '@/pages/Template' },
       { path: '/search', exact: true, component: '@/pages/Search' },

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Slider, Tooltip } from 'antd';
 import { IconFont } from '@/const';
 import './index.less';
+import { useModel } from 'umi';
 
 const MAX_SIZE = 400;
 const MIN_SIZE = 25;
 
 const SizeBar = () => {
-  const [size, setSize] = useState(100);
+  const { sizeStage, setSizeStage } = useModel('sizeStage');
   const [isAutoSize, setIsAutoSize] = useState(false);
 
   const handleAutoSizeOver = () => {
@@ -16,11 +17,11 @@ const SizeBar = () => {
 
   const handleChangeAutoSize = () => {
     // 自适应屏幕
-    setSize(200);
+    setSizeStage(200);
   };
 
   const handleChangeSize = (value: number) => {
-    setSize(value);
+    setSizeStage(value);
   };
 
   return (
@@ -29,7 +30,7 @@ const SizeBar = () => {
         tipFormatter={null}
         min={MIN_SIZE}
         max={MAX_SIZE}
-        value={size}
+        value={sizeStage}
         onChange={handleChangeSize}
       />
       <span
@@ -47,7 +48,7 @@ const SizeBar = () => {
             <IconFont type="icon-zishiying" style={{ fontSize: '28px' }} />
           </Tooltip>
         ) : (
-          `${size}%`
+          `${sizeStage}%`
         )}
       </span>
     </div>

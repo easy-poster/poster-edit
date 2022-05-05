@@ -24,7 +24,7 @@ const Stage = () => {
           height: 1080, // default: 600 高度
           antialias: true, // default: false 反锯齿
           transparent: false, // default: false 透明度
-          backgroundColor: 0x000000,
+          backgroundColor: 0xffffff,
           autoStart: false,
         };
         if (!window.app && !stageDOM.innerHTML) {
@@ -56,6 +56,7 @@ const Stage = () => {
               const container = new PIXI.Container();
               const blurFilter1 = new PIXI.filters.BlurFilter();
               demoSprite.filters = [blurFilter1];
+              blurFilter1.blur = 1;
               let count = 1;
               // ticker.add(() => {
               //   count += 1;

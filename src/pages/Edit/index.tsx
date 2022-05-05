@@ -34,7 +34,7 @@ const Edit = () => {
     }
   };
 
-  const downloadRecording = (chunks) => {
+  const downloadRecording = (chunks: any[] | undefined) => {
     let blob = new Blob(chunks, { type: 'video/webm' });
     var url = URL.createObjectURL(blob);
     console.log('url', url);
@@ -64,7 +64,7 @@ const Edit = () => {
     const bitrate = 1000000; // 1000000 360p; 2500000 720p; 1080p 8000000;
     if (stageDom && stageDom.childNodes[0]) {
       const stageStream = stageDom.childNodes[0].captureStream(60);
-      let chunks = [];
+      let chunks: any[] | undefined = [];
       console.log('stageStream', stageStream);
       var recorder = new MediaRecorder(stageStream, {
         videoBitsPerSecond: bitrate,

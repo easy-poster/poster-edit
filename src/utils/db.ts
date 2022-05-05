@@ -8,14 +8,18 @@ interface commonProps {
 }
 
 export interface epProject extends commonProps {
-  id?: number;
-  title: string;
-  blob: Blob;
-  cover: string;
+  uuid: string; // uuid
+  title: string; // 项目名称
+  resourceId?: number; // 资源id
+  url?: string; // blob 地址
+  src?: string; // 在线资源地址
+  cover?: string; // 封面
+  size?: number; // 资源大小
+  originWidth?: number; // 原始宽
+  originHeight?: number; // 原始高
 }
 
 export interface epImage extends commonProps {
-  userId: number;
   name: string;
   size: number;
   type: string;
@@ -30,8 +34,10 @@ export class EposterDexie extends Dexie {
   constructor(name: string) {
     super(name);
     this.version(1).stores({
-      epImage: '++id, userId, name, size, type, blob, cover',
-      epProject: '++id, title, blob, cover',
+      epImage:
+        '++id, userId, createTime, updateTime, name, size, type, blob, cover',
+      epProject:
+        '++id, userId, createTime, updateTime, uuid, title, resourceId, url, src, cover, size, originWidth, originHeight',
     });
   }
 }

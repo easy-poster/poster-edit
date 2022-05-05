@@ -85,17 +85,16 @@
     padding: 20px;
     border-radius: 20px 0 20px 20px;
 
-    .line {
-      padding: 0 !important;
-      width: 100%;
-      border-bottom: 2px solid #eee;
-      margin-bottom: 8px;
-    }
     .ant-dropdown-menu-item {
       border-radius: 8px;
       background-color: none;
       padding: 12px;
       color: rgb(60, 60, 72);
+      &:first-of-type {
+        margin-bottom: 12px;
+        border-radius: 0;
+        border-bottom: 2px solid #eee;
+      }
       &:first-of-type:hover,
       .ant-dropdown-menu-submenu-title:first-of-type:hover {
         background-color: #fff !important;

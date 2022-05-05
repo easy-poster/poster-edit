@@ -15,7 +15,7 @@ const UploadPage = () => {
     let result = [];
     result = await db.epImage
       .where({
-        userId: 123,
+        userId: 1,
       })
       .reverse()
       .sortBy('id');
@@ -41,7 +41,7 @@ const UploadPage = () => {
         };
         let coverBlob = await tools.compressImg(images, 240, 140);
         let result = await db.epImage.add({
-          userId: 123,
+          userId: 1,
           createTime: new Date(),
           updateTime: new Date(),
           name: file.name, // tools.resourceRepeat(myImage, file?.name) || file?.name

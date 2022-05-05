@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Link, history, useModel } from 'umi';
 import { useSize } from 'ahooks';
 import { Input, AutoComplete, Select, List, Card, Menu, Dropdown } from 'antd';
+import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';
 import { SelectProps } from 'antd/es/select';
 import BScroll from '@better-scroll/core';
 import { IconFont } from '@/const';
 import demoImg from '@/assets/demo.png';
+import noImage from '@/assets/noImage.jpeg';
+import dayjs from 'dayjs';
+import { db } from '@/utils/db';
 import './index.less';
-import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';
 
 const { Option } = Select;
 
@@ -73,7 +77,7 @@ const Home = () => {
         probeType: 3,
       });
     }
-  });
+  }, []);
 
   const handleTransform = (to: string) => {
     console.log('to', to, bscrollObj, size);
@@ -94,6 +98,24 @@ const Home = () => {
     }
   };
 
+  // 最近作品
+  const [project, setProject] = useState([]);
+  const getProject = async () => {
+    let result = [];
+    result = await db.epProject
+      .where({
+        userId: 1,
+      })
+      .reverse()
+      .sortBy('id');
+
+    setProject(result);
+  };
+
+  useEffect(() => {
+    getProject();
+  }, []);
+
   const [options, setOptions] = useState<SelectProps<object>['options']>([]);
 
   const handleSearch = (value: string) => {
@@ -104,31 +126,70 @@ const Home = () => {
     console.log('onSelect', value);
   };
 
-  const handleGoEdit = (item: any) => {
+  const handleGoEdit = (e, item: any) => {
     console.log('去编辑，要防抖', item);
+    if (item.uuid) {
+      history.push(`/edit/${item.uuid}`);
+    }
   };
 
-  const handleEditClick = ({ key }) => {
-    setActiveCard('');
+  const handleEdit = (e, id) => {
+    e.stopPropagation();
+    setActiveCard(id);
+  };
+
+  const handleDel = async (id: any) => {
+    if (id) {
+      try {
+        let res = await db.epProject.where('id').equals(id).delete();
+        if (res) {
+          setActiveCard('');
+          // 重新请求数据
+          getProject();
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+  };
+
+  const handleEditMenuClick = ({ key, domEvent }) => {
+    domEvent.stopPropagation();
     console.log('click on item', key);
+    switch (+key) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        handleDel(+activeCard);
+        break;
+
+      default:
+        break;
+    }
   };
 
-  const menu = (
-    <Menu onClick={handleEditClick}>
-      <Menu.Item key="1">
-        <IconFont type="icon-fuzhi" style={{ fontSize: '22px' }} />
-        <span className="menu-wrod">复制</span>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <IconFont type="icon-xiazai" style={{ fontSize: '22px' }} />
-        <span className="menu-wrod">下载</span>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <IconFont type="icon-shanchu" style={{ fontSize: '22px' }} />
-        <span className="menu-wrod">删除</span>
-      </Menu.Item>
-    </Menu>
-  );
+  const menu = () => {
+    const items = [
+      {
+        label: '复制',
+        key: 1,
+        icon: <IconFont type="icon-fuzhi" style={{ fontSize: '22px' }} />,
+      },
+      {
+        label: '下载',
+        key: 2,
+        icon: <IconFont type="icon-xiazai" style={{ fontSize: '22px' }} />,
+      },
+      {
+        label: '删除',
+        key: 3,
+        icon: <IconFont type="icon-shanchu" style={{ fontSize: '22px' }} />,
+      },
+    ];
+    return <Menu onClick={handleEditMenuClick} items={items} />;
+  };
 
   return (
     <div className="home">
@@ -175,7 +236,7 @@ const Home = () => {
               options={options}
               onSelect={onSelect}
               onSearch={handleSearch}
-              placeholder="搜索模板"
+              placeholder="最近作品"
             ></AutoComplete>
             <Select
               dropdownClassName="card-filter-wrap"
@@ -202,11 +263,18 @@ const Home = () => {
               xl: 2,
               xxl: 3,
             }}
-            dataSource={LIST}
+            dataSource={project}
             renderItem={(item) => (
               <List.Item>
-                <div className="card-item" onClick={() => handleGoEdit(item)}>
-                  <img className="card-cover" alt="example" src={item.cover} />
+                <div
+                  className="card-item"
+                  onClick={(e) => handleGoEdit(e, item)}
+                >
+                  <img
+                    className="card-cover"
+                    alt="example"
+                    src={item.cover || noImage}
+                  />
                   <Dropdown
                     overlayClassName="card-drop-wrap"
                     overlay={menu}
@@ -216,9 +284,9 @@ const Home = () => {
                   >
                     <div
                       className={`${
-                        activeCard === item.title ? 'active-edit' : 'card-edit'
+                        activeCard === item.id ? 'active-edit' : 'card-edit'
                       }`}
-                      onClick={() => setActiveCard(item.title)}
+                      onClick={(e) => handleEdit(e, item.id)}
                     >
                       <IconFont
                         type="icon-gengduo"
@@ -227,8 +295,11 @@ const Home = () => {
                     </div>
                   </Dropdown>
                   <div className="meta-wrap">
-                    <h3>标题{item.title}</h3>
-                    <p>最后编辑日期：{item.title}</p>
+                    <h3>{item.title}</h3>
+                    <p>
+                      最后编辑：
+                      {dayjs(item.updateTime).format('YYYY-MM-DD HH:mm')}
+                    </p>
                   </div>
                 </div>
               </List.Item>
