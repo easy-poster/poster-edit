@@ -298,7 +298,7 @@ const Home = () => {
                     <h3>{item.title}</h3>
                     <p>
                       最后编辑：
-                      {dayjs(item.updateTime).format('YYYY-MM-DD HH:mm')}
+                      {dayjs(item.updateTime).format('YYYY/MM/DD HH:mm')}
                     </p>
                   </div>
                 </div>

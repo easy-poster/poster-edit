@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { dynamic } from 'umi';
+import { dynamic, useParams } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont } from '@/const';
 import './index.less';
-import { useSize } from 'ahooks';
+import { useSetState, useSize } from 'ahooks';
 import Stage from './components/Stage';
+import { db, epProject } from '@/utils/db';
 
 const AsyncStage = dynamic({
   loader: async function () {
@@ -18,9 +19,33 @@ const AsyncStage = dynamic({
 });
 
 const Edit = () => {
+  const params = useParams();
   // 底部伸缩
   const listRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // project state
+  const [projectState, setProjectState] = useSetState<epProject>();
+
+  const initProject = async () => {
+    // 获取路由参数
+    try {
+      if (params?.id) {
+        let projectObj = await db.epProject.get({ uuid: params.id });
+        console.log('projectObj', projectObj);
+        if (projectObj) {
+          setProjectState(projectObj);
+        }
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    // 初始化
+    initProject();
+
+    return () => {};
+  }, []);
 
   const handleBtnClick = () => {
     setIsOpen(!isOpen);
@@ -107,7 +132,7 @@ const Edit = () => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            <AsyncStage />
+            <AsyncStage projectProps={projectState} />
             {/* <Stage /> */}
           </div>
           <SizeBar />

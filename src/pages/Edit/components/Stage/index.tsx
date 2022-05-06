@@ -9,26 +9,106 @@ import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useSize } from 'ahooks';
 import './index.less';
+import { useModel } from 'umi';
 
-const Stage = () => {
+const Stage = ({ projectProps }) => {
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
-  const stageSize = useSize(stageRef);
+  // 画布大小缩放
+  const scrollDivRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!scrollDivRef.current) {
+      return;
+    }
+    // 居中展示
+    scrollDivRef.current.scrollTop =
+      (scrollDivRef.current.scrollHeight - scrollDivRef.current.offsetHeight) /
+      2;
+    scrollDivRef.current.scrollLeft =
+      (scrollDivRef.current.scrollWidth - scrollDivRef.current.offsetWidth) / 2;
+
+    return () => {};
+  }, []);
+
+  const stageWrapSize = useSize(scrollDivRef);
+  const { sizeStage } = useModel('sizeStage');
+  useEffect(() => {
+    if (!window?.app) return;
+    if (
+      scrollDivRef?.current &&
+      stageWrapSize &&
+      sizeStage &&
+      Object.keys(stageWrapSize).length !== 0 &&
+      stageWrapSize?.width &&
+      stageWrapSize?.height
+    ) {
+      let { domWidth, domHeight } = {
+        domWidth: (stageWrapSize?.width * sizeStage) / 100 - 120,
+        domHeight: (stageWrapSize?.height * sizeStage) / 100 - 120,
+      };
+      console.log(domWidth, domHeight);
+      if (domWidth > 200 && domHeight > 200) {
+        if (domWidth > domHeight) {
+          window.app.renderer.view.style.height = Math.round(domHeight) + 'px';
+          window.app.renderer.view.style.width =
+            Math.round((domHeight * projectProps.width) / projectProps.height) +
+            'px';
+        } else {
+          window.app.renderer.view.style.width = Math.round(domWidth) + 'px';
+          window.app.renderer.view.style.height =
+            Math.round((domWidth / projectProps.width) * projectProps.height) +
+            'px';
+        }
+        scrollDivRef.current.scrollTop =
+          (scrollDivRef.current.scrollHeight -
+            scrollDivRef.current.offsetHeight) /
+          2;
+        scrollDivRef.current.scrollLeft =
+          (scrollDivRef.current.scrollWidth -
+            scrollDivRef.current.offsetWidth) /
+          2;
+      }
+    }
+
+    return () => {};
+  }, [stageWrapSize, projectProps, sizeStage]);
 
   const initCanvas = () => {
     return new Promise<void>((resolve, reject) => {
       const stageDOM = stageRef.current;
-      if (stageDOM) {
+      const stageWrapDOM = scrollDivRef.current;
+      console.log('projectProps', projectProps);
+      if (stageDOM && stageWrapDOM) {
         let options = {
-          width: 1920, // default: 800 宽度
-          height: 1080, // default: 600 高度
+          width: projectProps.width, // default: 800 宽度
+          height: projectProps.height, // default: 600 高度
           antialias: true, // default: false 反锯齿
           transparent: false, // default: false 透明度
-          backgroundColor: 0xffffff,
+          resolution: window.devicePixelRatio,
+          backgroundColor: projectProps.background,
+          autoDensity: true,
           autoStart: false,
         };
         if (!window.app && !stageDOM.innerHTML) {
           window.app = new PIXI.Application(options);
+          let { domWidth, domHeight } = {
+            domWidth: stageWrapDOM.offsetWidth - 120,
+            domHeight: stageWrapDOM.offsetHeight - 120,
+          };
+          if (domWidth > domHeight) {
+            window.app.renderer.view.style.height =
+              Math.round(domHeight) + 'px';
+            window.app.renderer.view.style.width =
+              Math.round(
+                (domHeight * projectProps.width) / projectProps.height,
+              ) + 'px';
+          } else {
+            window.app.renderer.view.style.width = Math.round(domWidth) + 'px';
+            window.app.renderer.view.style.height =
+              Math.round(
+                (domWidth / projectProps.width) * projectProps.height,
+              ) + 'px';
+          }
           var renderer = app.renderer;
           var loader = PIXI.Loader.shared;
           var ticker = PIXI.Ticker.shared;
@@ -67,8 +147,8 @@ const Stage = () => {
 
               container.addChild(demoSprite);
               window.app.stage.addChild(container);
-              window.app.render();
             }
+            window.app.render();
           });
         }
       }
@@ -76,29 +156,14 @@ const Stage = () => {
   };
 
   useEffect(() => {
-    initCanvas();
+    if (Object.keys(projectProps).length !== 0) {
+      initCanvas();
+    }
     return () => {
       console.log('清除内存');
       window.app = null;
     };
-  }, []);
-
-  // 画布大小缩放
-  const scrollDivRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    if (!scrollDivRef.current) {
-      return;
-    }
-    // 居中展示
-    scrollDivRef.current.scrollTop =
-      (scrollDivRef.current.scrollHeight - scrollDivRef.current.offsetHeight) /
-      2;
-    scrollDivRef.current.scrollLeft =
-      (scrollDivRef.current.scrollWidth - scrollDivRef.current.offsetWidth) / 2;
-
-    return () => {};
-  }, []);
+  }, [projectProps]);
 
   return (
     <div className="stage-wrap" ref={scrollDivRef}>

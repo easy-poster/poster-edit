@@ -52,6 +52,9 @@ const Nav = () => {
         uuid: uuid,
         createTime: new Date(),
         updateTime: new Date(),
+        width: 1920,
+        height: 1080,
+        background: '0xFFFFFF',
       });
       console.log('id', id);
       if (id) {

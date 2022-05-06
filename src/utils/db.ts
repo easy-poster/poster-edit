@@ -15,8 +15,9 @@ export interface epProject extends commonProps {
   src?: string; // 在线资源地址
   cover?: string; // 封面
   size?: number; // 资源大小
-  originWidth?: number; // 原始宽
-  originHeight?: number; // 原始高
+  width?: number; // 原始宽
+  height?: number; // 原始高
+  background?: string; // 背景
 }
 
 export interface epImage extends commonProps {
@@ -37,7 +38,7 @@ export class EposterDexie extends Dexie {
       epImage:
         '++id, userId, createTime, updateTime, name, size, type, blob, cover',
       epProject:
-        '++id, userId, createTime, updateTime, uuid, title, resourceId, url, src, cover, size, originWidth, originHeight',
+        '++id, userId, createTime, updateTime, &uuid, title, resourceId, url, src, cover, size, width, height, background',
     });
   }
 }
