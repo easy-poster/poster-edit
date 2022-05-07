@@ -54,7 +54,10 @@ const Nav = () => {
         updateTime: new Date(),
         width: 1920,
         height: 1080,
-        background: '0xFFFFFF',
+        background: '0x000000',
+        resourceId: 1,
+        resources: [],
+        layeres: [],
       });
       console.log('id', id);
       if (id) {

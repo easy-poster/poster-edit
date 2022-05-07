@@ -1,25 +1,25 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { dynamic, useParams } from 'umi';
+import { dynamic, useModel, useParams } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont } from '@/const';
 import './index.less';
 import { useSetState, useSize } from 'ahooks';
-import Stage from './components/Stage';
+import Stage from './Stage';
 import { db, epProject } from '@/utils/db';
 
 const AsyncStage = dynamic({
   loader: async function () {
     // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
     const { default: Stage } = await import(
-      /* webpackChunkName: "external_A" */ './components/Stage'
+      /* webpackChunkName: "external_A" */ './Stage'
     );
     return Stage;
   },
 });
 
 const Edit = () => {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   // 底部伸缩
   const listRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +31,7 @@ const Edit = () => {
     // 获取路由参数
     try {
       if (params?.id) {
-        let projectObj = await db.epProject.get({ uuid: params.id });
-        console.log('projectObj', projectObj);
+        let projectObj = await db.epProject.get({ uuid: params?.id });
         if (projectObj) {
           setProjectState(projectObj);
         }
@@ -81,6 +80,11 @@ const Edit = () => {
     // });
   };
 
+  const { setShowBuy } = useModel('buy');
+  const handleUpdate = () => {
+    setShowBuy(true);
+  };
+
   const handleExport = () => {
     console.log('导出', MediaRecorder.isTypeSupported('video/mp4'));
     const stageDom = document.getElementById('stage');
@@ -117,10 +121,10 @@ const Edit = () => {
     <>
       <div className="edit-header">
         <div className="header-left">
-          <HeaderBar />
+          <HeaderBar projectProps={projectState} />
         </div>
         <div className="header-right">
-          <div className="header-update">
+          <div className="header-update" onClick={handleUpdate}>
             <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
             <span className="update-text">升级</span>
           </div>

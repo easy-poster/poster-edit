@@ -1,8 +1,10 @@
+import { ItemTypeProps } from '@/const';
 import Dexie, { Table } from 'dexie';
+import { resourcesProp } from './parse';
 
 interface commonProps {
-  id?: number;
-  userId?: number;
+  id: number;
+  userId: number;
   createTime?: Date;
   updateTime?: Date;
 }
@@ -10,14 +12,16 @@ interface commonProps {
 export interface epProject extends commonProps {
   uuid: string; // uuid
   title: string; // 项目名称
-  resourceId?: number; // 资源id
+  resourceId: number; // 资源id
   url?: string; // blob 地址
   src?: string; // 在线资源地址
   cover?: string; // 封面
   size?: number; // 资源大小
-  width?: number; // 原始宽
-  height?: number; // 原始高
-  background?: string; // 背景
+  width: number; // 原始宽
+  height: number; // 原始高
+  background: string; // 背景
+  resources: Array<resourcesProp>; // 资源
+  layeres: Array<layerProps>;
 }
 
 export interface epImage extends commonProps {
@@ -28,9 +32,49 @@ export interface epImage extends commonProps {
   cover?: Blob;
 }
 
+export interface imageSpriteProps {
+  id: string;
+  name: string;
+  type: ItemTypeProps;
+  size: number;
+  from: 'url' | 'resource';
+  src: string;
+  rotation: number;
+  alpha: number;
+  zIndex: number;
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+  filters: Array<string>;
+}
+
+export interface textSpriteProps {
+  id: string;
+  name: string;
+  type: ItemTypeProps;
+  size: number;
+  rotation: number;
+  alpha: number;
+  zIndex: number;
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+}
+
+export interface layerProps {
+  id: string;
+  type: ItemTypeProps;
+  child: Array<imageSpriteProps>;
+}
+
+type epProjectFilter = Omit<epProject, 'id'>;
+type epImageFilter = Omit<epImage, 'id'>;
+
 export class EposterDexie extends Dexie {
-  epProject!: Table<epProject>;
-  epImage!: Table<epImage>;
+  epProject!: Table<epProjectFilter>;
+  epImage!: Table<epImageFilter>;
 
   constructor(name: string) {
     super(name);

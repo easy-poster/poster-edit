@@ -1,5 +1,38 @@
 import { createFromIconfontCN } from '@ant-design/icons';
 
+export enum ItemTypeProps {
+  IMAGE = 'IMAGE',
+  TEXT = 'TEXT',
+  AUDIO = 'AUDIO',
+  LOGO = 'LOGO',
+}
+
+export const ItemType = {
+  IMAGE: 'IMAGE',
+  TEXT: 'TEXT',
+  AUDIO: 'AUDIO',
+  LOGO: 'LOGO',
+};
+
+export const ImageDefData = {
+  id: '',
+  parentId: '',
+  name: '',
+  type: ItemType.IMAGE,
+  size: '',
+  from: 'resource', // 默认本地资源
+  src: '', // 本地地址
+  url: '', // 远程在线资源
+  rotation: 0,
+  alpha: 1,
+  zIndex: 0,
+  width: '',
+  height: '',
+  left: '',
+  top: '',
+  filters: [],
+};
+
 // 展示页菜单
 export const MENU_LAYOUT = [
   {

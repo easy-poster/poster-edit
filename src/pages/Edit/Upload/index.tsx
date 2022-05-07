@@ -4,7 +4,7 @@ import demoImg from '@/assets/demo.png';
 import './index.less';
 import { db } from '@/utils/db';
 import tools from '@/utils/tools';
-import { IconFont } from '@/const';
+import { IconFont, ImageDefData, ItemType } from '@/const';
 
 const UploadPage = () => {
   const inputImgRef = useRef(null);
@@ -18,7 +18,7 @@ const UploadPage = () => {
         userId: 1,
       })
       .reverse()
-      .sortBy('id');
+      .sortBy('updateTime');
     if (result.length > 0) {
       result = result.map((it) => {
         return { ...it, coverBlob: tools.getWebUrl(it.cover || '') };
@@ -117,7 +117,6 @@ const UploadPage = () => {
     if (files?.length === 0) {
       return false;
     }
-
     uploadQueue(files);
   };
 
@@ -145,8 +144,53 @@ const UploadPage = () => {
     }
   };
 
-  const handleAdd = (item: any) => {
-    console.log('item add', item);
+  const handleAdd = (data: any) => {
+    if (!window.app) {
+      message.warning(
+        language === 'EN' ? 'Project is being initialized' : '项目正在初始化',
+      );
+      return false;
+    }
+    console.log('data add', data);
+    // blob: Blob {size: 7715826, type: 'image/jpeg'}
+    // cover: Blob {size: 39211, type: 'image/jpeg'}
+    // coverBlob: "blob:http://localhost:8000/ffd1e1d6-f0f7-43be-a635-6964b5edfc24"
+    // createTime: Sat May 07 2022 15:06:34 GMT+0800 (中国标准时间) {}
+    // id: 9
+    // name: "11.jpg"
+    // size: 7715826
+    // type: "image/jpeg"
+    // updateTime: Sat May 07 2022 15:06:34 GMT+0800 (中国标准时间) {}
+    // userId: 1
+    let img = new Image();
+    let blobUrl = URL.createObjectURL(data.blob);
+    img.src = blobUrl;
+    img.onload = () => {
+      let result = {
+        ...ImageDefData,
+        id: `${new Date().getTime()}_${data.id}`,
+        parentId: `1_${ItemType.IMAGE}`,
+        name: data.name,
+        size: data.size,
+        width: 1920,
+        height: 1080,
+        left: 960,
+        top: 540,
+        src: data.blob,
+      };
+      let resources = [];
+      resources.push({
+        alias: result.id,
+        source: blobUrl,
+        options: {
+          loadType: 2,
+          xhrType: 'document',
+        },
+      });
+      if (resources.length) {
+        window.app.addNode(window.app, result, resources, 0);
+      }
+    };
   };
 
   return (

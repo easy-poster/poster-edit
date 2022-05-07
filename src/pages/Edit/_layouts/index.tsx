@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { IRouteComponentProps, useModel } from 'umi';
 import EditMenu from '@/pages/Edit/components/EditMenu';
+import VipModal from '@/components/VipModal';
 import { IconFont } from '@/const';
 import UploadPage from '../Upload';
 import ImagePage from '../Image';
@@ -21,6 +22,7 @@ const EditLayout = (props: IRouteComponentProps) => {
   const lineDropRef = useRef<HTMLDivElement>(null);
   const resouceWrapRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true);
+  const { isShowBuy } = useModel('buy');
 
   useEffect(() => {
     const lineDropDOM = lineDropRef.current;
@@ -139,6 +141,7 @@ const EditLayout = (props: IRouteComponentProps) => {
         </div>
       </div>
       <div className="edit-right">{props.children}</div>
+      <VipModal visible={isShowBuy} />
     </div>
   );
 };

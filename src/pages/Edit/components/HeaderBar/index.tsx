@@ -3,14 +3,28 @@ import { Breadcrumb, Form, Input } from 'antd';
 import './index.less';
 import { IconFont } from '@/const';
 import { Link } from 'umi';
+import { db } from '@/utils/db';
+import { epProject } from '@/utils/db';
+interface HeaderBarProps {
+  projectProps: epProject;
+}
 
-const HeaderBar = () => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ projectProps }) => {
   const [form] = Form.useForm();
 
   // title
   const [isTitleEdit, setIsTitleEdit] = useState(false);
-  const [title, setTitle] = useState('暂无标题');
+  const [title, setTitle] = useState('');
   const inputTitleRef = useRef(null);
+
+  useEffect(() => {
+    if (projectProps.title) {
+      setTitle(projectProps.title);
+    }
+
+    return () => {};
+  }, [projectProps]);
+
   const handleEdit = () => {
     setIsTitleEdit(true);
   };
@@ -24,10 +38,15 @@ const HeaderBar = () => {
   const handleTitleSave = async () => {
     try {
       const values = await form.validateFields();
-      console.log('values', values);
       setTitle(values.title || title);
-      if (isTitleEdit) {
-        setIsTitleEdit(false);
+      const updated = await db.epProject.update(projectProps.id, {
+        title: values.title || title,
+        updateTime: new Date(),
+      });
+      if (updated) {
+        if (isTitleEdit) {
+          setIsTitleEdit(false);
+        }
       }
     } catch (errInfo) {
       console.log('Save failed:', errInfo);

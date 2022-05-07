@@ -8,10 +8,21 @@ import React, {
 import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useSize } from 'ahooks';
-import './index.less';
 import { useModel } from 'umi';
+import { Application } from '@pixi/app';
+import './index.less';
+import { epProject } from '@/utils/db';
+declare global {
+  interface Window {
+    app: Application;
+  }
+}
 
-const Stage = ({ projectProps }) => {
+interface StageProps {
+  projectProps: epProject;
+}
+
+const Stage: React.FC<StageProps> = ({ projectProps }) => {
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
   // 画布大小缩放
@@ -51,8 +62,9 @@ const Stage = ({ projectProps }) => {
         if (domWidth > domHeight) {
           window.app.renderer.view.style.height = Math.round(domHeight) + 'px';
           window.app.renderer.view.style.width =
-            Math.round((domHeight * projectProps.width) / projectProps.height) +
-            'px';
+            Math.round(
+              (domHeight * projectProps?.width) / projectProps?.height,
+            ) + 'px';
         } else {
           window.app.renderer.view.style.width = Math.round(domWidth) + 'px';
           window.app.renderer.view.style.height =
@@ -85,10 +97,11 @@ const Stage = ({ projectProps }) => {
           antialias: true, // default: false 反锯齿
           transparent: false, // default: false 透明度
           resolution: window.devicePixelRatio,
-          backgroundColor: projectProps.background,
+          backgroundColor: '0xFF0000',
           autoDensity: true,
           autoStart: false,
         };
+        debugger;
         if (!window.app && !stageDOM.innerHTML) {
           window.app = new PIXI.Application(options);
           let { domWidth, domHeight } = {
@@ -109,7 +122,7 @@ const Stage = ({ projectProps }) => {
                 (domWidth / projectProps.width) * projectProps.height,
               ) + 'px';
           }
-          var renderer = app.renderer;
+          var renderer = window.app.renderer;
           var loader = PIXI.Loader.shared;
           var ticker = PIXI.Ticker.shared;
           var resources = loader.resources;
@@ -122,34 +135,33 @@ const Stage = ({ projectProps }) => {
           if (!texture) {
             loader.add('demoImg', demoImg);
           }
-          loader.load(() => {
-            var loader = PIXI.Loader.shared;
-            var ticker = PIXI.Ticker.shared;
-            ticker.maxFPS = 1;
-            var resources = loader.resources;
-            let texture = resources['demoImg']?.texture;
-            if (texture) {
-              const demoSprite = new PIXI.Sprite(texture);
-              demoSprite.width = 1920;
-              demoSprite.height = 1080;
+          // loader.load(() => {
+          //   var loader = PIXI.Loader.shared;
+          //   var ticker = PIXI.Ticker.shared;
+          //   ticker.maxFPS = 1;
+          //   var resources = loader.resources;
+          //   let texture = resources['demoImg']?.texture;
+          //   if (texture) {
+          //     const demoSprite = new PIXI.Sprite(texture);
+          //     demoSprite.width = 1920;
+          //     demoSprite.height = 1080;
 
-              const container = new PIXI.Container();
-              const blurFilter1 = new PIXI.filters.BlurFilter();
-              demoSprite.filters = [blurFilter1];
-              blurFilter1.blur = 1;
-              let count = 1;
-              // ticker.add(() => {
-              //   count += 1;
-              //   // const blurAmount = Math.cos(count);
-              //   blurFilter1.blur = count;
-              //   // console.log(blurFilter1.blur)
-              // })
-
-              container.addChild(demoSprite);
-              window.app.stage.addChild(container);
-            }
-            window.app.render();
-          });
+          //     const container = new PIXI.Container();
+          //     const blurFilter1 = new PIXI.filters.BlurFilter();
+          //     demoSprite.filters = [blurFilter1];
+          //     blurFilter1.blur = 1;
+          //     let count = 1;
+          //     // ticker.add(() => {
+          //     //   count += 1;
+          //     //   // const blurAmount = Math.cos(count);
+          //     //   blurFilter1.blur = count;
+          //     //   // console.log(blurFilter1.blur)
+          //     // })
+          //     // container.addChild(demoSprite);
+          //     // window.app.stage.addChild(container);
+          //   }
+          // });
+          window.app.render();
         }
       }
     });

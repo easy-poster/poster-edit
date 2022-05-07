@@ -107,7 +107,7 @@ const Home = () => {
         userId: 1,
       })
       .reverse()
-      .sortBy('id');
+      .sortBy('updateTime');
 
     setProject(result);
   };
