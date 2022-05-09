@@ -25,7 +25,7 @@ const Edit = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // project state
-  const [projectState, setProjectState] = useSetState<epProject>();
+  const [projectState, setProjectState] = useModel('project');
 
   const initProject = async () => {
     // 获取路由参数

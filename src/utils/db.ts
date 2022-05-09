@@ -1,6 +1,6 @@
 import { ItemTypeProps } from '@/const';
 import Dexie, { Table } from 'dexie';
-import { resourcesProp } from './parse';
+import { resourcesProp } from './pixiApp';
 
 interface commonProps {
   id: number;
@@ -8,6 +8,8 @@ interface commonProps {
   createTime?: Date;
   updateTime?: Date;
 }
+
+export type fromType = 'url' | 'resource';
 
 export interface epProject extends commonProps {
   uuid: string; // uuid
@@ -35,10 +37,12 @@ export interface epImage extends commonProps {
 export interface imageSpriteProps {
   id: string;
   name: string;
+  parentId: string;
   type: ItemTypeProps;
   size: number;
-  from: 'url' | 'resource';
+  from: fromType;
   src: string;
+  url: string;
   rotation: number;
   alpha: number;
   zIndex: number;

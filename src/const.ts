@@ -1,4 +1,5 @@
 import { createFromIconfontCN } from '@ant-design/icons';
+import { imageSpriteProps } from './utils/db';
 
 export enum ItemTypeProps {
   IMAGE = 'IMAGE',
@@ -14,22 +15,22 @@ export const ItemType = {
   LOGO: 'LOGO',
 };
 
-export const ImageDefData = {
+export const ImageDefData: imageSpriteProps = {
   id: '',
   parentId: '',
   name: '',
-  type: ItemType.IMAGE,
-  size: '',
-  from: 'resource', // 默认本地资源
+  type: ItemTypeProps.IMAGE,
+  size: 0,
+  from: 'resource', // 默认本地资源 url resource
   src: '', // 本地地址
   url: '', // 远程在线资源
   rotation: 0,
   alpha: 1,
   zIndex: 0,
-  width: '',
-  height: '',
-  left: '',
-  top: '',
+  width: 0,
+  height: 0,
+  left: 0,
+  top: 0,
   filters: [],
 };
 

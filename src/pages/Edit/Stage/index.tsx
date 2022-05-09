@@ -12,10 +12,10 @@ import { useModel } from 'umi';
 import { Application } from '@pixi/app';
 import './index.less';
 import { epProject } from '@/utils/db';
-import PixiApp from '@/utils/parse';
+import PixiApp, { PixiAppProps } from '@/utils/pixiApp';
 declare global {
   interface Window {
-    app: Application;
+    app: Application & PixiAppProps;
   }
 }
 
@@ -95,7 +95,6 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
           stageDOM.innerHTML = '';
         }
         window.app = new PixiApp(projectProps);
-        stageDOM.appendChild(window.app.view);
         // 初始化画布宽高
         let { domWidth, domHeight } = {
           domWidth: stageWrapDOM.offsetWidth - 120,
@@ -112,6 +111,7 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
             Math.round((domWidth / projectProps.width) * projectProps.height) +
             'px';
         }
+        stageDOM.appendChild(window.app.view);
         window.app.render();
       }
       resolve();
@@ -121,6 +121,8 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
   useEffect(() => {
     if (Object.keys(projectProps).length !== 0) {
       initStage().then(() => {
+        // window.parse = new PixiApp(window.app, projectProps);
+        // window.app = new
         console.log('初始化stage完成-->');
       });
     }

@@ -1,5 +1,6 @@
 import { ItemType, ItemTypeProps } from '@/const';
 import * as PIXI from 'pixi.js';
+import { Application } from 'pixi.js';
 import { epProject, imageSpriteProps, layerProps } from './db';
 
 type optionsProps = {
@@ -16,10 +17,20 @@ export interface resourcesProp {
   options: optionsProps;
 }
 
-interface PixiAppProps {
-  _initApp(prj: epProject): PIXI.Application;
+export interface PixiAppProps {
   _isResourcesExist(name: string): boolean;
   // addResources(app: PIXI.Application, resources: resourcesProp[]): Promise<resourcesProp[]>
+  getContainer(app: Application, id: string): PIXI.DisplayObject;
+  addNode(
+    app: Application,
+    item: imageSpriteProps,
+    resources: PIXI.utils.Dict<PIXI.LoaderResource>[],
+    index: number,
+    container?: PIXI.Container & {
+      id?: string;
+      type?: ItemTypeProps;
+    },
+  ): Promise<void>;
 }
 
 class PixiApp extends PIXI.Application implements PixiAppProps {
@@ -28,28 +39,23 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
   } = {};
   loader = PIXI.Loader.shared;
   constructor(prj: epProject) {
-    super();
-    this._initApp.call(this, prj);
-  }
-
-  // 初始化pixi
-  _initApp(prj: epProject) {
     let options = {
       width: prj.width, // default: 800 宽度
       height: prj.height, // default: 600 高度
       antialias: true, // default: false 反锯齿
       transparent: false, // default: false 透明度
-      resolution: window.devicePixelRatio,
-      backgroundColor: 0xff0000, // || +prj.background,
+      // resolution: window.devicePixelRatio,
+      backgroundColor: +prj.background,
       autoDensity: true,
       autoStart: false,
     };
-    const app = new PIXI.Application(options);
+    super(options);
     // 加载资源
-    this.loadResources(app, prj).then(() => {
-      this.parseProject(app, prj);
-    });
-    return app;
+    setTimeout(() => {
+      this.loadResources(this, prj).then(() => {
+        this.parseProject(this, prj);
+      });
+    }, 0);
   }
 
   // ----资源---->
@@ -62,58 +68,66 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
   }
 
   // 添加资源
-  addResources(resources: resourcesProp[]) {
-    return new Promise<resourcesProp[]>((resolve, reject) => {
-      let tempResources = JSON.parse(JSON.stringify(resources));
-      let _resources = [];
-      if (Array.isArray(resources)) {
-        _resources = [...resources];
-      } else {
-        _resources.push(resources);
-      }
-      resources.forEach((resource: resourcesProp, id) => {
-        if (
-          !this.allResources[resource.alias] &&
-          !this._isResourcesExist(resource.alias)
-        ) {
-          this.loader.add(resource.alias, resource.source, resource.options);
+  addResources(resources: PIXI.utils.Dict<PIXI.LoaderResource>[]) {
+    return new Promise<PIXI.utils.Dict<PIXI.LoaderResource>>(
+      (resolve, reject) => {
+        let tempResources = JSON.parse(JSON.stringify(resources));
+        let _resources = [];
+        if (Array.isArray(resources)) {
+          _resources = [...resources];
+        } else {
+          _resources.push(resources);
         }
-      });
+        resources.forEach(
+          (resource: PIXI.utils.Dict<PIXI.LoaderResource>, id) => {
+            if (
+              !this.allResources[resource.alias] &&
+              !this._isResourcesExist(resource.alias)
+            ) {
+              this.loader.add(
+                resource.alias,
+                resource.source,
+                resource.options,
+              );
+            }
+          },
+        );
 
-      this.loader.load((loader, resources) => {
-        Object.assign(this.allResources, resources);
-        loader.reset();
-        for (let index in tempResources) {
-          let resource = tempResources[index];
-          let res = resources[resource.alias];
-          console.log('加载完成：', resource.alias);
-          if (res) {
-            switch (res.type) {
-              case PIXI.LoaderResource.TYPE.IMAGE:
-                break;
-              case PIXI.LoaderResource.TYPE.TEXT:
-                break;
-              case PIXI.LoaderResource.TYPE.JSON:
-                break;
-              case PIXI.LoaderResource.TYPE.AUDIO:
-                break;
-              case PIXI.LoaderResource.TYPE.JSON:
-                break;
-              case PIXI.LoaderResource.TYPE.XML:
-                break;
-              case PIXI.LoaderResource.TYPE.UNKNOWN:
-                console.log(
-                  'load UNKNOWN, name:' + name + ', time:' + Date.now(),
-                );
-                break;
-              default:
-                break;
+        this.loader.load((loader, resources) => {
+          Object.assign(this.allResources, resources);
+          loader.reset();
+          for (let index in tempResources) {
+            let resource = tempResources[index];
+            let res = resources[resource.alias];
+            console.log('加载完成：', resource.alias);
+            if (res) {
+              switch (res.type) {
+                case PIXI.LoaderResource.TYPE.IMAGE:
+                  break;
+                case PIXI.LoaderResource.TYPE.TEXT:
+                  break;
+                case PIXI.LoaderResource.TYPE.JSON:
+                  break;
+                case PIXI.LoaderResource.TYPE.AUDIO:
+                  break;
+                case PIXI.LoaderResource.TYPE.JSON:
+                  break;
+                case PIXI.LoaderResource.TYPE.XML:
+                  break;
+                case PIXI.LoaderResource.TYPE.UNKNOWN:
+                  console.log(
+                    'load UNKNOWN, name:' + name + ', time:' + Date.now(),
+                  );
+                  break;
+                default:
+                  break;
+              }
             }
           }
-        }
-        resolve(resources);
-      });
-    });
+          resolve(resources);
+        });
+      },
+    );
   }
 
   // 删除资源
@@ -129,9 +143,19 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
   // 加载资源
   loadResources(app: any, options: epProject) {
-    // 检查资源
+    let that = this;
     // 资源加载器
     return new Promise((resolve, reject) => {
+      debugger;
+      // 检查资源
+      options.resources.forEach((resource, id) => {
+        debugger;
+        if (!that._isResourcesExist(resource.alias)) {
+          debugger;
+          that.loader.add(resource.alias, resource.source, resource.options);
+        }
+      });
+
       this.loader.load((loader, resources) => {
         Object.assign(this.allResources, resources);
         loader.reset();
@@ -237,6 +261,8 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
         }
         if (texture) {
           sprite = new PIXI.Sprite(texture);
+          sprite.interactive = true;
+          sprite.buttonMode = true;
         }
         break;
       case ItemType.TEXT:
@@ -345,37 +371,60 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     window.app = null;
   }
 
+  // container
+  getContainer(app: any, id: string) {
+    return app.stage.children.find((it) => {
+      return it.id === id;
+    });
+  }
+
   // 添加
-  addNode(app, item, resources, index, container) {
-    if (!app) return false;
-    if (!container) {
-      container = new PIXI.Container();
-      container.sortableChildren = true;
-      container.id = `${item.parentId}`;
-      container.type = item.type;
-      app.stage.addChild(container);
-    }
+  addNode(
+    app: Application,
+    item: imageSpriteProps,
+    resources: PIXI.utils.Dict<PIXI.LoaderResource>[],
+    index: number,
+    container?: PIXI.Container & {
+      id?: string;
+      type?: ItemTypeProps;
+    },
+  ) {
     return new Promise<void>((resolve, reject) => {
-      this.addResources(resources).then(() => {
-        let nodeSprite;
-        let zIndex = 0;
-        let containers = container.children;
-        let prevContainersLength = containers.length;
-        if (index > containers.length || index < 0) return;
-        containers.forEach(function (it, id) {
-          if (id >= index) {
-            if (id == index) {
-              zIndex = it.zIndex;
+      if (!app) {
+        reject();
+      }
+      if (!container) {
+        container = new PIXI.Container();
+        container.sortableChildren = true;
+        container.id = `${item.parentId}`;
+        container.type = item.type;
+      }
+      app.stage.addChild(container);
+      this.addResources(resources)
+        .then(() => {
+          let nodeSprite;
+          let zIndex = 0;
+          let containers = container.children || [];
+          let prevContainersLength = containers.length;
+          if (index > containers.length || index < 0) return;
+          containers.forEach(function (it, id) {
+            if (id >= index) {
+              if (id == index) {
+                zIndex = it.zIndex;
+              }
+              it.zIndex = it.zIndex + 10;
             }
-            it.zIndex = it.zIndex + 10;
+          });
+          nodeSprite = this.parseItem(app, item, zIndex);
+          if (nodeSprite) {
+            container.addChild(nodeSprite);
           }
+          app.render();
+          resolve();
+        })
+        .catch(() => {
+          reject();
         });
-        nodeSprite = this.parseItem(app, item, zIndex);
-        if (nodeSprite) {
-          container.addChild(nodeSprite);
-        }
-        resolve();
-      });
     });
   }
 

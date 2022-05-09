@@ -5,11 +5,13 @@ import './index.less';
 import { db } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData, ItemType } from '@/const';
+import { useModel } from 'umi';
 
 const UploadPage = () => {
   const inputImgRef = useRef(null);
 
   const [images, setImages] = useState([]);
+  const [projectState] = useModel('project');
 
   const getImage = async () => {
     let result = [];
@@ -134,7 +136,6 @@ const UploadPage = () => {
           .equals(+item.id)
           .delete();
         if (res) {
-          debugger;
           // 重新请求数据
           getImage();
         }
@@ -146,37 +147,42 @@ const UploadPage = () => {
 
   const handleAdd = (data: any) => {
     if (!window.app) {
-      message.warning(
-        language === 'EN' ? 'Project is being initialized' : '项目正在初始化',
-      );
+      message.warning('项目正在初始化');
       return false;
     }
-    console.log('data add', data);
-    // blob: Blob {size: 7715826, type: 'image/jpeg'}
-    // cover: Blob {size: 39211, type: 'image/jpeg'}
-    // coverBlob: "blob:http://localhost:8000/ffd1e1d6-f0f7-43be-a635-6964b5edfc24"
-    // createTime: Sat May 07 2022 15:06:34 GMT+0800 (中国标准时间) {}
-    // id: 9
-    // name: "11.jpg"
-    // size: 7715826
-    // type: "image/jpeg"
-    // updateTime: Sat May 07 2022 15:06:34 GMT+0800 (中国标准时间) {}
-    // userId: 1
     let img = new Image();
     let blobUrl = URL.createObjectURL(data.blob);
     img.src = blobUrl;
     img.onload = () => {
+      if (img.width * img.height > projectState.width * projectState.height) {
+        let imgAspectRatio = img.width / img.height;
+        let Maxbd =
+          img.width / projectState.width > img.height / projectState.height
+            ? 'width'
+            : 'height';
+        switch (Maxbd) {
+          case 'width':
+            img.width = projectState.width;
+            img.height = img.width / imgAspectRatio;
+            break;
+          case 'height':
+            img.height = projectState.height;
+            img.width = img.height * imgAspectRatio;
+            break;
+          default:
+            break;
+        }
+      }
       let result = {
         ...ImageDefData,
         id: `${new Date().getTime()}_${data.id}`,
         parentId: `1_${ItemType.IMAGE}`,
         name: data.name,
         size: data.size,
-        width: 1920,
-        height: 1080,
-        left: 960,
-        top: 540,
-        src: data.blob,
+        width: img.width,
+        height: img.height,
+        left: projectState.width / 2,
+        top: projectState.height / 2,
       };
       let resources = [];
       resources.push({
@@ -188,7 +194,35 @@ const UploadPage = () => {
         },
       });
       if (resources.length) {
-        window.app.addNode(window.app, result, resources, 0);
+        const objectConttainer = window.app.getContainer(
+          window.app,
+          `1_${ItemType.IMAGE}`,
+        );
+        window.app
+          .addNode(window.app, result, resources, 0, objectConttainer)
+          .then(async () => {
+            // 存储到数据库
+            try {
+              let imgContainer = {
+                id: `1_${ItemType.IMAGE}`,
+                type: result.type,
+                child: projectState.layeres[0]?.child
+                  ? [...projectState.layeres[0]?.child, result]
+                  : [result],
+              };
+              const updated = await db.epProject.update(projectState.id, {
+                resources: [...projectState.resources, ...resources],
+                layeres: [imgContainer],
+                updateTime: new Date(),
+              });
+              if (updated) {
+                window.app.render();
+                console.log('存储成功');
+              }
+            } catch (err) {
+              console.log('err', err);
+            }
+          });
       }
     };
   };
