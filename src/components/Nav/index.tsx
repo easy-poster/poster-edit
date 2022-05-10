@@ -55,7 +55,6 @@ const Nav = () => {
         width: 1920,
         height: 1080,
         background: '0x272731',
-        resourceId: 1,
         resources: [],
         layeres: [],
       });

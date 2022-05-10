@@ -51,11 +51,9 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     };
     super(options);
     // 加载资源
-    setTimeout(() => {
-      this.loadResources(this, prj).then(() => {
-        this.parseProject(this, prj);
-      });
-    }, 0);
+    this.loadResources(this, prj).then(() => {
+      this.parseProject(this, prj);
+    });
   }
 
   // ----资源---->
@@ -143,16 +141,15 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
   // 加载资源
   loadResources(app: any, options: epProject) {
-    let that = this;
+    if (this.loader) {
+      this.loader.reset();
+    }
     // 资源加载器
     return new Promise((resolve, reject) => {
-      debugger;
       // 检查资源
       options.resources.forEach((resource, id) => {
-        debugger;
-        if (!that._isResourcesExist(resource.alias)) {
-          debugger;
-          that.loader.add(resource.alias, resource.source, resource.options);
+        if (!this._isResourcesExist(resource.alias)) {
+          this.loader.add(resource.alias, resource.source, resource.options);
         }
       });
 
@@ -225,6 +222,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
           break;
       }
     }
+    app.render();
   }
 
   // 解析图片
@@ -236,6 +234,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     for (let i = childCount - 1; i > -1; i--) {
       let item = child[i];
       let zIndex = row_Index + (childCount - i) * 10;
+      console.log('zIndex', zIndex);
       let sprite = this.parseItem(app, item, zIndex);
       if (sprite) {
         container.addChild(sprite);

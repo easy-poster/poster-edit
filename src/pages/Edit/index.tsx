@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { dynamic, useModel, useParams } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
-import { IconFont } from '@/const';
+import { IconFont, ItemType } from '@/const';
 import './index.less';
 import { useSetState, useSize } from 'ahooks';
 import Stage from './Stage';
@@ -32,8 +32,55 @@ const Edit = () => {
     try {
       if (params?.id) {
         let projectObj = await db.epProject.get({ uuid: params?.id });
+        let tempResources = [];
+        let promiseArr = [];
         if (projectObj) {
-          setProjectState(projectObj);
+          let layeres = projectObj.layeres || [];
+          layeres.forEach((item) => {
+            item.child.forEach((it) => {
+              switch (it.type) {
+                case ItemType.IMAGE:
+                  let isExist = tempResources.find((resource) => {
+                    return (resource.alias = it.id);
+                  });
+                  if (!isExist && it.resourceId) {
+                    promiseArr.push(
+                      new Promise<void>(async (resolve, reject) => {
+                        if (it.from === 'resource') {
+                          let resource = await db.epImage.get({
+                            id: it.resourceId,
+                          });
+                          if (resource) {
+                            tempResources.push({
+                              alias: it.id,
+                              source: URL.createObjectURL(resource?.blob),
+                              options: { loadType: 2, xhrType: 'document' },
+                            });
+                          }
+                          resolve();
+                        } else {
+                          tempResources.push({
+                            alias: it.id,
+                            source: it.src,
+                            options: { loadType: 2, xhrType: 'document' },
+                          });
+                        }
+                      }),
+                    );
+                  }
+                  break;
+                default:
+                  break;
+              }
+            });
+          });
+
+          Promise.all(promiseArr).then((result) => {
+            if (tempResources.length > 0) {
+              projectObj.resources = tempResources;
+            }
+            setProjectState(projectObj);
+          });
         }
       }
     } catch (error) {}
@@ -43,7 +90,9 @@ const Edit = () => {
     // 初始化
     initProject();
 
-    return () => {};
+    return () => {
+      window.app = null;
+    };
   }, []);
 
   const handleBtnClick = () => {

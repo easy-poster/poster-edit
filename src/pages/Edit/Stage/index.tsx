@@ -121,8 +121,6 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
   useEffect(() => {
     if (Object.keys(projectProps).length !== 0) {
       initStage().then(() => {
-        // window.parse = new PixiApp(window.app, projectProps);
-        // window.app = new
         console.log('初始化stage完成-->');
       });
     }

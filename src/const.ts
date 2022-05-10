@@ -21,6 +21,7 @@ export const ImageDefData: imageSpriteProps = {
   name: '',
   type: ItemTypeProps.IMAGE,
   size: 0,
+  resourceId: 0,
   from: 'resource', // 默认本地资源 url resource
   src: '', // 本地地址
   url: '', // 远程在线资源

@@ -14,7 +14,6 @@ export type fromType = 'url' | 'resource';
 export interface epProject extends commonProps {
   uuid: string; // uuid
   title: string; // 项目名称
-  resourceId: number; // 资源id
   url?: string; // blob 地址
   src?: string; // 在线资源地址
   cover?: string; // 封面
@@ -40,6 +39,7 @@ export interface imageSpriteProps {
   parentId: string;
   type: ItemTypeProps;
   size: number;
+  resourceId: number;
   from: fromType;
   src: string;
   url: string;
@@ -84,9 +84,9 @@ export class EposterDexie extends Dexie {
     super(name);
     this.version(1).stores({
       epImage:
-        '++id, userId, createTime, updateTime, name, size, type, blob, cover',
+        '++id, userId, createTime, updateTime, name, size, resourceId, type, blob, cover',
       epProject:
-        '++id, userId, createTime, updateTime, &uuid, title, resourceId, url, src, cover, size, width, height, background',
+        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background',
     });
   }
 }

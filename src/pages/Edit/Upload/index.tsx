@@ -178,6 +178,7 @@ const UploadPage = () => {
         id: `${new Date().getTime()}_${data.id}`,
         parentId: `1_${ItemType.IMAGE}`,
         name: data.name,
+        resourceId: data.id,
         size: data.size,
         width: img.width,
         height: img.height,
@@ -211,7 +212,7 @@ const UploadPage = () => {
                   : [result],
               };
               const updated = await db.epProject.update(projectState.id, {
-                resources: [...projectState.resources, ...resources],
+                // resources: [...projectState.resources, ...resources],
                 layeres: [imgContainer],
                 updateTime: new Date(),
               });
