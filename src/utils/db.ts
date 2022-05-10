@@ -36,7 +36,6 @@ export interface epImage extends commonProps {
 export interface imageSpriteProps {
   id: string;
   name: string;
-  parentId: string;
   type: ItemTypeProps;
   size: number;
   resourceId: number;
@@ -68,7 +67,6 @@ export interface textSpriteProps {
 }
 
 export interface layerProps {
-  id: string;
   type: ItemTypeProps;
   child: Array<imageSpriteProps>;
 }
@@ -86,7 +84,7 @@ export class EposterDexie extends Dexie {
       epImage:
         '++id, userId, createTime, updateTime, name, size, resourceId, type, blob, cover',
       epProject:
-        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background',
+        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background, layeres',
     });
   }
 }

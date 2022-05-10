@@ -126,10 +126,14 @@ const Home = () => {
     console.log('onSelect', value);
   };
 
-  const handleGoEdit = (e, item: any) => {
-    console.log('去编辑，要防抖', item);
+  const handleGoEdit = async (e, item: any) => {
     if (item.uuid) {
-      history.push(`/edit/${item.uuid}`);
+      const updated = await db.epProject.update(item.id, {
+        updateTime: new Date(),
+      });
+      if (updated) {
+        history.push(`/edit/${item.uuid}`);
+      }
     }
   };
 
@@ -260,8 +264,8 @@ const Home = () => {
               sm: 1,
               md: 1,
               lg: 2,
-              xl: 2,
-              xxl: 3,
+              xl: 3,
+              xxl: 4,
             }}
             dataSource={project}
             renderItem={(item) => (

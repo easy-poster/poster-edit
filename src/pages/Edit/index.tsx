@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { dynamic, useModel, useParams } from 'umi';
+import { dynamic, useModel, useParams, connect } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont, ItemType } from '@/const';
@@ -18,14 +18,17 @@ const AsyncStage = dynamic({
   },
 });
 
-const Edit = () => {
+const Edit = ({ dispatch, loading, prj, layeres }) => {
   const params = useParams<{ id: string }>();
   // 底部伸缩
   const listRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   // project state
-  const [projectState, setProjectState] = useModel('project');
+  // const [projectState, setProjectState] = useModel('project');
+  let projectState = {};
+
+  console.log('dva', loading, prj, layeres);
 
   const initProject = async () => {
     // 获取路由参数
@@ -79,7 +82,7 @@ const Edit = () => {
             if (tempResources.length > 0) {
               projectObj.resources = tempResources;
             }
-            setProjectState(projectObj);
+            // setProjectState(projectObj);
           });
         }
       }
@@ -88,7 +91,13 @@ const Edit = () => {
 
   useEffect(() => {
     // 初始化
-    initProject();
+    // initProject();
+    if (params?.id) {
+      dispatch({
+        type: 'project/getPrj',
+        payload: { id: params.id },
+      });
+    }
 
     return () => {
       window.app = null;
@@ -210,4 +219,13 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+function mapStateToProps(state) {
+  const { prj, layeres } = state.project;
+  return {
+    loading: state.loading.models.project,
+    prj,
+    layeres,
+  };
+}
+
+export default connect(mapStateToProps)(Edit);

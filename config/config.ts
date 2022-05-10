@@ -6,6 +6,11 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  dva: {
+    immer: true,
+    hmr: true,
+    lazyLoad: true,
+  },
   theme,
   // mfsu: {},
   routes: routes,

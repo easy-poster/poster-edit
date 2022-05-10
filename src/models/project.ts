@@ -1,6 +1,62 @@
-import { useSetState } from 'ahooks';
+import * as prjService from '@/services/project';
 
-export default () => {
-  const [projectState, setProjectState] = useSetState({});
-  return [projectState, setProjectState];
+export default {
+  namespace: 'project',
+  state: {
+    loading: false,
+    prj: {},
+    layeres: [],
+  },
+  reducers: {
+    save(state, { payload: { prj, layeres, loading } }) {
+      return { ...state, loading, prj, layeres };
+    },
+  },
+  effects: {
+    *getPrj({ payload: { id } }, { call, put }) {
+      const project = yield call(prjService.getProject, { id });
+      let prj = {};
+      let layeres = [];
+      for (let key in project) {
+        if (key === 'layeres') {
+          layeres = project[key];
+          continue;
+        }
+        if (key === 'resources') continue;
+        prj[key] = project[key];
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          prj,
+          layeres,
+        },
+      });
+    },
+    // *remove({ payload: id }, { call, put }) {
+    //   yield call(usersService.remove, id);
+    //   yield put({ type: 'reload' });
+    // },
+    // *patch({ payload: { id, values } }, { call, put }) {
+    //   yield call(usersService.patch, id, values);
+    //   yield put({ type: 'reload' });
+    // },
+    // *create({ payload: values }, { call, put }) {
+    //   yield call(usersService.create, values);
+    //   yield put({ type: 'reload' });
+    // },
+    // *reload(action, { put, select }) {
+    //   const page = yield select(state => state.users.page);
+    //   yield put({ type: 'fetch', payload: { page } });
+    // },
+  },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      // return history.listen(({ pathname, query }) => {
+      //   if (pathname === '/users') {
+      //     dispatch({ type: 'fetch', payload: query });
+      //   }
+      // });
+    },
+  },
 };

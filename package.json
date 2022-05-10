@@ -23,7 +23,7 @@
     "@ahooksjs/use-url-state": "^3.3.8",
     "@ant-design/icons": "^4.7.0",
     "@better-scroll/core": "^2.4.2",
-    "ahooks": "^2.10.11",
+    "ahooks": "^3.3.10",
     "antd": "^4.20.0",
     "dayjs": "^1.11.1",
     "dexie": "^3.2.1",
@@ -41,11 +41,13 @@
     "@types/react": "^17.0.0",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "^17.0.0",
+    "@types/redux-logger": "^3.0.9",
     "@types/uuid": "^8.3.4",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.20",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
+    "redux-logger": "^3.0.6",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }

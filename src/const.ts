@@ -1,12 +1,7 @@
 import { createFromIconfontCN } from '@ant-design/icons';
 import { imageSpriteProps } from './utils/db';
 
-export enum ItemTypeProps {
-  IMAGE = 'IMAGE',
-  TEXT = 'TEXT',
-  AUDIO = 'AUDIO',
-  LOGO = 'LOGO',
-}
+export type ItemTypeProps = 'IMAGE' | 'TEXT' | 'AUDIO' | 'LOGO';
 
 export const ItemType = {
   IMAGE: 'IMAGE',
@@ -17,9 +12,8 @@ export const ItemType = {
 
 export const ImageDefData: imageSpriteProps = {
   id: '',
-  parentId: '',
   name: '',
-  type: ItemTypeProps.IMAGE,
+  type: 'IMAGE',
   size: 0,
   resourceId: 0,
   from: 'resource', // 默认本地资源 url resource

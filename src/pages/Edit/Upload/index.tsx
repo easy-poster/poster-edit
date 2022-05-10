@@ -5,13 +5,13 @@ import './index.less';
 import { db } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData, ItemType } from '@/const';
-import { useModel } from 'umi';
+import { useModel, useParams } from 'umi';
 
 const UploadPage = () => {
   const inputImgRef = useRef(null);
 
   const [images, setImages] = useState([]);
-  const [projectState] = useModel('project');
+  // const [projectState] = useModel('project');
 
   const getImage = async () => {
     let result = [];
@@ -145,88 +145,86 @@ const UploadPage = () => {
     }
   };
 
-  const handleAdd = (data: any) => {
-    if (!window.app) {
-      message.warning('项目正在初始化');
-      return false;
-    }
-    let img = new Image();
-    let blobUrl = URL.createObjectURL(data.blob);
-    img.src = blobUrl;
-    img.onload = () => {
-      if (img.width * img.height > projectState.width * projectState.height) {
-        let imgAspectRatio = img.width / img.height;
-        let Maxbd =
-          img.width / projectState.width > img.height / projectState.height
-            ? 'width'
-            : 'height';
-        switch (Maxbd) {
-          case 'width':
-            img.width = projectState.width;
-            img.height = img.width / imgAspectRatio;
-            break;
-          case 'height':
-            img.height = projectState.height;
-            img.width = img.height * imgAspectRatio;
-            break;
-          default:
-            break;
-        }
-      }
-      let result = {
-        ...ImageDefData,
-        id: `${new Date().getTime()}_${data.id}`,
-        parentId: `1_${ItemType.IMAGE}`,
-        name: data.name,
-        resourceId: data.id,
-        size: data.size,
-        width: img.width,
-        height: img.height,
-        left: projectState.width / 2,
-        top: projectState.height / 2,
-      };
-      let resources = [];
-      resources.push({
-        alias: result.id,
-        source: blobUrl,
-        options: {
-          loadType: 2,
-          xhrType: 'document',
-        },
-      });
-      if (resources.length) {
-        const objectConttainer = window.app.getContainer(
-          window.app,
-          `1_${ItemType.IMAGE}`,
-        );
-        window.app
-          .addNode(window.app, result, resources, 0, objectConttainer)
-          .then(async () => {
-            // 存储到数据库
-            try {
-              let imgContainer = {
-                id: `1_${ItemType.IMAGE}`,
-                type: result.type,
-                child: projectState.layeres[0]?.child
-                  ? [...projectState.layeres[0]?.child, result]
-                  : [result],
-              };
-              const updated = await db.epProject.update(projectState.id, {
-                // resources: [...projectState.resources, ...resources],
-                layeres: [imgContainer],
-                updateTime: new Date(),
-              });
-              if (updated) {
-                window.app.render();
-                console.log('存储成功');
-              }
-            } catch (err) {
-              console.log('err', err);
-            }
-          });
-      }
-    };
-  };
+  // const handleAdd = (data: any) => {
+  //   if (!window.app) {
+  //     message.warning('项目正在初始化');
+  //     return false;
+  //   }
+  //   let img = new Image();
+  //   let blobUrl = URL.createObjectURL(data.blob);
+  //   img.src = blobUrl;
+  //   img.onload = () => {
+  //     if (img.width * img.height > projectState.width * projectState.height) {
+  //       let imgAspectRatio = img.width / img.height;
+  //       let Maxbd =
+  //         img.width / projectState.width > img.height / projectState.height
+  //           ? 'width'
+  //           : 'height';
+  //       switch (Maxbd) {
+  //         case 'width':
+  //           img.width = projectState.width;
+  //           img.height = img.width / imgAspectRatio;
+  //           break;
+  //         case 'height':
+  //           img.height = projectState.height;
+  //           img.width = img.height * imgAspectRatio;
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //     let result = {
+  //       ...ImageDefData,
+  //       id: `${new Date().getTime()}_${data.id}`,
+  //       name: data.name,
+  //       resourceId: data.id,
+  //       size: data.size,
+  //       width: img.width,
+  //       height: img.height,
+  //       left: projectState.width / 2,
+  //       top: projectState.height / 2,
+  //     };
+  //     let resources = [];
+  //     resources.push({
+  //       alias: result.id,
+  //       source: blobUrl,
+  //       options: {
+  //         loadType: 2,
+  //         xhrType: 'document',
+  //       },
+  //     });
+  //     if (resources.length) {
+  //       const objectConttainer = window.app.getContainer(
+  //         window.app,
+  //         ItemType.IMAGE,
+  //       );
+  //       window.app
+  //         .addNode(window.app, result, resources, 0, objectConttainer)
+  //         .then(async (sprite) => {
+  //           // 存储到数据库
+  //           try {
+  //             let imgContainer = {
+  //               type: result.type,
+  //               child: projectState.layeres[0]?.child
+  //                 ? [...projectState.layeres[0]?.child, result]
+  //                 : [result],
+  //             };
+  //             const updated = await db.epProject.update(projectState.id, {
+  //               // resources: [...projectState.resources, ...resources],
+  //               layeres: [imgContainer],
+  //               updateTime: new Date(),
+  //             });
+  //             if (updated) {
+  //               window.app.render();
+  //               console.log('存储成功');
+  //             }
+  //           } catch (err) {
+  //             console.log('err', err);
+  //           }
+  //         });
+  //     }
+  //   };
+  // };
 
   return (
     <div className="upload-wrap">

@@ -195,14 +195,12 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       let row_Index = (layeresCount - index) * 1000;
       let container: PIXI.Container & {
         type?: ItemTypeProps;
-        id?: string;
       };
       switch (layer.type) {
         case ItemType.IMAGE:
           container = this.parseImage(app, layer, row_Index);
           if (container) {
             container.type = layer.type;
-            container.id = layer.id;
             app.stage.addChild(container);
           }
           break;
@@ -210,7 +208,6 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
           container = this.parseImage(app, layer, row_Index);
           if (container) {
             container.type = layer.type;
-            container.id = layer.id;
             app.stage.addChild(container);
           }
           break;
@@ -231,7 +228,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     container.sortableChildren = true;
     let child = layer.child;
     const childCount = child.length;
-    for (let i = childCount - 1; i > -1; i--) {
+    for (let i = 0; i < childCount; i++) {
       let item = child[i];
       let zIndex = row_Index + (childCount - i) * 10;
       console.log('zIndex', zIndex);
@@ -371,9 +368,9 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
   }
 
   // container
-  getContainer(app: any, id: string) {
+  getContainer(app: any, type: ItemTypeProps) {
     return app.stage.children.find((it) => {
-      return it.id === id;
+      return it.type === type;
     });
   }
 
@@ -384,18 +381,16 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     resources: PIXI.utils.Dict<PIXI.LoaderResource>[],
     index: number,
     container?: PIXI.Container & {
-      id?: string;
       type?: ItemTypeProps;
     },
   ) {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!app) {
         reject();
       }
       if (!container) {
         container = new PIXI.Container();
         container.sortableChildren = true;
-        container.id = `${item.parentId}`;
         container.type = item.type;
       }
       app.stage.addChild(container);
@@ -406,9 +401,9 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
           let containers = container.children || [];
           let prevContainersLength = containers.length;
           if (index > containers.length || index < 0) return;
-          containers.forEach(function (it, id) {
-            if (id >= index) {
-              if (id == index) {
+          containers.forEach(function (it, i) {
+            if (i >= index) {
+              if (i == index) {
                 zIndex = it.zIndex;
               }
               it.zIndex = it.zIndex + 10;
@@ -417,9 +412,9 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
           nodeSprite = this.parseItem(app, item, zIndex);
           if (nodeSprite) {
             container.addChild(nodeSprite);
+            app.render();
+            resolve(nodeSprite);
           }
-          app.render();
-          resolve();
         })
         .catch(() => {
           reject();
