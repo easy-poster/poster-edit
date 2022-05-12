@@ -1,13 +1,12 @@
 import { db } from '@/utils/db';
 
-export function getProject({ id }) {
-  return db.epProject.get({ uuid: id });
+export function getProject({ uuid }) {
+  return db.epProject.get({ uuid });
 }
 
-export function updateLayeres({ id }) {
-  return new Promise<void>((resovle, reject) => {
-    setTimeout(() => {
-      resovle();
-    }, 2000);
+export function updateLayeres({ id, newLayeres }) {
+  return db.epProject.update(id, {
+    layeres: newLayeres,
+    updateTime: new Date(),
   });
 }

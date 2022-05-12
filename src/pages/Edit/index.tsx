@@ -1,5 +1,13 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { dynamic, useModel, useParams, connect } from 'umi';
+import {
+  dynamic,
+  useModel,
+  useParams,
+  connect,
+  useDispatch,
+  useStore,
+  useSelector,
+} from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont, ItemType } from '@/const';
@@ -18,88 +26,27 @@ const AsyncStage = dynamic({
   },
 });
 
-const Edit = ({ dispatch, loading, prj, layeres }) => {
+const Edit = () => {
   const params = useParams<{ id: string }>();
   // 底部伸缩
   const listRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // project state
-  // const [projectState, setProjectState] = useModel('project');
-  let projectState = {};
-
-  console.log('dva', loading, prj, layeres);
-
-  const initProject = async () => {
-    // 获取路由参数
-    try {
-      if (params?.id) {
-        let projectObj = await db.epProject.get({ uuid: params?.id });
-        let tempResources = [];
-        let promiseArr = [];
-        if (projectObj) {
-          let layeres = projectObj.layeres || [];
-          layeres.forEach((item) => {
-            item.child.forEach((it) => {
-              switch (it.type) {
-                case ItemType.IMAGE:
-                  let isExist = tempResources.find((resource) => {
-                    return (resource.alias = it.id);
-                  });
-                  if (!isExist && it.resourceId) {
-                    promiseArr.push(
-                      new Promise<void>(async (resolve, reject) => {
-                        if (it.from === 'resource') {
-                          let resource = await db.epImage.get({
-                            id: it.resourceId,
-                          });
-                          if (resource) {
-                            tempResources.push({
-                              alias: it.id,
-                              source: URL.createObjectURL(resource?.blob),
-                              options: { loadType: 2, xhrType: 'document' },
-                            });
-                          }
-                          resolve();
-                        } else {
-                          tempResources.push({
-                            alias: it.id,
-                            source: it.src,
-                            options: { loadType: 2, xhrType: 'document' },
-                          });
-                        }
-                      }),
-                    );
-                  }
-                  break;
-                default:
-                  break;
-              }
-            });
-          });
-
-          Promise.all(promiseArr).then((result) => {
-            if (tempResources.length > 0) {
-              projectObj.resources = tempResources;
-            }
-            // setProjectState(projectObj);
-          });
-        }
-      }
-    } catch (error) {}
-  };
+  const dispatch = useDispatch();
+  const projectState = useSelector((state) => {
+    return state.project.prj;
+  });
 
   useEffect(() => {
-    // 初始化
-    // initProject();
     if (params?.id) {
       dispatch({
         type: 'project/getPrj',
-        payload: { id: params.id },
+        payload: { uuid: params.id },
       });
     }
 
     return () => {
+      console.log('清除内存');
       window.app = null;
     };
   }, []);
@@ -194,7 +141,7 @@ const Edit = ({ dispatch, loading, prj, layeres }) => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            <AsyncStage projectProps={projectState} />
+            <AsyncStage />
             {/* <Stage /> */}
           </div>
           <SizeBar />
@@ -219,13 +166,4 @@ const Edit = ({ dispatch, loading, prj, layeres }) => {
   );
 };
 
-function mapStateToProps(state) {
-  const { prj, layeres } = state.project;
-  return {
-    loading: state.loading.models.project,
-    prj,
-    layeres,
-  };
-}
-
-export default connect(mapStateToProps)(Edit);
+export default Edit;

@@ -5,13 +5,19 @@ import './index.less';
 import { db } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData, ItemType } from '@/const';
-import { useModel, useParams } from 'umi';
+import { useDispatch, useModel, useParams, useSelector } from 'umi';
 
 const UploadPage = () => {
   const inputImgRef = useRef(null);
 
   const [images, setImages] = useState([]);
-  // const [projectState] = useModel('project');
+  const dispatch = useDispatch();
+  const projectState = useSelector((state) => {
+    return state.project.prj;
+  });
+  const layeres = useSelector((state) => {
+    return state.project.layeres;
+  });
 
   const getImage = async () => {
     let result = [];
@@ -145,86 +151,77 @@ const UploadPage = () => {
     }
   };
 
-  // const handleAdd = (data: any) => {
-  //   if (!window.app) {
-  //     message.warning('项目正在初始化');
-  //     return false;
-  //   }
-  //   let img = new Image();
-  //   let blobUrl = URL.createObjectURL(data.blob);
-  //   img.src = blobUrl;
-  //   img.onload = () => {
-  //     if (img.width * img.height > projectState.width * projectState.height) {
-  //       let imgAspectRatio = img.width / img.height;
-  //       let Maxbd =
-  //         img.width / projectState.width > img.height / projectState.height
-  //           ? 'width'
-  //           : 'height';
-  //       switch (Maxbd) {
-  //         case 'width':
-  //           img.width = projectState.width;
-  //           img.height = img.width / imgAspectRatio;
-  //           break;
-  //         case 'height':
-  //           img.height = projectState.height;
-  //           img.width = img.height * imgAspectRatio;
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //     }
-  //     let result = {
-  //       ...ImageDefData,
-  //       id: `${new Date().getTime()}_${data.id}`,
-  //       name: data.name,
-  //       resourceId: data.id,
-  //       size: data.size,
-  //       width: img.width,
-  //       height: img.height,
-  //       left: projectState.width / 2,
-  //       top: projectState.height / 2,
-  //     };
-  //     let resources = [];
-  //     resources.push({
-  //       alias: result.id,
-  //       source: blobUrl,
-  //       options: {
-  //         loadType: 2,
-  //         xhrType: 'document',
-  //       },
-  //     });
-  //     if (resources.length) {
-  //       const objectConttainer = window.app.getContainer(
-  //         window.app,
-  //         ItemType.IMAGE,
-  //       );
-  //       window.app
-  //         .addNode(window.app, result, resources, 0, objectConttainer)
-  //         .then(async (sprite) => {
-  //           // 存储到数据库
-  //           try {
-  //             let imgContainer = {
-  //               type: result.type,
-  //               child: projectState.layeres[0]?.child
-  //                 ? [...projectState.layeres[0]?.child, result]
-  //                 : [result],
-  //             };
-  //             const updated = await db.epProject.update(projectState.id, {
-  //               // resources: [...projectState.resources, ...resources],
-  //               layeres: [imgContainer],
-  //               updateTime: new Date(),
-  //             });
-  //             if (updated) {
-  //               window.app.render();
-  //               console.log('存储成功');
-  //             }
-  //           } catch (err) {
-  //             console.log('err', err);
-  //           }
-  //         });
-  //     }
-  //   };
-  // };
+  const handleAdd = (data: any) => {
+    if (!window.app && Object.keys(projectState).length !== 0) {
+      message.warning('项目正在初始化');
+      return false;
+    }
+    let img = new Image();
+    let blobUrl = URL.createObjectURL(data.blob);
+    img.src = blobUrl;
+    img.onload = () => {
+      if (img.width * img.height > projectState.width * projectState.height) {
+        let imgAspectRatio = img.width / img.height;
+        let Maxbd =
+          img.width / projectState.width > img.height / projectState.height
+            ? 'width'
+            : 'height';
+        switch (Maxbd) {
+          case 'width':
+            img.width = projectState.width;
+            img.height = img.width / imgAspectRatio;
+            break;
+          case 'height':
+            img.height = projectState.height;
+            img.width = img.height * imgAspectRatio;
+            break;
+          default:
+            break;
+        }
+      }
+      let result = {
+        ...ImageDefData,
+        id: `${new Date().getTime()}_${data.id}`,
+        name: data.name,
+        resourceId: data.id,
+        size: data.size,
+        width: img.width,
+        height: img.height,
+        left: projectState.width / 2,
+        top: projectState.height / 2,
+      };
+      let resources = [];
+      resources.push({
+        alias: result.id,
+        source: blobUrl,
+        options: {
+          loadType: 2,
+          xhrType: 'document',
+        },
+      });
+      if (resources.length) {
+        const objectConttainer = window.app.getContainer(window.app, 'STAGE');
+        window.app
+          .addNode(window.app, result, resources, 0, objectConttainer)
+          .then(async (sprite) => {
+            // 存储到数据库
+            try {
+              let newLayeres = [...layeres, result];
+              dispatch({
+                type: 'project/updateLayer',
+                payload: {
+                  id: projectState.id,
+                  uuid: projectState.uuid,
+                  newLayeres,
+                },
+              });
+            } catch (err) {
+              console.log('err', err);
+            }
+          });
+      }
+    };
+  };
 
   return (
     <div className="upload-wrap">

@@ -21,8 +21,8 @@ export interface epProject extends commonProps {
   width: number; // 原始宽
   height: number; // 原始高
   background: string; // 背景
-  resources: Array<resourcesProp>; // 资源
-  layeres: Array<layerProps>;
+  // resources: Array<resourcesProp>; // 资源
+  layeres: Array<imageSpriteProps>;
 }
 
 export interface epImage extends commonProps {
@@ -64,11 +64,6 @@ export interface textSpriteProps {
   height: number;
   left: number;
   top: number;
-}
-
-export interface layerProps {
-  type: ItemTypeProps;
-  child: Array<imageSpriteProps>;
 }
 
 type epProjectFilter = Omit<epProject, 'id'>;

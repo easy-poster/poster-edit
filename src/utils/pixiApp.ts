@@ -17,6 +17,8 @@ export interface resourcesProp {
   options: optionsProps;
 }
 
+type containerType = 'STAGE' | 'GUIDE';
+
 export interface PixiAppProps {
   _isResourcesExist(name: string): boolean;
   // addResources(app: PIXI.Application, resources: resourcesProp[]): Promise<resourcesProp[]>
@@ -27,8 +29,7 @@ export interface PixiAppProps {
     resources: PIXI.utils.Dict<PIXI.LoaderResource>[],
     index: number,
     container?: PIXI.Container & {
-      id?: string;
-      type?: ItemTypeProps;
+      type: containerType;
     },
   ): Promise<void>;
 }
@@ -188,58 +189,24 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
   // 解析项目数据
   parseProject(app: PIXI.Application, options: epProject) {
+    let container: PIXI.Container & {
+      type?: containerType;
+    } = new PIXI.Container();
+    container.sortableChildren = true;
+    container.type = 'STAGE';
     const layeres = options.layeres || [];
     const layeresCount = layeres.length;
-    for (let index = layeres.length - 1; index > -1; index--) {
+    for (let index = 0; index < layeresCount; index++) {
       let layer = layeres[index];
-      let row_Index = (layeresCount - index) * 1000;
-      let container: PIXI.Container & {
-        type?: ItemTypeProps;
-      };
-      switch (layer.type) {
-        case ItemType.IMAGE:
-          container = this.parseImage(app, layer, row_Index);
-          if (container) {
-            container.type = layer.type;
-            app.stage.addChild(container);
-          }
-          break;
-        case ItemType.LOGO:
-          container = this.parseImage(app, layer, row_Index);
-          if (container) {
-            container.type = layer.type;
-            app.stage.addChild(container);
-          }
-          break;
-        case ItemType.TEXT:
-          break;
-        case ItemType.AUDIO:
-          break;
-        default:
-          break;
-      }
-    }
-    app.render();
-  }
-
-  // 解析图片
-  parseImage(app: any, layer: layerProps, row_Index: number) {
-    let container = new PIXI.Container();
-    container.sortableChildren = true;
-    let child = layer.child;
-    const childCount = child.length;
-    for (let i = 0; i < childCount; i++) {
-      let item = child[i];
-      let zIndex = row_Index + (childCount - i) * 10;
-      console.log('zIndex', zIndex);
-      let sprite = this.parseItem(app, item, zIndex);
+      let sprite = this.parseItem(app, layer, index + 10);
       if (sprite) {
         container.addChild(sprite);
       } else {
-        console.log(`${item.name} no texture`);
+        console.log(`${layer.name} no texture`);
       }
     }
-    return container;
+    app.stage.addChild(container);
+    app.render();
   }
 
   // 精灵纹理解析
@@ -381,7 +348,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     resources: PIXI.utils.Dict<PIXI.LoaderResource>[],
     index: number,
     container?: PIXI.Container & {
-      type?: ItemTypeProps;
+      type?: containerType;
     },
   ) {
     return new Promise((resolve, reject) => {
@@ -391,34 +358,25 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       if (!container) {
         container = new PIXI.Container();
         container.sortableChildren = true;
-        container.type = item.type;
+        container.type = 'STAGE';
+        app.stage.addChild(container);
       }
-      app.stage.addChild(container);
-      this.addResources(resources)
-        .then(() => {
-          let nodeSprite;
-          let zIndex = 0;
-          let containers = container.children || [];
-          let prevContainersLength = containers.length;
-          if (index > containers.length || index < 0) return;
-          containers.forEach(function (it, i) {
-            if (i >= index) {
-              if (i == index) {
-                zIndex = it.zIndex;
-              }
-              it.zIndex = it.zIndex + 10;
+      if (container) {
+        this.addResources(resources)
+          .then(() => {
+            let nodeSprite;
+            let zIndex = 0;
+            nodeSprite = this.parseItem(app, item, zIndex);
+            if (nodeSprite) {
+              container.addChild(nodeSprite);
+              app.render();
+              resolve(nodeSprite);
             }
+          })
+          .catch(() => {
+            reject();
           });
-          nodeSprite = this.parseItem(app, item, zIndex);
-          if (nodeSprite) {
-            container.addChild(nodeSprite);
-            app.render();
-            resolve(nodeSprite);
-          }
-        })
-        .catch(() => {
-          reject();
-        });
+      }
     });
   }
 

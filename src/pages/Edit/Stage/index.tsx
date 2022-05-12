@@ -8,11 +8,12 @@ import React, {
 import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useSize } from 'ahooks';
-import { useModel } from 'umi';
+import { useModel, useSelector } from 'umi';
 import { Application } from '@pixi/app';
 import './index.less';
-import { epProject } from '@/utils/db';
+import { db, epProject } from '@/utils/db';
 import PixiApp, { PixiAppProps } from '@/utils/pixiApp';
+import { ItemType } from '@/const';
 declare global {
   interface Window {
     app: Application & PixiAppProps;
@@ -23,7 +24,14 @@ interface StageProps {
   projectProps: epProject;
 }
 
-const Stage: React.FC<StageProps> = ({ projectProps }) => {
+const Stage: React.FC = () => {
+  const projectState = useSelector((state) => {
+    return state.project.prj;
+  });
+  const layeres = useSelector((state) => {
+    return state.project.layeres;
+  });
+
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
   // 画布大小缩放
@@ -50,6 +58,7 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
       scrollDivRef?.current &&
       stageWrapSize &&
       sizeStage &&
+      Object.keys(projectState).length !== 0 &&
       Object.keys(stageWrapSize).length !== 0 &&
       stageWrapSize?.width &&
       stageWrapSize?.height
@@ -63,12 +72,12 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
           window.app.renderer.view.style.height = Math.round(domHeight) + 'px';
           window.app.renderer.view.style.width =
             Math.round(
-              (domHeight * projectProps?.width) / projectProps?.height,
+              (domHeight * projectState?.width) / projectState?.height,
             ) + 'px';
         } else {
           window.app.renderer.view.style.width = Math.round(domWidth) + 'px';
           window.app.renderer.view.style.height =
-            Math.round((domWidth / projectProps.width) * projectProps.height) +
+            Math.round((domWidth / projectState.width) * projectState.height) +
             'px';
         }
         scrollDivRef.current.scrollTop =
@@ -83,18 +92,79 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
     }
 
     return () => {};
-  }, [stageWrapSize, projectProps, sizeStage]);
+  }, [stageWrapSize, projectState, sizeStage]);
 
-  const initStage = () => {
+  const initProject = async () => {
+    // 获取路由参数
+    try {
+      if (Array.isArray(layeres)) {
+        let tempResources = [];
+        let promiseArr = [];
+        layeres.forEach((it) => {
+          switch (it.type) {
+            case ItemType.IMAGE:
+              let isExist = tempResources.find((resource) => {
+                return (resource.alias = it.id);
+              });
+              if (!isExist && it.resourceId) {
+                promiseArr.push(
+                  new Promise<void>(async (resolve, reject) => {
+                    if (it.from === 'resource') {
+                      let resource = await db.epImage.get({
+                        id: it.resourceId,
+                      });
+                      if (resource) {
+                        tempResources.push({
+                          alias: it.id,
+                          source: URL.createObjectURL(resource?.blob),
+                          options: { loadType: 2, xhrType: 'document' },
+                        });
+                      }
+                      resolve();
+                    } else {
+                      tempResources.push({
+                        alias: it.id,
+                        source: it.src,
+                        options: { loadType: 2, xhrType: 'document' },
+                      });
+                    }
+                  }),
+                );
+              }
+              break;
+            default:
+              break;
+          }
+        });
+
+        Promise.all(promiseArr).then((result) => {
+          let mergeProject = {};
+          mergeProject = {
+            ...projectState,
+            ...{ resources: tempResources },
+            layeres,
+          };
+          console.log('mergeProject', mergeProject);
+          initStage(mergeProject).then(() => {
+            console.log('初始化stage完成-->');
+          });
+        });
+      }
+    } catch (error) {
+      console.log('initProject error', error);
+    }
+  };
+
+  const initStage = (prj) => {
     return new Promise<void>((resolve, reject) => {
-      console.log('projectProps', projectProps);
+      console.log('projectProps', prj);
       const stageDOM = stageRef.current;
       const stageWrapDOM = scrollDivRef.current;
       if (stageWrapDOM && stageDOM) {
         if (stageDOM.innerHTML) {
           stageDOM.innerHTML = '';
         }
-        window.app = new PixiApp(projectProps);
+        window.app = new PixiApp(prj);
         // 初始化画布宽高
         let { domWidth, domHeight } = {
           domWidth: stageWrapDOM.offsetWidth - 120,
@@ -103,13 +173,11 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
         if (domWidth > domHeight) {
           window.app.renderer.view.style.height = Math.round(domHeight) + 'px';
           window.app.renderer.view.style.width =
-            Math.round((domHeight * projectProps.width) / projectProps.height) +
-            'px';
+            Math.round((domHeight * prj.width) / prj.height) + 'px';
         } else {
           window.app.renderer.view.style.width = Math.round(domWidth) + 'px';
           window.app.renderer.view.style.height =
-            Math.round((domWidth / projectProps.width) * projectProps.height) +
-            'px';
+            Math.round((domWidth / prj.width) * prj.height) + 'px';
         }
         stageDOM.appendChild(window.app.view);
         window.app.render();
@@ -119,16 +187,14 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
   };
 
   useEffect(() => {
-    if (Object.keys(projectProps).length !== 0) {
-      initStage().then(() => {
-        console.log('初始化stage完成-->');
-      });
+    if (Object.keys(projectState).length !== 0) {
+      initProject();
     }
     return () => {
-      console.log('清除内存');
-      window.app = null;
+      // console.log('清除内存');
+      // window.app = null;
     };
-  }, [projectProps]);
+  }, [projectState]);
 
   return (
     <div className="stage-wrap" ref={scrollDivRef}>
