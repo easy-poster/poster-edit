@@ -8,7 +8,7 @@ import React, {
 import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useSetState, useSize } from 'ahooks';
-import { useModel, useSelector } from 'umi';
+import { useDispatch, useModel, useSelector } from 'umi';
 import { Application } from '@pixi/app';
 import './index.less';
 import { db, epProject } from '@/utils/db';
@@ -34,6 +34,7 @@ const Stage: React.FC = () => {
   const layeres = useSelector((state) => {
     return state.project.layeres;
   });
+  const dispatch = useDispatch();
 
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
@@ -225,13 +226,33 @@ const Stage: React.FC = () => {
     // 将交互数据设置为null
     sprite.data = null;
     tools.removeEventHandler(document.body, 'mousemove', spriteMousemove);
+    tools.removeEventHandler(document.body, 'mousemup', spriteMouseup);
     isMouseDown = false;
+    if (layeres.length) {
+      let tempItem = JSON.parse(JSON.stringify(item));
+      let tempLayeres = JSON.parse(JSON.stringify(layeres));
+      tempItem.left = Math.ceil(sprite.x);
+      tempItem.top = Math.ceil(sprite.y);
+      for (let i = 0; i < tempLayeres.length; i++) {
+        if (tempLayeres[i].id === tempItem.id) {
+          tempLayeres[i] = { ...tempLayeres[i], ...tempItem };
+        }
+      }
+      // 保存精灵属性
+      dispatch({
+        type: 'project/updateLayer',
+        payload: {
+          id: projectState.id,
+          uuid: projectState.uuid,
+          newLayeres: tempLayeres,
+        },
+      });
+    }
     if (window.app) {
       window.app.render();
     }
   };
   const spriteMousemove = (item, sprite, event) => {
-    console.log('move', mouse);
     if (isMouseDown) {
       let viewWidth = projectState.width || 1920;
       let viewHeight = projectState.height || 1080;
@@ -250,7 +271,6 @@ const Stage: React.FC = () => {
             left: newPosition.x - mouse.mouseOffsetX,
             top: newPosition.y - mouse.mouseOffsetY,
           };
-          console.log(mousePos);
           sprite.x = mousePos.left;
           sprite.y = mousePos.top;
           if (window.app) {
