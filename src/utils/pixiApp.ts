@@ -1,6 +1,6 @@
 import { ItemType, ItemTypeProps } from '@/const';
 import * as PIXI from 'pixi.js';
-import { Application } from 'pixi.js';
+import { Application, Sprite } from 'pixi.js';
 import { epProject, imageSpriteProps, layerProps } from './db';
 
 type optionsProps = {
@@ -22,6 +22,7 @@ type containerType = 'STAGE' | 'GUIDE';
 export interface PixiAppProps {
   _isResourcesExist(name: string): boolean;
   // addResources(app: PIXI.Application, resources: resourcesProp[]): Promise<resourcesProp[]>
+  // getSprite(sprite: PIXI.Sprite);
   getContainer(app: Application, id: string): PIXI.DisplayObject;
   addNode(
     app: Application,
@@ -39,6 +40,10 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     [propname: string]: resourcesProp;
   } = {};
   loader = PIXI.Loader.shared;
+  static callFuc = {
+    parseItem: null,
+  };
+
   constructor(prj: epProject) {
     let options = {
       width: prj.width, // default: 800 宽度
@@ -252,8 +257,19 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       // if (item.filters) {
       //   this.parseFilters(sprite, item.filters);
       // }
+
+      // 添加精灵监听
+      if (PixiApp.callFuc.parseItem) {
+        PixiApp.callFuc.parseItem(item, sprite);
+      }
     }
     return sprite;
+  }
+
+  static setCallback(type, callback) {
+    if (type == 'parseItem') {
+      PixiApp.callFuc.parseItem = callback;
+    }
   }
 
   // parseFilters(sprite: PIXI.Sprite, filters: any[]) {
@@ -365,8 +381,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
         this.addResources(resources)
           .then(() => {
             let nodeSprite;
-            let zIndex = 0;
-            nodeSprite = this.parseItem(app, item, zIndex);
+            nodeSprite = this.parseItem(app, item, index);
             if (nodeSprite) {
               container.addChild(nodeSprite);
               app.render();

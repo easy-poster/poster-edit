@@ -1,4 +1,18 @@
 const tools = {
+  addEventHandler: (target, type, fn) => {
+    if (target.addEventListener) {
+      target.addEventListener(type, fn);
+    } else {
+      target.attachEvent('on' + type, fn);
+    }
+  },
+  removeEventHandler: (target, type, fn) => {
+    if (target.removeEventListener) {
+      target.removeEventListener(type, fn);
+    } else {
+      target.detachEvent('on' + type, fn);
+    }
+  },
   randomColor: () => {
     let color = '#';
     for (var i = 0; i < 6; i++) {

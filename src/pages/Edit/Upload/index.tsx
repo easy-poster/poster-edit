@@ -202,7 +202,13 @@ const UploadPage = () => {
       if (resources.length) {
         const objectConttainer = window.app.getContainer(window.app, 'STAGE');
         window.app
-          .addNode(window.app, result, resources, 0, objectConttainer)
+          .addNode(
+            window.app,
+            result,
+            resources,
+            layeres.length + 10,
+            objectConttainer,
+          )
           .then(async (sprite) => {
             // 存储到数据库
             try {

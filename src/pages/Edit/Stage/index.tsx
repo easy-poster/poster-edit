@@ -7,13 +7,14 @@ import React, {
 } from 'react';
 import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
-import { useSize } from 'ahooks';
+import { useSetState, useSize } from 'ahooks';
 import { useModel, useSelector } from 'umi';
 import { Application } from '@pixi/app';
 import './index.less';
 import { db, epProject } from '@/utils/db';
 import PixiApp, { PixiAppProps } from '@/utils/pixiApp';
 import { ItemType } from '@/const';
+import tools from '@/utils/tools';
 declare global {
   interface Window {
     app: Application & PixiAppProps;
@@ -23,6 +24,8 @@ declare global {
 interface StageProps {
   projectProps: epProject;
 }
+
+let isMouseDown = false;
 
 const Stage: React.FC = () => {
   const projectState = useSelector((state) => {
@@ -144,7 +147,8 @@ const Stage: React.FC = () => {
             ...{ resources: tempResources },
             layeres,
           };
-          console.log('mergeProject', mergeProject);
+          // 精灵监听回调(要在初始化舞台前执行)
+          PixiApp.setCallback('parseItem', initCall);
           initStage(mergeProject).then(() => {
             console.log('初始化stage完成-->');
           });
@@ -153,6 +157,13 @@ const Stage: React.FC = () => {
     } catch (error) {
       console.log('initProject error', error);
     }
+  };
+
+  // 初始化监听回调
+  const initCall = (item, sprite) => {
+    sprite.on('mousedown', spriteMousedown.bind(this, item, sprite));
+    sprite.on('mouseup', spriteMouseup.bind(this, item, sprite));
+    sprite.on('mousemove', spriteMousemove.bind(this, item, sprite));
   };
 
   const initStage = (prj) => {
@@ -184,6 +195,70 @@ const Stage: React.FC = () => {
       }
       resolve();
     });
+  };
+
+  const [mouse, setMouse] = useSetState({
+    width: 0,
+    height: 0,
+    mouseOffsetX: 0,
+    mouseOffsetY: 0,
+  });
+  const spriteMousedown = (item, sprite, event) => {
+    console.log('down');
+    sprite.stopped = true;
+    sprite.data = event.data;
+    sprite.dragging = true;
+    isMouseDown = true;
+    setMouse({
+      mouseOffsetX: event.data.global.x - sprite.x,
+      mouseOffsetY: event.data.global.y - sprite.y,
+      width: sprite.width,
+      height: sprite.height,
+    });
+    if (window.app) {
+      window.app.render();
+    }
+  };
+  const spriteMouseup = (item, sprite) => {
+    console.log('up');
+    sprite.dragging = false;
+    // 将交互数据设置为null
+    sprite.data = null;
+    tools.removeEventHandler(document.body, 'mousemove', spriteMousemove);
+    isMouseDown = false;
+    if (window.app) {
+      window.app.render();
+    }
+  };
+  const spriteMousemove = (item, sprite, event) => {
+    console.log('move', mouse);
+    if (isMouseDown) {
+      let viewWidth = projectState.width || 1920;
+      let viewHeight = projectState.height || 1080;
+      let curMouseX = event.data.global.x;
+      let curMouseY = event.data.global.y;
+      if (
+        curMouseX / 1 > 0 &&
+        curMouseX / 1 < viewWidth &&
+        curMouseY / 1 > 0 &&
+        curMouseY / 1 < viewHeight
+      ) {
+        if (sprite.dragging) {
+          const newPosition = sprite.data.getLocalPosition(sprite.parent);
+          // 鼠标位置
+          let mousePos = {
+            left: newPosition.x - mouse.mouseOffsetX,
+            top: newPosition.y - mouse.mouseOffsetY,
+          };
+          console.log(mousePos);
+          sprite.x = mousePos.left;
+          sprite.y = mousePos.top;
+          if (window.app) {
+            window.app.render();
+          }
+        }
+      }
+    }
   };
 
   useEffect(() => {
