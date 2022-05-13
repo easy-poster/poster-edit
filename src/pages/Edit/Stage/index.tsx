@@ -154,6 +154,7 @@ const Stage: React.FC = () => {
           appCallback();
           initStage(mergeProject).then(() => {
             console.log('初始化stage完成-->');
+            window.app.start();
           });
         });
       }

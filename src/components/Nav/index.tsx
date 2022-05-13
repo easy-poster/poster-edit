@@ -55,7 +55,7 @@ const Nav = () => {
         width: 1920,
         height: 1080,
         background: '0x272731',
-        resources: [],
+        fps: 10,
         layeres: [],
       });
       console.log('id', id);

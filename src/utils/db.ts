@@ -21,6 +21,7 @@ export interface epProject extends commonProps {
   width: number; // 原始宽
   height: number; // 原始高
   background: string; // 背景
+  fps: number;
   // resources: Array<resourcesProp>; // 资源
   layeres: Array<imageSpriteProps>;
 }
@@ -79,7 +80,7 @@ export class EposterDexie extends Dexie {
       epImage:
         '++id, userId, createTime, updateTime, name, size, resourceId, type, blob, cover',
       epProject:
-        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background, layeres',
+        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background, fps, layeres',
     });
   }
 }

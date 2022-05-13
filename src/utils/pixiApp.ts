@@ -41,6 +41,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     [propname: string]: resourcesProp;
   } = {};
   loader = PIXI.Loader.shared;
+  ticker = PIXI.Ticker.shared;
   static callFuc = {
     parseItem: null,
   };
@@ -57,6 +58,11 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       autoStart: false,
     };
     super(options);
+
+    // ticker init
+    this.ticker.autoStart = false;
+    this.ticker.maxFPS = prj.fps || 30;
+
     // 加载资源
     this.loadResources(this, prj).then(() => {
       this.parseProject(this, prj);
@@ -401,6 +407,38 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
   // 删除
   removeNode() {}
+
+  // render渲染相关
+  // start
+  start(app: PIXI.Application, start = 0) {
+    this.ticker.add((delta) => {
+      let containers = app.stage.children;
+      if (containers) {
+        containers.forEach((item) => {
+          if (item.isSprite) {
+            if (item.type === 'IMAGE') {
+              this.renderImage(item);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  renderImage(sprite) {
+    if (sprite.filters) {
+      sprite.filters.forEach(function (filter, id) {
+        switch (filter.id) {
+          case '':
+            break;
+          default:
+        }
+      });
+    }
+    if (!sprite.visible) {
+      sprite.visible = true;
+    }
+  }
 }
 
 export default PixiApp;
