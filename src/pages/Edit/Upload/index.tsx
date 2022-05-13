@@ -187,8 +187,8 @@ const UploadPage = () => {
         size: data.size,
         width: img.width,
         height: img.height,
-        left: 0, //projectState.width / 2,
-        top: 0, // projectState.height / 2,
+        left: projectState.width / 2,
+        top: projectState.height / 2,
       };
       let resources = [];
       resources.push({
