@@ -10,6 +10,7 @@ import {
 } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
+import * as PIXI from 'pixi.js';
 import { IconFont, ItemType } from '@/const';
 import './index.less';
 import { useSetState, useSize } from 'ahooks';
@@ -122,6 +123,45 @@ const Edit = () => {
     }
   };
 
+  const handleImgExport = () => {
+    const stageDom = document.getElementById('stage');
+    if (stageDom && window.app && Object.keys(projectState).length !== 0) {
+      const stage = window.app.stage;
+      const renderer = window.app.renderer;
+      if (stage && renderer) {
+        const { x, y } = stage.getBounds();
+        const stageImage = renderer.plugins.extract.image(
+          stage,
+          'image/jpeg',
+          1,
+        );
+        stageImage.onload = () => {
+          const canvasElement = document.createElement('canvas');
+          const ctx: any = canvasElement.getContext('2d');
+          canvasElement.width = projectState.width;
+          canvasElement.height = projectState.height;
+          ctx.drawImage(
+            stageImage,
+            -x,
+            -y,
+            projectState.width,
+            projectState.height,
+            0,
+            0,
+            projectState.width,
+            projectState.height,
+          );
+          const data = canvasElement.toDataURL('image/jpeg');
+          const download = document.createElement('a');
+          download.href = data;
+          download.download = '测试图片';
+          download.click();
+          download.remove();
+        };
+      }
+    }
+  };
+
   return (
     <>
       <div className="edit-header">
@@ -133,7 +173,7 @@ const Edit = () => {
             <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
             <span className="update-text">升级</span>
           </div>
-          <div className="header-export" onClick={handleExport}>
+          <div className="header-export" onClick={handleImgExport}>
             导出
           </div>
         </div>

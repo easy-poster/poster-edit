@@ -54,7 +54,7 @@ const Nav = () => {
         updateTime: new Date(),
         width: 1920,
         height: 1080,
-        background: '0x272731',
+        background: '0x000000', // '0x272731',
         fps: 10,
         layeres: [],
       });

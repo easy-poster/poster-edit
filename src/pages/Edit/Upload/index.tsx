@@ -189,6 +189,7 @@ const UploadPage = () => {
         height: img.height,
         left: projectState.width / 2,
         top: projectState.height / 2,
+        rotation: 45,
       };
       let resources = [];
       resources.push({

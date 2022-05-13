@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import * as PIXI from 'pixi.js';
 import demoImg from '@/assets/bg/demo.jpg';
-import { useSetState, useSize } from 'ahooks';
+import { useReactive, useSetState, useSize } from 'ahooks';
 import { useDispatch, useModel, useSelector } from 'umi';
 import { Application } from '@pixi/app';
 import './index.less';
@@ -34,8 +34,6 @@ const Stage: React.FC = () => {
     return state.project.layeres;
   });
   const dispatch = useDispatch();
-
-  let isMouseDown = useRef(false);
 
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
@@ -163,26 +161,36 @@ const Stage: React.FC = () => {
     }
   };
 
+  const isMouseDown = useRef(false);
+  const mouse = useReactive({
+    mouseOffsetX: 0,
+    mouseOffsetY: 0,
+  });
+
   const appCallback = () => {
     PixiApp.setCallback('parseItem', (item, sprite) => {
       sprite
-        .on('pointerdown', spriteMousedown.bind(this, item, sprite))
+        .on('pointerdown', spriteMousedown.bind(this, sprite))
         .on('pointerup', spriteMouseup.bind(this, item, sprite))
         .on('pointerupoutside', spriteMouseup.bind(this, item, sprite))
         .on('pointermove', spriteMousemove.bind(this, item, sprite));
     });
   };
-
-  const spriteMousedown = (item, sprite, event) => {
+  const spriteMousedown = (sprite, event) => {
+    console.log(sprite, this, event);
     sprite.data = event.data;
     sprite.dragging = true;
+    sprite.alpha = 0.5;
     isMouseDown.current = true;
+    mouse.mouseOffsetX = event.data.global.x - sprite.x;
+    mouse.mouseOffsetY = event.data.global.y - sprite.y;
   };
 
   const spriteMouseup = (item, sprite) => {
-    sprite.dragging = false;
+    sprite.alpha = 1;
     // 将交互数据设置为null
     sprite.data = null;
+    sprite.dragging = false;
     isMouseDown.current = false;
     let newLayer = JSON.parse(JSON.stringify(item));
     newLayer.left = Math.ceil(sprite.x);
@@ -210,11 +218,8 @@ const Stage: React.FC = () => {
       ) {
         if (sprite.dragging) {
           const newPosition = sprite.data.getLocalPosition(sprite.parent);
-          sprite.x = newPosition.x;
-          sprite.y = newPosition.y;
-          // if (window.app) {
-          //   window.app.render();
-          // }
+          sprite.x = newPosition.x - mouse.mouseOffsetX; //mousePos.left;
+          sprite.y = newPosition.y - mouse.mouseOffsetY;
         }
       }
     }
