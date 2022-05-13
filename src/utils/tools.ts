@@ -1,4 +1,7 @@
+import { EventEmitter } from 'events';
+
 const tools = {
+  EventBus: new EventEmitter(),
   addEventHandler: (target, type, fn) => {
     if (target.addEventListener) {
       target.addEventListener(type, fn);

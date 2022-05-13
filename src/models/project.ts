@@ -36,7 +36,7 @@ export default {
         },
       });
     },
-    *updateLayer({ payload: { id, uuid, newLayeres } }, { call, put }) {
+    *updateLayeres({ payload: { id, uuid, newLayeres } }, { call, put }) {
       console.log('id', id);
       const updated = yield call(prjService.updateLayeres, { id, newLayeres });
       if (updated) {
@@ -46,6 +46,25 @@ export default {
           type: 'saveLayeres',
           payload: {
             layeres,
+          },
+        });
+      }
+    },
+    *updateLayer({ payload: { newLayer } }, { call, put, select }) {
+      const { prj, layeres } = yield select((state) => state.project);
+      let newLayeres = JSON.parse(JSON.stringify(layeres));
+      if (layeres && newLayer) {
+        for (let i = 0; i < newLayeres.length; i++) {
+          if (newLayeres[i].id === newLayer.id) {
+            newLayeres[i] = { ...newLayeres[i], ...newLayer };
+          }
+        }
+        yield put({
+          type: 'updateLayeres',
+          payload: {
+            id: prj.id,
+            uuid: prj.uuid,
+            newLayeres,
           },
         });
       }

@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
@@ -25,8 +26,6 @@ interface StageProps {
   projectProps: epProject;
 }
 
-let isMouseDown = false;
-
 const Stage: React.FC = () => {
   const projectState = useSelector((state) => {
     return state.project.prj;
@@ -35,6 +34,9 @@ const Stage: React.FC = () => {
     return state.project.layeres;
   });
   const dispatch = useDispatch();
+
+  console.log('stage layeres', layeres);
+  let isMouseDown = useRef(false);
 
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
@@ -149,7 +151,7 @@ const Stage: React.FC = () => {
             layeres,
           };
           // 精灵监听回调(要在初始化舞台前执行)
-          PixiApp.setCallback('parseItem', initCall);
+          // appCallback()
           initStage(mergeProject).then(() => {
             console.log('初始化stage完成-->');
           });
@@ -160,12 +162,89 @@ const Stage: React.FC = () => {
     }
   };
 
-  // 初始化监听回调
-  const initCall = (item, sprite) => {
-    sprite.on('mousedown', spriteMousedown.bind(this, item, sprite));
-    sprite.on('mouseup', spriteMouseup.bind(this, item, sprite));
-    sprite.on('mousemove', spriteMousemove.bind(this, item, sprite));
+  const appCallback = () => {
+    PixiApp.setCallback('parseItem', (item, sprite) => {
+      sprite.on('mousedown', spriteMousedown.bind(this, item, sprite));
+      sprite.on('mouseup', spriteMouseup.bind(this, item, sprite));
+      sprite.on('mousemove', spriteMousemove.bind(this, item, sprite));
+    });
+
+    const spriteMousedown = (item, sprite, event) => {
+      console.log('down');
+      sprite.data = event.data;
+      sprite.dragging = true;
+      isMouseDown.current = true;
+      setMouse({
+        mouseOffsetX: event.data.global.x - sprite.x,
+        mouseOffsetY: event.data.global.y - sprite.y,
+        width: sprite.width,
+        height: sprite.height,
+      });
+      if (window.app) {
+        window.app.render();
+      }
+    };
+    const spriteMouseup = (item, sprite) => {
+      console.log('up');
+      sprite.dragging = false;
+      // 将交互数据设置为null
+      sprite.data = null;
+      isMouseDown.current = false;
+      tools.removeEventHandler(document.body, 'mousemup', spriteMouseup);
+      let newLayer = JSON.parse(JSON.stringify(item));
+      newLayer.left = Math.ceil(sprite.x);
+      newLayer.top = Math.ceil(sprite.y);
+
+      // 保存精灵属性
+      dispatch({
+        type: 'project/updateLayer',
+        payload: {
+          newLayer,
+        },
+      });
+      if (window.app) {
+        window.app.render();
+      }
+    };
+    const spriteMousemove = (item, sprite, event) => {
+      if (isMouseDown.current) {
+        let viewWidth = projectState.width || 1920;
+        let viewHeight = projectState.height || 1080;
+        let curMouseX = event.data.global.x;
+        let curMouseY = event.data.global.y;
+        console.log('move', event.data.global);
+        if (
+          curMouseX / 1 > 0 &&
+          curMouseX / 1 < viewWidth &&
+          curMouseY / 1 > 0 &&
+          curMouseY / 1 < viewHeight
+        ) {
+          if (sprite.dragging) {
+            const newPosition = sprite.data.getLocalPosition(sprite.parent);
+            console.log('newPosition', newPosition);
+            // 鼠标位置
+            let mousePos = {
+              left: newPosition.x - mouse.mouseOffsetX,
+              top: newPosition.y - mouse.mouseOffsetY,
+            };
+            console.log('mousePos', mousePos);
+            sprite.x = mousePos.left;
+            sprite.y = mousePos.top;
+            if (window.app) {
+              window.app.render();
+            }
+          }
+        }
+      }
+    };
   };
+
+  // 初始化监听回调
+  // const initCall = (item, sprite) => {
+  //   sprite.on('mousedown', spriteMousedown.bind(this, item, sprite));
+  //   sprite.on('mouseup', spriteMouseup.bind(this, item, sprite));
+  //   sprite.on('mousemove', spriteMousemove.bind(this, item, sprite));
+  // };
 
   const initStage = (prj) => {
     return new Promise<void>((resolve, reject) => {
@@ -204,82 +283,6 @@ const Stage: React.FC = () => {
     mouseOffsetX: 0,
     mouseOffsetY: 0,
   });
-  const spriteMousedown = (item, sprite, event) => {
-    console.log('down');
-    sprite.stopped = true;
-    sprite.data = event.data;
-    sprite.dragging = true;
-    isMouseDown = true;
-    setMouse({
-      mouseOffsetX: event.data.global.x - sprite.x,
-      mouseOffsetY: event.data.global.y - sprite.y,
-      width: sprite.width,
-      height: sprite.height,
-    });
-    if (window.app) {
-      window.app.render();
-    }
-  };
-  const spriteMouseup = (item, sprite) => {
-    console.log('up');
-    sprite.dragging = false;
-    // 将交互数据设置为null
-    sprite.data = null;
-    tools.removeEventHandler(document.body, 'mousemove', spriteMousemove);
-    tools.removeEventHandler(document.body, 'mousemup', spriteMouseup);
-    isMouseDown = false;
-    if (layeres.length) {
-      let tempItem = JSON.parse(JSON.stringify(item));
-      let tempLayeres = JSON.parse(JSON.stringify(layeres));
-      tempItem.left = Math.ceil(sprite.x);
-      tempItem.top = Math.ceil(sprite.y);
-      for (let i = 0; i < tempLayeres.length; i++) {
-        if (tempLayeres[i].id === tempItem.id) {
-          tempLayeres[i] = { ...tempLayeres[i], ...tempItem };
-        }
-      }
-      // 保存精灵属性
-      dispatch({
-        type: 'project/updateLayer',
-        payload: {
-          id: projectState.id,
-          uuid: projectState.uuid,
-          newLayeres: tempLayeres,
-        },
-      });
-    }
-    if (window.app) {
-      window.app.render();
-    }
-  };
-  const spriteMousemove = (item, sprite, event) => {
-    if (isMouseDown) {
-      let viewWidth = projectState.width || 1920;
-      let viewHeight = projectState.height || 1080;
-      let curMouseX = event.data.global.x;
-      let curMouseY = event.data.global.y;
-      if (
-        curMouseX / 1 > 0 &&
-        curMouseX / 1 < viewWidth &&
-        curMouseY / 1 > 0 &&
-        curMouseY / 1 < viewHeight
-      ) {
-        if (sprite.dragging) {
-          const newPosition = sprite.data.getLocalPosition(sprite.parent);
-          // 鼠标位置
-          let mousePos = {
-            left: newPosition.x - mouse.mouseOffsetX,
-            top: newPosition.y - mouse.mouseOffsetY,
-          };
-          sprite.x = mousePos.left;
-          sprite.y = mousePos.top;
-          if (window.app) {
-            window.app.render();
-          }
-        }
-      }
-    }
-  };
 
   useEffect(() => {
     if (Object.keys(projectState).length !== 0) {
@@ -290,6 +293,22 @@ const Stage: React.FC = () => {
       // window.app = null;
     };
   }, [projectState]);
+
+  useEffect(() => {
+    tools.EventBus.addListener('SPRITE_MOUSEDOWN', () => {
+      console.log('SPRITE_MOUSEDOWN');
+    });
+    tools.EventBus.addListener('SPRITE_MOUSEMOVE', () => {
+      console.log('SPRITE_MOUSEMOVE');
+    });
+    tools.EventBus.addListener('SPRITE_MOUSEUP', () => {
+      console.log('SPRITE_MOUSEUP');
+    });
+
+    appCallback();
+
+    return () => {};
+  }, []);
 
   return (
     <div className="stage-wrap" ref={scrollDivRef}>

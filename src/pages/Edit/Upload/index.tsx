@@ -187,8 +187,8 @@ const UploadPage = () => {
         size: data.size,
         width: img.width,
         height: img.height,
-        left: projectState.width / 2,
-        top: projectState.height / 2,
+        left: 0, //projectState.width / 2,
+        top: 0, // projectState.height / 2,
       };
       let resources = [];
       resources.push({
@@ -214,7 +214,7 @@ const UploadPage = () => {
             try {
               let newLayeres = [...layeres, result];
               dispatch({
-                type: 'project/updateLayer',
+                type: 'project/updateLayeres',
                 payload: {
                   id: projectState.id,
                   uuid: projectState.uuid,

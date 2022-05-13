@@ -17,7 +17,7 @@ const SizeBar = () => {
 
   const handleChangeAutoSize = () => {
     // 自适应屏幕
-    setSizeStage(200);
+    setSizeStage(100);
   };
 
   const handleChangeSize = (value: number) => {

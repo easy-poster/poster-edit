@@ -2,6 +2,7 @@ import { ItemType, ItemTypeProps } from '@/const';
 import * as PIXI from 'pixi.js';
 import { Application, Sprite } from 'pixi.js';
 import { epProject, imageSpriteProps, layerProps } from './db';
+import tools from './tools';
 
 type optionsProps = {
   loadType: PIXI.LoaderResource.LOAD_TYPE;
@@ -60,6 +61,12 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     this.loadResources(this, prj).then(() => {
       this.parseProject(this, prj);
     });
+  }
+
+  static setCallback(type, callback) {
+    if (type == 'parseItem') {
+      PixiApp.callFuc.parseItem = callback;
+    }
   }
 
   // ----资源---->
@@ -264,12 +271,6 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       }
     }
     return sprite;
-  }
-
-  static setCallback(type, callback) {
-    if (type == 'parseItem') {
-      PixiApp.callFuc.parseItem = callback;
-    }
   }
 
   // parseFilters(sprite: PIXI.Sprite, filters: any[]) {
