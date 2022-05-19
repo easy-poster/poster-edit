@@ -48,7 +48,10 @@ const Edit = () => {
 
     return () => {
       console.log('清除内存');
-      window.app = null;
+      if (window.app) {
+        window.app.closeProject(window.app);
+        window.app = null;
+      }
     };
   }, []);
 
@@ -181,7 +184,7 @@ const Edit = () => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            <AsyncStage />
+            {/* <AsyncStage /> */}
             {/* <Stage /> */}
           </div>
           <SizeBar />

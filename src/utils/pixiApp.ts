@@ -52,7 +52,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       height: prj.height, // default: 600 高度
       antialias: true, // default: false 反锯齿
       transparent: false, // default: false 透明度
-      // resolution: window.devicePixelRatio,
+      resolution: window.devicePixelRatio,
       backgroundColor: +prj.background,
       autoDensity: true,
       autoStart: false,
@@ -354,7 +354,15 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
   // 关闭项目
   closeProject(app) {
     this.allResources = {};
-    window.app = null;
+    this.ticker.stop();
+    this.ticker.remove(this.loop);
+    console.log('PIXI.utils.TextureCache', PIXI.utils.TextureCache);
+    // Object.keys(PIXI.utils.TextureCache).forEach((texture) => {
+    //   console.log('texture', texture)
+    //   PIXI.utils.TextureCache[texture].destroy({baseTexture:true});
+    // });
+    this.stage.destroy(true);
+    this.renderer.destroy(true);
   }
 
   // container
@@ -411,18 +419,20 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
   // render渲染相关
   // start
   start(app: PIXI.Application, start = 0) {
-    this.ticker.add((delta) => {
-      let containers = app.stage.children;
-      if (containers) {
-        containers.forEach((item) => {
-          if (item.isSprite) {
-            if (item.type === 'IMAGE') {
-              this.renderImage(item);
-            }
+    this.ticker.add(this.loop);
+  }
+
+  loop(delta) {
+    let containers = app.stage.children;
+    if (containers) {
+      containers.forEach((item) => {
+        if (item.isSprite) {
+          if (item.type === 'IMAGE') {
+            this.renderImage(item);
           }
-        });
-      }
-    });
+        }
+      });
+    }
   }
 
   renderImage(sprite) {

@@ -177,17 +177,14 @@ const Stage: React.FC = () => {
     });
   };
   const spriteMousedown = (sprite, event) => {
-    console.log(sprite, this, event);
     sprite.data = event.data;
     sprite.dragging = true;
-    sprite.alpha = 0.5;
     isMouseDown.current = true;
     mouse.mouseOffsetX = event.data.global.x - sprite.x;
     mouse.mouseOffsetY = event.data.global.y - sprite.y;
   };
 
   const spriteMouseup = (item, sprite) => {
-    sprite.alpha = 1;
     // 将交互数据设置为null
     sprite.data = null;
     sprite.dragging = false;
@@ -259,10 +256,7 @@ const Stage: React.FC = () => {
     if (Object.keys(projectState).length !== 0) {
       initProject();
     }
-    return () => {
-      // console.log('清除内存');
-      // window.app = null;
-    };
+    return () => {};
   }, [projectState]);
 
   return (
