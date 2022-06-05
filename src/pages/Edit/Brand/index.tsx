@@ -3,7 +3,7 @@ import './index.less';
 
 const BrandPage = () => {
   return (
-    <div className="brand-wrap">
+    <div className="brand-edit-wrap">
       <div className="brand-item">
         <div className="brand-title">logo</div>
         <div className="brand-container">logo</div>

@@ -184,7 +184,7 @@ const Edit = () => {
       <div className="edit-content">
         <div className="edit-main">
           <div className="edit-container">
-            {/* <AsyncStage /> */}
+            <AsyncStage />
             {/* <Stage /> */}
           </div>
           <SizeBar />

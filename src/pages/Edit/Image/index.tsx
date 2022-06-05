@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AutoComplete, SelectProps } from 'antd';
+import { AutoComplete, SelectProps, Breadcrumb } from 'antd';
 import demoImg from '@/assets/demo.png';
 import { IconFont } from '@/const';
 import { useSize } from 'ahooks';
@@ -83,14 +83,32 @@ const ImagePage = () => {
     return arr;
   }, [columsNum]);
 
+  const SLIST = useMemo(() => {
+    let arr = [];
+    for (let i = 0; i < 18; i++) {
+      arr.push({
+        title: `slider${i}`,
+        id: i,
+        cover: demoImg,
+      });
+    }
+    return arr;
+  }, []);
+
   console.log('columsNum', columsNum, LIST);
 
   const handleAdd = (data: any) => {
     console.log('add', data);
   };
 
+  const [isMore, setIsMore] = useState(false);
   const handleGoMore = (data: any) => {
     console.log('gomore', data);
+    setIsMore(true);
+  };
+
+  const handleGoAll = () => {
+    setIsMore(false);
   };
 
   return (
@@ -107,41 +125,86 @@ const ImagePage = () => {
           onSearch={handleSearch}
           placeholder="搜索图像"
         ></AutoComplete>
+        {isMore && (
+          <Breadcrumb separator=">">
+            <Breadcrumb.Item className="bread-item-all" onClick={handleGoAll}>
+              所有分类
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>images demo</Breadcrumb.Item>
+          </Breadcrumb>
+        )}
       </div>
-      <div className="search-img-list">
-        <div className="pre-img-item">
-          <div className="pre-title">images demo</div>
-          <div
-            className="pre-list"
-            ref={preListRef}
-            style={{ gridTemplateColumns: `repeat(${columsNum}, 1fr)` }}
-          >
-            {LIST.map((item, index) => (
-              <div className="item_img" key={item.title}>
-                <img src={item.cover} alt={item.title} />
-                {LIST.length - 1 === index ? (
-                  <div className="right-btn" onClick={() => handleGoMore(item)}>
-                    <IconFont
-                      type="icon-xiangyou"
-                      style={{ fontSize: '24px' }}
-                    />
+      {isMore ? (
+        <div className="more-list">
+          {SLIST.map((item) => {
+            return (
+              <div className="img-item" key={item.id}>
+                <div className="img-wrap">
+                  <img className="img-cover" alt="example" src={item.cover} />
+                  <div className="edit-wrap">
+                    <div
+                      className="img-btn edit-del"
+                      // onClick={() => handleDel(item)}
+                    >
+                      <IconFont
+                        type="icon-gengduo"
+                        style={{ fontSize: '14px' }}
+                      />
+                    </div>
+                    <div
+                      className="img-btn edit-add"
+                      onClick={() => handleAdd(item)}
+                    >
+                      <IconFont
+                        type="icon-tianjia_huaban"
+                        style={{ fontSize: '16px' }}
+                      />
+                    </div>
                   </div>
-                ) : (
-                  <div
-                    className="img-btn edit-add"
-                    onClick={() => handleAdd(item)}
-                  >
-                    <IconFont
-                      type="icon-tianjia_huaban"
-                      style={{ fontSize: '16px' }}
-                    />
-                  </div>
-                )}
+                </div>
               </div>
-            ))}
+            );
+          })}
+        </div>
+      ) : (
+        <div className="img-list">
+          <div className="pre-img-item">
+            <div className="pre-title">images demo</div>
+            <div
+              className="pre-list"
+              ref={preListRef}
+              style={{ gridTemplateColumns: `repeat(${columsNum}, 1fr)` }}
+            >
+              {LIST.map((item, index) => (
+                <div className="item_img" key={item.title}>
+                  <img src={item.cover} alt={item.title} />
+                  {LIST.length - 1 === index ? (
+                    <div
+                      className="right-btn"
+                      onClick={() => handleGoMore(item)}
+                    >
+                      <IconFont
+                        type="icon-xiangyou"
+                        style={{ fontSize: '24px' }}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="img-btn edit-add"
+                      onClick={() => handleAdd(item)}
+                    >
+                      <IconFont
+                        type="icon-tianjia_huaban"
+                        style={{ fontSize: '16px' }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -61,7 +61,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
     // ticker init
     this.ticker.autoStart = false;
-    this.ticker.maxFPS = prj.fps || 10;
+    this.ticker.maxFPS = prj.fps || 30;
 
     // 加载资源
     this.loadResources(this, prj).then(() => {
@@ -357,12 +357,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
     this.ticker.stop();
     this.ticker.remove(this.loop);
     console.log('PIXI.utils.TextureCache', PIXI.utils.TextureCache);
-    // Object.keys(PIXI.utils.TextureCache).forEach((texture) => {
-    //   console.log('texture', texture)
-    //   PIXI.utils.TextureCache[texture].destroy({baseTexture:true});
-    // });
-    this.stage.destroy(true);
-    this.renderer.destroy(true);
+    app.destroy(true);
   }
 
   // container
