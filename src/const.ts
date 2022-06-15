@@ -29,6 +29,20 @@ export const ImageDefData: imageSpriteProps = {
   filters: [],
 };
 
+export const TextDefData = {
+  id: '',
+  name: '',
+  type: 'TEXT',
+  styles: '',
+  rotation: 0,
+  alpha: 1,
+  zIndex: 0,
+  width: 0,
+  height: 0,
+  left: 0,
+  top: 0,
+};
+
 // 展示页菜单
 export const MENU_LAYOUT = [
   {

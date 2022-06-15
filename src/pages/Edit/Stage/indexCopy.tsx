@@ -23,6 +23,7 @@ interface StageProps {
 }
 
 const Stage: React.FC<StageProps> = ({ projectProps }) => {
+  let ticker;
   // 初始化舞台
   const stageRef = useRef<HTMLDivElement>(null);
   // 画布大小缩放
@@ -121,14 +122,11 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
                 (domWidth / projectProps.width) * projectProps.height,
               ) + 'px';
           }
-          var renderer = window.app.renderer;
           var loader = PIXI.Loader.shared;
-          var ticker = PIXI.Ticker.shared;
           var resources = loader.resources;
 
           let texture = resources['demoImg']?.texture;
           stageDOM.appendChild(window.app.view);
-          var raf;
           console.log('texture123', texture);
 
           if (!texture) {
@@ -136,8 +134,8 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
           }
           loader.load(() => {
             var loader = PIXI.Loader.shared;
-            var ticker = PIXI.Ticker.shared;
-            ticker.maxFPS = 1;
+            ticker = PIXI.Ticker.shared;
+            ticker.maxFPS = 30;
             var resources = loader.resources;
             let texture = resources['demoImg']?.texture;
             if (texture) {
@@ -169,10 +167,16 @@ const Stage: React.FC<StageProps> = ({ projectProps }) => {
   useEffect(() => {
     if (Object.keys(projectProps).length !== 0) {
       initCanvas();
+      setTimeout(() => {
+        console.log('清除内存');
+        window.app.destroy();
+      }, 5000);
     }
     return () => {
       console.log('清除内存');
-      window.app = null;
+      // ticker.destroy();
+      // window.app.destroy();
+      // window.app = null;
     };
   }, [projectProps]);
 

@@ -242,12 +242,10 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
         }
         if (texture) {
           sprite = new PIXI.Sprite(texture);
-          sprite.interactive = true;
-          sprite.buttonMode = true;
         }
         break;
       case ItemType.TEXT:
-        // sprite = new PIXI.Text(item.content, item.style);
+        sprite = new PIXI.Text(item.name, item.style);
         break;
       default:
         console.warn('unsuppport');
@@ -260,12 +258,16 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
       sprite.anchor.set(0.5, 0.5);
       sprite.x = item.left;
       sprite.y = item.top;
-      sprite.width = item.width;
-      sprite.height = item.height;
+      if (item.width && item.height) {
+        sprite.width = item.width;
+        sprite.height = item.height;
+      }
       sprite.rotation = item.rotation || 0;
       sprite.alpha = item.alpha || 1;
       sprite.zIndex = zIndex;
       sprite.visible = true;
+      sprite.interactive = true;
+      sprite.buttonMode = true;
       // 处理滤镜
       // if (item.filters) {
       //   this.parseFilters(sprite, item.filters);
@@ -388,19 +390,29 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
         app.stage.addChild(container);
       }
       if (container) {
-        this.addResources(resources)
-          .then(() => {
-            let nodeSprite;
-            nodeSprite = this.parseItem(app, item, index);
-            if (nodeSprite) {
-              container.addChild(nodeSprite);
-              app.render();
-              resolve(nodeSprite);
-            }
-          })
-          .catch(() => {
-            reject();
-          });
+        if (item.type === 'TEXT') {
+          let node = {};
+          node = this.parseItem(app, item, index);
+          if (node) {
+            container.addChild(node);
+            app.render();
+            resolve(node);
+          }
+        } else {
+          this.addResources(resources)
+            .then(() => {
+              let nodeSprite;
+              nodeSprite = this.parseItem(app, item, index);
+              if (nodeSprite) {
+                container.addChild(nodeSprite);
+                app.render();
+                resolve(nodeSprite);
+              }
+            })
+            .catch(() => {
+              reject();
+            });
+        }
       }
     });
   }

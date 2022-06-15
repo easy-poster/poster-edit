@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import demoImg from '@/assets/demo.png';
 import './index.less';
-import { IconFont } from '@/const';
-import { AutoComplete, SelectProps } from 'antd';
+import { IconFont, TextDefData } from '@/const';
+import { AutoComplete, message, SelectProps } from 'antd';
+import { useSelector } from 'umi';
 
 function getRandomInt(max: number, min: number = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
@@ -40,6 +41,14 @@ const searchResult = (query: string) =>
     });
 
 const TextPage = () => {
+  const projectState = useSelector((state) => {
+    return state.project.prj;
+  });
+
+  const layeres = useSelector((state) => {
+    return state.project.layeres;
+  });
+
   const LIST = useMemo(() => {
     let arr = [];
     for (let i = 0; i < 18; i++) {
@@ -64,6 +73,27 @@ const TextPage = () => {
 
   const handleAdd = (data: any) => {
     console.log('data', data);
+    if (!window.app && Object.keys(projectState).length !== 0) {
+      message.warning('项目正在初始化');
+      return false;
+    }
+    let result = {
+      ...TextDefData,
+      id: `${new Date().getTime()}_t`,
+      name: data,
+      style: {
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fill: 0xffffff,
+        align: 'center',
+      },
+      left: projectState.width / 2,
+      top: projectState.height / 2,
+    };
+    const objectContainer = window.app.getContainer(window.app, 'STAGE');
+    window.app
+      .addNode(window.app, result, null, layeres.length + 10, objectContainer)
+      .then(async (sprite) => {});
   };
 
   return (
@@ -80,7 +110,9 @@ const TextPage = () => {
           onSearch={handleSearch}
           placeholder="搜索文字"
         ></AutoComplete>
-        <div className="text-nomal">添加一段文本</div>
+        <div className="text-nomal" onClick={() => handleAdd('添加一段文本')}>
+          添加一段文本
+        </div>
       </div>
       <div className="text-list">
         {LIST.map((item) => {
