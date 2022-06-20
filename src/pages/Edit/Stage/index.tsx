@@ -16,6 +16,8 @@ import { db, epProject } from '@/utils/db';
 import PixiApp, { PixiAppProps } from '@/utils/pixiApp';
 import { ItemType } from '@/const';
 import tools from '@/utils/tools';
+import { drawRect, drawCircle } from './zoomComponent';
+
 declare global {
   interface Window {
     app: Application & PixiAppProps;
@@ -169,11 +171,99 @@ const Stage: React.FC = () => {
 
   const appCallback = () => {
     PixiApp.setCallback('parseItem', (item, sprite) => {
-      sprite
-        .on('pointerdown', spriteMousedown.bind(this, sprite))
-        .on('pointerup', spriteMouseup.bind(this, item, sprite))
-        .on('pointerupoutside', spriteMouseup.bind(this, item, sprite))
-        .on('pointermove', spriteMousemove.bind(this, item, sprite));
+      if (window?.app?.stage) {
+        const CUT = 10;
+        const PADDIND = 40;
+        const GUIDE = 'GUIDE';
+
+        let GuideContainer = window.app.stage.children.find(
+          (it) => it?.id === GUIDE,
+        );
+        let ContaineARR = window?.app?.stage?.children || [];
+        for (let i = ContaineARR.length - 1; i > 0; i--) {
+          if (ContaineARR[i]?.id === GUIDE) {
+            GuideContainer = ContaineARR[i];
+          }
+        }
+        if (!GuideContainer) {
+          GuideContainer = new PIXI.Container();
+          window.app.stage.addChild(GuideContainer);
+        }
+
+        // 清除辅助线
+        GuideContainer?.removeChildren();
+
+        let GuideWidth = window.app.renderer.width;
+        let GuideHeight = window.app.renderer.height;
+
+        GuideContainer.id = GUIDE;
+        GuideContainer.type = GUIDE;
+        GuideContainer.zIndex = 1000000;
+        GuideContainer.width = GuideWidth;
+        GuideContainer.height = GuideHeight;
+
+        const GuideHArr = [
+          0,
+          PADDIND,
+          GuideHeight / 2,
+          GuideHeight - PADDIND,
+          GuideHeight,
+        ];
+        const GuideVArr = [
+          0,
+          PADDIND,
+          GuideWidth / 2,
+          GuideWidth - PADDIND,
+          GuideWidth,
+        ];
+
+        // 横线
+        GuideHArr.forEach((item, index) => {
+          const GuideHline = new PIXI.Graphics();
+          GuideHline.id = `${index + 1}GUIDE_X`;
+          GuideHline.visible = false;
+          GuideHline.zIndex = 1000000;
+          GuideHline.lineStyle(4, 0xffbb00, 1);
+          GuideHline.moveTo(0, item);
+          let tick = true;
+          for (let i = 0; i < GuideWidth; i = i + CUT) {
+            if (tick) {
+              GuideHline.lineTo(i, item);
+              tick = false;
+            } else {
+              GuideHline.moveTo(i, item);
+              tick = true;
+            }
+          }
+          GuideContainer.addChild(GuideHline);
+        });
+
+        // 竖线
+        GuideVArr.forEach((item, index) => {
+          const GuideVline = new PIXI.Graphics();
+          GuideVline.id = `${index + 1}GUIDE_Y`;
+          GuideVline.visible = false;
+          GuideVline.zIndex = 1000000;
+          GuideVline.lineStyle(4, 0xffbb00, 1);
+          GuideVline.moveTo(item, 0);
+          let tick = false;
+          for (let i = 0; i < GuideHeight; i = i + CUT) {
+            if (tick) {
+              GuideVline.moveTo(item, i);
+              tick = false;
+            } else {
+              GuideVline.lineTo(item, i);
+              tick = true;
+            }
+          }
+          GuideContainer.addChild(GuideVline);
+        });
+      }
+
+      sprite.on('pointerdown', spriteMousedown.bind(this, sprite));
+      // .on('pointerup', spriteMouseup.bind(this, item, sprite))
+      // .on('pointerupoutside', spriteMouseup.bind(this, item, sprite))
+      // .on('pointermove', spriteMousemove.bind(this, item, sprite));
     });
   };
   const spriteMousedown = (sprite, event) => {
@@ -182,6 +272,27 @@ const Stage: React.FC = () => {
     isMouseDown.current = true;
     mouse.mouseOffsetX = event.data.global.x - sprite.x;
     mouse.mouseOffsetY = event.data.global.y - sprite.y;
+
+    createSizeRect(sprite);
+  };
+
+  const createSizeRect = (sprite) => {
+    const ContType = 'sizeContainer';
+    let sizeContainer = window.app.stage.children.find((item) => {
+      return item.type === ContType;
+    });
+    if (!sizeContainer) {
+      sizeContainer = new PIXI.Container();
+      sizeContainer.type = ContType;
+      sizeContainer.zIndex = 100000;
+    }
+    sizeContainer?.removeChildren();
+
+    drawRect(sizeContainer, sprite, () => {});
+
+    drawCircle(sizeContainer, sprite, () => {});
+
+    window.app.stage.addChild(sizeContainer);
   };
 
   const spriteMouseup = (item, sprite) => {

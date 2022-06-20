@@ -92,12 +92,12 @@ export const MENU_EDIT = [
     icon: 'icon-wenzi',
     route: '/template',
   },
-  {
-    name: '背景',
-    id: 5,
-    icon: 'icon-background',
-    route: '/template',
-  },
+  // {
+  //   name: '背景',
+  //   id: 5,
+  //   icon: 'icon-background',
+  //   route: '/template',
+  // },
   {
     name: '品牌',
     id: 6,

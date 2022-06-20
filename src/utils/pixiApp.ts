@@ -61,7 +61,7 @@ class PixiApp extends PIXI.Application implements PixiAppProps {
 
     // ticker init
     this.ticker.autoStart = false;
-    this.ticker.maxFPS = prj.fps || 30;
+    this.ticker.maxFPS = 10;
 
     // 加载资源
     this.loadResources(this, prj).then(() => {
