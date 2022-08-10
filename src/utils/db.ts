@@ -1,6 +1,5 @@
 import { ItemTypeProps } from '@/const';
 import Dexie, { Table } from 'dexie';
-import { resourcesProp } from './pixiApp';
 
 interface commonProps {
   id: number;

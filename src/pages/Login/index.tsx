@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useHistory } from 'umi';
-import { Divider, Form, Input, Tabs } from 'antd';
+import { Divider, Form, Input, message, Tabs } from 'antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import './index.less';
 import { IconFont } from '@/const';
@@ -38,7 +38,28 @@ const Login = () => {
     }
   };
 
+  const res = (e) => {
+    message.config({
+      top: (e?.target?.innerHeight || window.innerHeight) / 2,
+    });
+  };
+
+  useEffect(() => {
+    res();
+
+    window.addEventListener('resize', res);
+
+    return () => {
+      window.removeEventListener('resize', res);
+    };
+  }, []);
+
   const handleLogin = async () => {
+    // message.destroy();
+    message.success({
+      content: 'This is a prompt message with custom className and style',
+      className: 'custom-class',
+    });
     try {
       console.log('form', form);
       const values = await form.validateFields();

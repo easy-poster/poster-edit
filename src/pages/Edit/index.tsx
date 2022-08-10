@@ -10,7 +10,6 @@ import {
 } from 'umi';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
-import * as PIXI from 'pixi.js';
 import { IconFont, ItemType } from '@/const';
 import './index.less';
 import { useSetState, useSize } from 'ahooks';
@@ -183,13 +182,10 @@ const Edit = () => {
       </div>
       <div className="edit-content">
         <div className="edit-main">
-          <div className="edit-container">
-            <AsyncStage />
-            {/* <Stage /> */}
-          </div>
+          <AsyncStage />
           <SizeBar />
         </div>
-        <div className="edit-footer">
+        {/* <div className="edit-footer">
           <div className="edit-tool-bar">tool bar</div>
           <div className="edit-list-bar" ref={listRef}>
             list bar
@@ -203,7 +199,7 @@ const Edit = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
