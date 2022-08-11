@@ -5,6 +5,33 @@ export enum WorkareaLayoutType {
   FULLSCREEN = 'fullscreen',
 }
 
+export enum InteractionModeType {
+  SELECTION = 'selection',
+  GRAB = 'grab',
+  POLYGON = 'polygon',
+  LINE = 'line',
+  ARROW = 'arrow',
+  LINK = 'link',
+  CROP = 'crop',
+}
+
+export enum SuperType {
+  DRAWING = 'drawing',
+  NODE = 'node',
+  ELEMENT = 'element',
+  LINK = 'link',
+  PORT = 'port',
+  SVG = 'svg',
+  IMAGE = 'image',
+}
+
+export enum CursorType {
+  DEFAULT = 'default',
+  POINTER = 'pointer',
+  MOVE = 'move',
+  GRAB = 'grab',
+}
+
 export const canvasOption = {
   preserveObjectStacking: true,
   width: 300,

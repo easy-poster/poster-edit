@@ -12,6 +12,7 @@ import {
   EventHandler,
   GuidelineHandler,
   ImageHandler,
+  InteractionHandler,
   WorkareaHandler,
   ZoomHandler,
 } from '.';
@@ -296,6 +297,7 @@ class Handler implements HandlerOptions {
     this.eventHandler = new EventHandler(this);
     this.zoomHandler = new ZoomHandler(this);
     this.guidelineHandler = new GuidelineHandler(this);
+    this.interactionHandler = new InteractionHandler(this);
   };
 
   // 初始化设置---------

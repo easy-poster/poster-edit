@@ -5,3 +5,4 @@ export { default as GuidelineHandler } from './GuidelineHandler';
 export { default as EventHandler } from './EventHandler';
 export { default as ZoomHandler } from './ZoomHandler';
 export { default as WorkareaHandler } from './WorkareaHandler';
+export { default as InteractionHandler } from './InteractionHandler';
