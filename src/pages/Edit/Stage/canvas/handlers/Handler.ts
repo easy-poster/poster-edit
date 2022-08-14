@@ -5,6 +5,7 @@ import {
   Object,
   Pattern,
 } from 'fabric/fabric-impl';
+import { fabric } from 'fabric';
 import React from 'react';
 import { union } from 'lodash';
 import {
@@ -18,6 +19,7 @@ import {
 } from '.';
 import CanvasObject from '../CanvasObject';
 import { defaults } from '../const';
+import { FabricObjectType, WorkareaLayoutType } from '../const/defaults';
 
 export interface Option {
   /**
@@ -223,15 +225,15 @@ class Handler implements HandlerOptions {
   public lineArray?: any[];
   public isCut = false;
 
-  private isRequsetAnimFrame = false;
-  private requestFrame: any;
+  public isRequsetAnimFrame = false;
+  public requestFrame: any;
   /**
    * Copied object
    *
-   * @private
+   * @public
    * @type {*}
    */
-  private clipboard: any;
+  public clipboard: any;
 
   constructor(options: HandlerOptions) {
     this.init(options);
@@ -246,13 +248,13 @@ class Handler implements HandlerOptions {
     | ((canvas: FabricCanvas<Canvas>, target: FabricObject<Object>) => void)
     | undefined;
 
-  private init(options: HandlerOptions) {
+  public init(options: HandlerOptions) {
     this.initOptions(options);
     this.initCallback(options);
     this.initHandler();
   }
 
-  private initOptions = (options: HandlerOptions) => {
+  public initOptions = (options: HandlerOptions) => {
     this.id = options.id;
     this.canvas = options.canvas;
     this.container = options.container;
@@ -276,7 +278,7 @@ class Handler implements HandlerOptions {
     this.setKeyEvent(options.keyEvent);
   };
 
-  private initCallback = (options: HandlerOptions) => {
+  public initCallback = (options: HandlerOptions) => {
     this.onAdd = options.onAdd;
     this.onTooltip = options.onTooltip;
     this.onZoom = options.onZoom;
@@ -291,7 +293,7 @@ class Handler implements HandlerOptions {
     this.onLoad = options.onLoad;
   };
 
-  private initHandler = () => {
+  public initHandler = () => {
     this.workareaHandler = new WorkareaHandler(this);
     this.imageHandler = new ImageHandler(this);
     this.eventHandler = new EventHandler(this);
@@ -438,7 +440,9 @@ class Handler implements HandlerOptions {
       return true;
     }) as FabricObject[];
     if (objects.length) {
-      objects.forEach((obj) => (this.objectMap[obj.id] = obj));
+      objects.forEach(
+        (obj: FabricObject) => obj.id && (this.objectMap[obj.id] = obj),
+      );
     } else {
       this.objectMap = {};
     }
@@ -468,6 +472,132 @@ class Handler implements HandlerOptions {
       });
     }
   };
+
+  public add = (
+    obj: FabricObjectOption,
+    centered = true,
+    loaded = false,
+    group = false,
+  ) => {
+    const { editable, onAdd, gridOption, objectOption } = this;
+    const option: any = {
+      hasControls: editable,
+      hasBorders: editable,
+      selectable: editable,
+      lockMovementX: !editable,
+      lockMovementY: !editable,
+      hoverCursor: !editable ? 'pointer' : 'move',
+    };
+    if (obj.type === FabricObjectType.ITEXT) {
+      option.editable = false;
+    } else {
+      option.editable = editable;
+    }
+
+    if (editable && this.workarea.layout === WorkareaLayoutType.FULLSCREEN) {
+      option.scaleX = this.workarea.scaleX;
+      option.scaleY = this.workarea.scaleY;
+    }
+
+    const newOption = {
+      ...objectOption,
+      ...obj,
+      ...option,
+    };
+
+    let createObj;
+    switch (obj.type) {
+      case FabricObjectType.IMAGE:
+        createObj = this.addImage(newOption);
+        break;
+
+      default:
+        break;
+    }
+    if (!createObj) return;
+
+    // 添加默认居中
+    this.centerObject(createObj, centered);
+
+    this.canvas.add(createObj);
+    if (onAdd && editable && !loaded) {
+      onAdd(createObj);
+    }
+
+    return createObj;
+  };
+
+  // add Type --------
+  /**
+   * Set the image
+   * @param {FabricImage} obj
+   * @param {(File | string)} [source]
+   * @returns
+   */
+  public setImage = (
+    obj: FabricImage,
+    source?: File | string,
+  ): Promise<FabricImage> => {
+    return new Promise((resolve) => {
+      if (!source) {
+        obj.set('file', null);
+        obj.set('src', null);
+        resolve(
+          obj.setSrc(
+            'http://localhost:8000/demo.png',
+            () => this.canvas.renderAll(),
+            {
+              dirty: true,
+            },
+          ) as FabricImage,
+        );
+      }
+      if (source instanceof File) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          obj.set('file', source);
+          obj.set('src', null);
+          resolve(
+            obj.setSrc(reader.result as string, () => this.canvas.renderAll(), {
+              dirty: true,
+            }) as FabricImage,
+          );
+        };
+        reader.readAsDataURL(source);
+      } else {
+        obj.set('file', null);
+        obj.set('src', source);
+        resolve(
+          obj.setSrc(source, () => this.canvas.renderAll(), {
+            dirty: true,
+          }) as FabricImage,
+        );
+      }
+    });
+  };
+
+  /**
+   * 添加图片
+   * @param obj
+   * @returns
+   */
+  public addImage = (obj: FabricImage) => {
+    const { objectOption } = this;
+    const { filters = [], src, file, ...otherOption } = obj;
+    const image = new Image();
+
+    const createdObj = new fabric.Image(image, {
+      ...objectOption,
+      ...otherOption,
+    }) as FabricImage;
+    // createdObj.set({
+    // 	filters: this.imageHandler.createFilters(filters),
+    // });
+    this.setImage(createdObj, src || file);
+    return createdObj;
+  };
+
+  // add Type end -------
 }
 
 export default Handler;

@@ -32,6 +32,19 @@ export enum CursorType {
   GRAB = 'grab',
 }
 
+export enum FabricObjectType {
+  IMAGE = 'image',
+  ITEXT = 'i-text',
+  TEXTBOX = 'textbox',
+  SVG = 'svg',
+  VIDEO = 'video',
+  CIRCLE = 'circle',
+  POLYGON = 'polygon',
+  RECT = 'rect',
+  TRIANGLE = 'triangle',
+  LINE = 'line',
+}
+
 export const canvasOption = {
   preserveObjectStacking: true,
   width: 300,

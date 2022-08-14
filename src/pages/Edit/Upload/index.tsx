@@ -152,10 +152,15 @@ const UploadPage = () => {
   };
 
   const handleAdd = (data: any) => {
+    if (window.handler) {
+      window.handler.add({ type: 'image' });
+    }
+
     if (!window.app && Object.keys(projectState).length !== 0) {
       message.warning('项目正在初始化');
       return false;
     }
+
     let img = new Image();
     let blobUrl = URL.createObjectURL(data.blob);
     img.src = blobUrl;

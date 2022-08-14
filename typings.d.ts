@@ -15,6 +15,13 @@ declare module '*.svg' {
 /**
  * 画布相关
  */
+
+// 把canvas 和 handler 挂载在window上
+declare interface Window {
+  canvas: FabricCanvas | null;
+  handler: any;
+}
+
 declare type AnimationType =
   | 'fade'
   | 'bounce'

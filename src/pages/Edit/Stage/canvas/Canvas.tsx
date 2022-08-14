@@ -78,8 +78,6 @@ const Canvas = React.memo((props: CanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef);
   const stageRef = useRef<HTMLCanvasElement>(null);
-  const canvasObj = useRef<FabricCanvas | null>(null);
-  const handlerObj = useRef<any>(null);
 
   useEffect(() => {
     initFabric();
@@ -87,17 +85,17 @@ const Canvas = React.memo((props: CanvasProps) => {
 
   const initFabric = useCallback(() => {
     if (!stageRef?.current || !containerRef?.current) return;
-    canvasObj.current = new fabric.Canvas(stageRef.current, {
+    window.canvas = new fabric.Canvas(stageRef.current, {
       backgroundColor: '#000',
       width: containerRef.current.offsetWidth,
       height: containerRef.current.offsetHeight,
     });
 
-    canvasObj.current.selectionColor = 'rgba(40, 144, 149, 0.269)';
-    canvasObj.current.selectionBorderColor = '#209fa5';
-    canvasObj.current.selectionLineWidth = 1;
+    window.canvas.selectionColor = 'rgba(40, 144, 149, 0.269)';
+    window.canvas.selectionBorderColor = '#209fa5';
+    window.canvas.selectionLineWidth = 1;
 
-    canvasObj.current.renderAll();
+    window.canvas.renderAll();
 
     const mergeCanvasOption = {
       ...defaults.canvasOption,
@@ -107,10 +105,15 @@ const Canvas = React.memo((props: CanvasProps) => {
       },
     };
 
-    handlerObj.current = new Handler({
+    const onAdd = (target) => {
+      console.log('tonAdd target', target);
+      // window.handler.select(target);
+    };
+
+    window.handler = new Handler({
       id: '1',
       editable: true,
-      canvas: canvasObj.current,
+      canvas: window.canvas,
       container: containerRef.current,
       canvasOption: mergeCanvasOption,
       objectOption: objectOption,
@@ -128,18 +131,24 @@ const Canvas = React.memo((props: CanvasProps) => {
         minZoom: 30,
         maxZoom: 300,
         zoomEnabled: true,
+        onAdd: onAdd,
       },
     });
+
+    return () => {
+      window.canvas = null;
+      window.handler = null;
+    };
   }, []);
 
   useEffect(() => {
     if (
-      handlerObj.current &&
+      window.handler &&
       containerRef.current &&
       containerSize?.width &&
       containerSize?.height
     ) {
-      handlerObj.current.eventHandler.resize(
+      window.handler.eventHandler.resize(
         containerSize?.width,
         containerSize?.height,
       );

@@ -85,7 +85,6 @@ class EventHandler {
    * @returns
    */
   public mousewheel = (opt: FabricEvent) => {
-    console.log('mousewheel', opt);
     const event = opt as FabricEvent<WheelEvent>;
     const { zoomEnabled } = this.handler;
     if (!zoomEnabled) {
