@@ -52,6 +52,7 @@ export const canvasOption = {
   selection: true,
   defaultCursor: 'default',
   backgroundColor: '#1c1c26',
+  controlsAboveOverlay: true, //控制器显示最上层
 };
 
 export const keyEvent = {

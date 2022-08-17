@@ -267,6 +267,7 @@ class Handler implements HandlerOptions {
     this.height = options.height;
     this.objects = [];
 
+    this.initControls();
     this.setPropertiesToInclude(options.propertiesToInclude);
     this.setWorkareaOption(options.workareaOption);
     this.setCanvasOption(options.canvasOption);
@@ -300,6 +301,25 @@ class Handler implements HandlerOptions {
     this.zoomHandler = new ZoomHandler(this);
     this.guidelineHandler = new GuidelineHandler(this);
     this.interactionHandler = new InteractionHandler(this);
+  };
+
+  public initControls = () => {
+    fabric.Object.prototype.padding = 4;
+    fabric.Object.prototype.controls.mtr.withConnection = false;
+    fabric.Object.prototype.borderScaleFactor = 2.5;
+    fabric.Object.prototype.borderOpacityWhenMoving = 1;
+    fabric.Object.prototype.borderColor = '#209fa5';
+    // 修改控制点的形状，默认为`rect`矩形，可选的值还有`circle`圆形
+    fabric.Object.prototype.cornerStyle = 'circle';
+    // 修改控制点的填充色为白色
+    fabric.Object.prototype.cornerColor = 'white';
+    // 设置控制点不透明，即可以盖住其下的控制线
+    fabric.Object.prototype.transparentCorners = false;
+    // 修改控制点的边框颜色为`gray`灰色
+    fabric.Object.prototype.cornerStrokeColor = 'gray';
+
+    // 单独修改旋转控制点距离主体的纵向距离为-20px
+    fabric.Object.prototype.controls.mtr.offsetY = -30;
   };
 
   // 初始化设置---------
@@ -362,6 +382,10 @@ class Handler implements HandlerOptions {
 
     if (typeof canvasOption.preserveObjectStacking !== 'undefined') {
       this.canvas.preserveObjectStacking = canvasOption.preserveObjectStacking;
+    }
+
+    if (typeof canvasOption.controlsAboveOverlay !== 'undefined') {
+      this.canvas.controlsAboveOverlay = canvasOption.controlsAboveOverlay;
     }
   };
 
