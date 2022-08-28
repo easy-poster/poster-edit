@@ -20,6 +20,7 @@ import {
 import CanvasObject from '../CanvasObject';
 import { defaults } from '../const';
 import { FabricObjectType, WorkareaLayoutType } from '../const/defaults';
+// import imgmlr from '@/assets/canvas/middlecontrol.svg';
 
 export interface Option {
   /**
@@ -304,7 +305,59 @@ class Handler implements HandlerOptions {
   };
 
   public initControls = () => {
-    fabric.Object.prototype.padding = 4;
+    let imgmlr = document.createElement('img');
+    imgmlr.src = 'http://localhost:8000/middlecontrol.svg';
+
+    let imgmtb = document.createElement('img');
+    imgmtb.src = 'http://localhost:8000/middlecontrolhoz.svg';
+
+    let imgedge = document.createElement('img');
+    imgedge.src = 'http://localhost:8000/edgecontrol.svg';
+
+    let imgrot = document.createElement('img');
+    imgrot.src = 'http://localhost:8000/rotateicon.svg';
+
+    function renderIcon(ctx, left, top, styleOverride, fabricObject) {
+      const wsize = 20;
+      const hsize = 25;
+      ctx.save();
+      ctx.translate(left, top);
+      ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+      ctx.drawImage(imgmlr, -wsize / 2, -hsize / 2, wsize, hsize);
+      ctx.restore();
+    }
+
+    function renderIconRotate(ctx, left, top, styleOverride, fabricObject) {
+      const wsize = 40;
+      const hsize = 40;
+      ctx.save();
+      ctx.translate(left, top);
+      ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+      ctx.drawImage(imgrot, -wsize / 2, -hsize / 2, wsize, hsize);
+      ctx.restore();
+    }
+
+    function renderIconHoz(ctx, left, top, styleOverride, fabricObject) {
+      const wsize = 25;
+      const hsize = 20;
+      ctx.save();
+      ctx.translate(left, top);
+      ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+      ctx.drawImage(imgmtb, -wsize / 2, -hsize / 2, wsize, hsize);
+      ctx.restore();
+    }
+
+    function renderIconEdge(ctx, left, top, styleOverride, fabricObject) {
+      const wsize = 25;
+      const hsize = 25;
+      ctx.save();
+      ctx.translate(left, top);
+      ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+      ctx.drawImage(imgedge, -wsize / 2, -hsize / 2, wsize, hsize);
+      ctx.restore();
+    }
+
+    fabric.Object.prototype.padding = 1;
     fabric.Object.prototype.controls.mtr.withConnection = false;
     fabric.Object.prototype.borderScaleFactor = 2.5;
     fabric.Object.prototype.borderOpacityWhenMoving = 1;
@@ -319,7 +372,133 @@ class Handler implements HandlerOptions {
     fabric.Object.prototype.cornerStrokeColor = 'gray';
 
     // 单独修改旋转控制点距离主体的纵向距离为-20px
-    fabric.Object.prototype.controls.mtr.offsetY = -30;
+    // fabric.Object.prototype.controls.mtr.offsetY = -30;
+
+    fabric.Object.prototype.controls.ml = new fabric.Control({
+      x: -0.5,
+      y: 0,
+      offsetX: -1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
+      getActionName: fabric.controlsUtils.scaleOrSkewActionName,
+      render: renderIcon,
+    });
+
+    fabric.Object.prototype.controls.mr = new fabric.Control({
+      x: 0.5,
+      y: 0,
+      offsetX: 1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
+      getActionName: fabric.controlsUtils.scaleOrSkewActionName,
+      render: renderIcon,
+    });
+
+    fabric.Object.prototype.controls.mb = new fabric.Control({
+      x: 0,
+      y: 0.5,
+      offsetY: 1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
+      getActionName: fabric.controlsUtils.scaleOrSkewActionName,
+      render: renderIconHoz,
+    });
+
+    fabric.Object.prototype.controls.mt = new fabric.Control({
+      x: 0,
+      y: -0.5,
+      offsetY: -1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
+      getActionName: fabric.controlsUtils.scaleOrSkewActionName,
+      render: renderIconHoz,
+    });
+
+    fabric.Object.prototype.controls.tl = new fabric.Control({
+      x: -0.5,
+      y: -0.5,
+      cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingEqually,
+      render: renderIconEdge,
+    });
+
+    fabric.Object.prototype.controls.tr = new fabric.Control({
+      x: 0.5,
+      y: -0.5,
+      cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingEqually,
+      render: renderIconEdge,
+    });
+
+    fabric.Object.prototype.controls.bl = new fabric.Control({
+      x: -0.5,
+      y: 0.5,
+      cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingEqually,
+      render: renderIconEdge,
+    });
+
+    fabric.Object.prototype.controls.br = new fabric.Control({
+      x: 0.5,
+      y: 0.5,
+      cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.scalingEqually,
+      render: renderIconEdge,
+    });
+
+    fabric.Object.prototype.controls.mtr = new fabric.Control({
+      x: 0,
+      y: -0.5,
+      offsetY: -30,
+      actionName: 'rotate',
+      actionHandler: fabric.controlsUtils.rotationWithSnapping,
+      cursorStyleHandler: fabric.controlsUtils.rotationStyleHandler,
+      render: renderIconRotate,
+    });
+
+    fabric.Textbox.prototype.controls = fabric.Object.prototype.controls;
+    let textBoxControls = (fabric.Textbox.prototype.controls = {});
+    textBoxControls.mtr = fabric.Object.prototype.controls.mtr;
+    textBoxControls.tr = fabric.Object.prototype.controls.tr;
+    textBoxControls.br = fabric.Object.prototype.controls.br;
+    textBoxControls.tl = fabric.Object.prototype.controls.tl;
+    textBoxControls.bl = fabric.Object.prototype.controls.bl;
+    textBoxControls.mt = fabric.Object.prototype.controls.mt;
+    textBoxControls.mb = fabric.Object.prototype.controls.mb;
+
+    textBoxControls.ml = new fabric.Control({
+      x: -0.5,
+      y: 0,
+      offsetX: -1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.changeWidth,
+      actionName: 'resizing',
+      render: renderIcon,
+    });
+
+    textBoxControls.mr = new fabric.Control({
+      x: 0.5,
+      y: 0,
+      offsetX: 1,
+      cursorStyleHandler: fabric.controlsUtils.scaleSkewCursorStyleHandler,
+      actionHandler: fabric.controlsUtils.changeWidth,
+      actionName: 'resizing',
+      render: renderIcon,
+    });
+
+    this.canvas.on('text:changed', () => {
+      let linewidth =
+        this.canvas.getActiveObject().__lineWidths[
+          this.canvas.getActiveObject().__lineWidths.length - 1
+        ];
+      if (
+        !isNaN(linewidth) &&
+        linewidth + 40 > this.canvas.getActiveObject().width
+      ) {
+        this.canvas.getActiveObject().set('width', linewidth + 40);
+        this.canvas.renderAll();
+      }
+    });
   };
 
   // 初始化设置---------
@@ -403,6 +582,7 @@ class Handler implements HandlerOptions {
    */
   public setFabricObjects = (fabricObjects?: FabricObjects) => {
     this.fabricObjects = { ...this.fabricObjects, ...fabricObjects };
+    console.log('this.fabricObjects', this.fabricObjects);
   };
 
   /**
@@ -513,7 +693,7 @@ class Handler implements HandlerOptions {
       hoverCursor: !editable ? 'pointer' : 'move',
     };
     if (obj.type === FabricObjectType.ITEXT) {
-      option.editable = false;
+      option.editable = true;
     } else {
       option.editable = editable;
     }
@@ -532,9 +712,21 @@ class Handler implements HandlerOptions {
     let createObj;
     switch (obj.type) {
       case FabricObjectType.IMAGE:
-        createObj = this.addImage(newOption);
+        createObj = this.addImage({
+          ...newOption,
+          ...{
+            lockUniScaling: true,
+            objectCaching: true,
+            absolutePositioned: true,
+          },
+        });
         break;
-
+      case FabricObjectType.TEXTBOX:
+        createObj = this.fabricObjects[obj.type].create({ ...newOption });
+        createObj.setControlsVisibility({
+          mt: false,
+          mb: false,
+        });
       default:
         break;
     }
@@ -547,6 +739,8 @@ class Handler implements HandlerOptions {
     if (onAdd && editable && !loaded) {
       onAdd(createObj);
     }
+    // 添加选中
+    this.canvas.setActiveObject(createObj);
 
     return createObj;
   };
@@ -611,6 +805,8 @@ class Handler implements HandlerOptions {
     const image = new Image();
 
     const createdObj = new fabric.Image(image, {
+      originX: 'center',
+      originY: 'center',
       ...objectOption,
       ...otherOption,
     }) as FabricImage;

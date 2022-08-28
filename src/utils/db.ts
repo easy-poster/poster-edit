@@ -13,16 +13,11 @@ export type fromType = 'url' | 'resource';
 export interface epProject extends commonProps {
   uuid: string; // uuid
   title: string; // 项目名称
-  url?: string; // blob 地址
-  src?: string; // 在线资源地址
   cover?: string; // 封面
   size?: number; // 资源大小
   width: number; // 原始宽
   height: number; // 原始高
-  background: string; // 背景
-  fps: number;
-  // resources: Array<resourcesProp>; // 资源
-  layeres: Array<imageSpriteProps>;
+  content: string; // 画布资源
 }
 
 export interface epImage extends commonProps {

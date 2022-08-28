@@ -74,18 +74,18 @@ export const MENU_EDIT = [
     actIcon: 'icon-tianjiatianchong',
     route: '/',
   },
-  {
-    name: '图片',
-    id: 2,
-    icon: 'icon-haibaozujian',
-    route: '/myproject',
-  },
-  {
-    name: '图形',
-    id: 3,
-    icon: 'icon-sucaiku-1',
-    route: '/brand',
-  },
+  // {
+  //   name: '图片',
+  //   id: 2,
+  //   icon: 'icon-haibaozujian',
+  //   route: '/myproject',
+  // },
+  // {
+  //   name: '图形',
+  //   id: 3,
+  //   icon: 'icon-sucaiku-1',
+  //   route: '/brand',
+  // },
   {
     name: '文字',
     id: 4,
@@ -98,12 +98,12 @@ export const MENU_EDIT = [
   //   icon: 'icon-background',
   //   route: '/template',
   // },
-  {
-    name: '品牌',
-    id: 6,
-    icon: 'icon-pinpai',
-    route: '/template',
-  },
+  // {
+  //   name: '品牌',
+  //   id: 6,
+  //   icon: 'icon-pinpai',
+  //   route: '/template',
+  // },
 ];
 
 export const IconFont = createFromIconfontCN({

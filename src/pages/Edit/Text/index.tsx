@@ -72,6 +72,11 @@ const TextPage = () => {
   };
 
   const handleAdd = (data: any) => {
+    if (window.handler) {
+      window.handler.add({ type: 'textbox', text: data });
+    }
+    return;
+
     console.log('data', data);
     if (!window.app && Object.keys(projectState).length !== 0) {
       message.warning('项目正在初始化');

@@ -6,6 +6,7 @@ import { db } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData, ItemType } from '@/const';
 import { useDispatch, useModel, useParams, useSelector } from 'umi';
+import { FabricObjectType } from '../Stage/canvas/const/defaults';
 
 const UploadPage = () => {
   const inputImgRef = useRef(null);
@@ -153,8 +154,9 @@ const UploadPage = () => {
 
   const handleAdd = (data: any) => {
     if (window.handler) {
-      window.handler.add({ type: 'image' });
+      window.handler.add({ type: FabricObjectType.IMAGE });
     }
+    return;
 
     if (!window.app && Object.keys(projectState).length !== 0) {
       message.warning('项目正在初始化');

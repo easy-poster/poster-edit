@@ -16,6 +16,10 @@ const CanvasObject: CanvasObjectSchema = {
     create: ({ text, ...option }: { text: string }) =>
       new fabric.IText(text, option),
   },
+  textbox: {
+    create: ({ text, ...option }: { text: string }) =>
+      new fabric.Textbox(text, option),
+  },
   image: {
     create: ({ element = new Image(), ...option }) =>
       new fabric.Image(element, {
