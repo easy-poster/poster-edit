@@ -36,6 +36,16 @@ class ZoomHandler {
     }
     this.handler.canvas.requestRenderAll();
   };
+
+  /**
+   * Zoom one to one
+   *
+   */
+  public zoomOneToOne = () => {
+    const center = this.handler.canvas.getCenter();
+    this.handler.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    this.zoomToPoint(new fabric.Point(center.left, center.top), 1);
+  };
 }
 
 export default ZoomHandler;
