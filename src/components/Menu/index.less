@@ -1,86 +1,86 @@
 .menu-wrap {
-  display: flex;
-  width: 264px;
-  min-width: 264px;
-  height: 100vh;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  position: sticky;
-  top: 0px;
-  overflow-y: auto;
-  background: white;
-  border-right: 1px solid rgb(242, 242, 242);
-  .menu-nav {
     display: flex;
+    width: 264px;
+    min-width: 264px;
+    height: 100vh;
     flex-flow: column nowrap;
-    padding-top: 30px;
-    .menu-logo {
-      height: 50px;
-      padding: 0 20px;
-      cursor: pointer;
-    }
-    .menu-list {
-      margin-top: 40px;
-      padding: 0 20px;
-      .menu-item {
+    justify-content: space-between;
+    position: sticky;
+    top: 0px;
+    overflow-y: auto;
+    background: white;
+    border-right: 1px solid rgb(242, 242, 242);
+    .menu-nav {
         display: flex;
-        align-items: center;
-        padding: 12px 10px;
-        height: 48px;
-        border-radius: 8px;
-        margin-bottom: 4px;
-        color: #000;
-        font-size: 16px;
-        font-weight: 300;
-        &:not(.active-item):hover,
-        &:not(.active-item):active {
-          background: rgba(77, 201, 145, 0.1);
-          color: rgb(77, 201, 145);
-          font-weight: 400;
+        flex-flow: column nowrap;
+        padding-top: 30px;
+        .menu-logo {
+            height: 50px;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+        .menu-list {
+            margin-top: 40px;
+            padding: 0 20px;
+            .menu-item {
+                display: flex;
+                align-items: center;
+                padding: 12px 10px;
+                height: 48px;
+                border-radius: 8px;
+                margin-bottom: 4px;
+                color: #000;
+                font-size: 16px;
+                font-weight: 300;
+                &:not(.active-item):hover,
+                &:not(.active-item):active {
+                    background: rgba(77, 201, 145, 0.1);
+                    color: rgb(77, 201, 145);
+                    font-weight: 400;
+                }
+
+                .menu-icon {
+                    margin-right: 10px;
+                }
+            }
+
+            .active-item {
+                color: rgb(20, 120, 126);
+                background: rgba(77, 201, 145, 0.3);
+                font-weight: 400;
+            }
+        }
+    }
+
+    .other-setting {
+        height: auto;
+        padding: 20px;
+        .setting-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            height: 48px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 300;
+            &:not(.active-item):hover,
+            &:not(.active-item):active {
+                background: rgba(77, 201, 145, 0.1);
+                color: rgb(77, 201, 145);
+                font-weight: 400;
+            }
+
+            .setting-icon {
+                margin-right: 10px;
+            }
         }
 
-        .menu-icon {
-          margin-right: 10px;
+        .active-item {
+            color: rgb(20, 120, 126);
+            background: rgba(77, 201, 145, 0.3);
+            font-weight: 600;
         }
-      }
-
-      .active-item {
-        color: rgb(20, 120, 126);
-        background: rgba(77, 201, 145, 0.3);
-        font-weight: 400;
-      }
     }
-  }
-
-  .other-setting {
-    height: auto;
-    padding: 20px;
-    .setting-btn {
-      display: flex;
-      align-items: center;
-      padding: 12px 10px;
-      height: 48px;
-      border-radius: 8px;
-      margin-bottom: 4px;
-      color: #000;
-      font-size: 16px;
-      font-weight: 300;
-      &:not(.active-item):hover,
-      &:not(.active-item):active {
-        background: rgba(77, 201, 145, 0.1);
-        color: rgb(77, 201, 145);
-        font-weight: 400;
-      }
-
-      .setting-icon {
-        margin-right: 10px;
-      }
-    }
-
-    .active-item {
-      color: rgb(20, 120, 126);
-      background: rgba(77, 201, 145, 0.3);
-      font-weight: 600;
-    }
-  }
 }

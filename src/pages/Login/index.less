@@ -1,140 +1,136 @@
 .login-wrap {
-  display: flex;
-  flex-flow: row wrap;
-  flex: 1;
-  height: 100%;
-  .left {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 2;
-    background-image: linear-gradient(
-      to right bottom,
-      rgb(20, 120, 126),
-      rgb(77, 201, 145)
-    );
-    color: #fff;
-    font-size: 42px;
-    font-family: Wawati SC;
-  }
-
-  .right {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    // justify-content: center;
-    // font-family: Wawati SC;
-    flex: 3;
-    .title {
-      font-size: 36px;
-      margin-top: 100px;
-    }
-    .login-list {
-      margin-top: 30px;
-      .item {
-        margin-top: 10px;
+    flex-flow: row wrap;
+    flex: 1;
+    height: 100%;
+    .left {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 400px;
-        height: 50px;
-        background: #eee;
-        border-radius: 10px;
-        cursor: pointer;
-        &:hover {
-          background: rgb(225, 225, 225);
-        }
-      }
-
-      .ant-form-item {
-        width: 100%;
-        .ant-input-affix-wrapper {
-          border-radius: 10px;
-          padding: 0 10px 0 0;
-        }
-        input {
-          padding: 8px 10px;
-          font-size: 20px;
-          border-radius: 10px;
-        }
-      }
-      .forget-btn {
-        margin-top: 20px;
-        color: rgb(20, 120, 126);
-        cursor: pointer;
-      }
-    }
-    .tips {
-      margin-top: 20px;
-      width: 400px;
+        flex: 2;
+        background-image: linear-gradient(to right bottom, rgb(20, 120, 126), rgb(77, 201, 145));
+        color: #fff;
+        font-size: 42px;
+        font-family: Wawati SC;
     }
 
-    .login-btn {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 400px;
-      height: 50px;
-      color: #fff;
-      border-radius: 10px;
-      cursor: pointer;
-      background-image: linear-gradient(to right, #209fa5, #5fd5a0);
-      &:hover {
-        background-image: linear-gradient(to right, #25b8c0, #66e9ae);
-      }
-    }
-
-    .forget {
-      .title {
-        margin-top: 60px;
-        font-size: 36px;
-      }
-      .ant-form-item {
-        width: 100%;
-        input {
-          padding: 8px 10px;
-          font-size: 20px;
-          border-radius: 10px;
-        }
-      }
-      .btn-wrap {
+    .right {
         display: flex;
-        justify-content: space-between;
-        .btn {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 120px;
-          height: 50px;
-          color: #fff;
-          border-radius: 10px;
-          cursor: pointer;
-          font-weight: 400;
+        flex-flow: column nowrap;
+        align-items: center;
+        // justify-content: center;
+        // font-family: Wawati SC;
+        flex: 3;
+        .title {
+            font-size: 36px;
+            margin-top: 100px;
         }
-        .cancer {
-          background: #eee;
-          color: #000;
-          &:hover {
-            background: rgb(225, 225, 225);
-          }
-        }
-        .comfirm {
-          background-image: linear-gradient(to right, #209fa5, #5fd5a0);
-          &:hover {
-            background-image: linear-gradient(to right, #25b8c0, #66e9ae);
-          }
-        }
-      }
-    }
+        .login-list {
+            margin-top: 30px;
+            .item {
+                margin-top: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 400px;
+                height: 50px;
+                background: #eee;
+                border-radius: 10px;
+                cursor: pointer;
+                &:hover {
+                    background: rgb(225, 225, 225);
+                }
+            }
 
-    .result {
-      .title {
-        margin-top: 60px;
-        font-size: 36px;
-      }
-      .tips {
-      }
+            .ant-form-item {
+                width: 100%;
+                .ant-input-affix-wrapper {
+                    border-radius: 10px;
+                    padding: 0 10px 0 0;
+                }
+                input {
+                    padding: 8px 10px;
+                    font-size: 20px;
+                    border-radius: 10px;
+                }
+            }
+            .forget-btn {
+                margin-top: 20px;
+                color: rgb(20, 120, 126);
+                cursor: pointer;
+            }
+        }
+        .tips {
+            margin-top: 20px;
+            width: 400px;
+        }
+
+        .login-btn {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 50px;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            background-image: linear-gradient(to right, #209fa5, #5fd5a0);
+            &:hover {
+                background-image: linear-gradient(to right, #25b8c0, #66e9ae);
+            }
+        }
+
+        .forget {
+            .title {
+                margin-top: 60px;
+                font-size: 36px;
+            }
+            .ant-form-item {
+                width: 100%;
+                input {
+                    padding: 8px 10px;
+                    font-size: 20px;
+                    border-radius: 10px;
+                }
+            }
+            .btn-wrap {
+                display: flex;
+                justify-content: space-between;
+                .btn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 120px;
+                    height: 50px;
+                    color: #fff;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    font-weight: 400;
+                }
+                .cancer {
+                    background: #eee;
+                    color: #000;
+                    &:hover {
+                        background: rgb(225, 225, 225);
+                    }
+                }
+                .comfirm {
+                    background-image: linear-gradient(to right, #209fa5, #5fd5a0);
+                    &:hover {
+                        background-image: linear-gradient(to right, #25b8c0, #66e9ae);
+                    }
+                }
+            }
+        }
+
+        .result {
+            .title {
+                margin-top: 60px;
+                font-size: 36px;
+            }
+            .tips {
+            }
+        }
     }
-  }
 }

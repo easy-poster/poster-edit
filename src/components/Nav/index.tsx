@@ -9,96 +9,96 @@ import './index.less';
 import tools from '@/utils/tools';
 
 const menu = () => {
-  const handleLogOut = () => {
-    history.push('/login');
-  };
+    const handleLogOut = () => {
+        history.push('/login');
+    };
 
-  const items = [
-    {
-      label: (
-        <Link to="/user">
-          MOMO
-          <p style={{ color: 'rgb(111, 111, 125)' }}>418788724@qq.com</p>
-        </Link>
-      ),
-      key: 1,
-    },
-    {
-      label: <Link to="/setting">设置</Link>,
-      key: 2,
-    },
-    {
-      label: <div onClick={handleLogOut}>退出</div>,
-      key: 3,
-    },
-  ];
+    const items = [
+        {
+            label: (
+                <Link to="/user">
+                    MOMO
+                    <p style={{ color: 'rgb(111, 111, 125)' }}>418788724@qq.com</p>
+                </Link>
+            ),
+            key: 1,
+        },
+        {
+            label: <Link to="/setting">设置</Link>,
+            key: 2,
+        },
+        {
+            label: <div onClick={handleLogOut}>退出</div>,
+            key: 3,
+        },
+    ];
 
-  return <Menu items={items} />;
+    return <Menu items={items} />;
 };
 
 const Nav = () => {
-  const handleNewProject = async () => {
-    try {
-      let count = await db.epProject
-        .where({
-          userId: 1,
-        })
-        .count();
+    const handleNewProject = async () => {
+        try {
+            let count = await db.epProject
+                .where({
+                    userId: 1,
+                })
+                .count();
 
-      let uuid = uuidv4();
-      const id = await db.epProject.add({
-        title: `title_${count + 1}`,
-        userId: 1,
-        uuid: uuid,
-        createTime: new Date(),
-        updateTime: new Date(),
-        width: 1920,
-        height: 1080,
-        background: '0x000000', // '0x272731',
-        fps: 20,
-        layeres: [],
-      });
-      console.log('id', id);
-      if (id) {
-        history.push(`/edit/${uuid}`);
-      }
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
+            let uuid = uuidv4();
+            const id = await db.epProject.add({
+                title: `title_${count + 1}`,
+                userId: 1,
+                uuid: uuid,
+                createTime: new Date(),
+                updateTime: new Date(),
+                width: 1920,
+                height: 1080,
+                background: '0x000000', // '0x272731',
+                fps: 20,
+                layeres: [],
+            });
+            console.log('id', id);
+            if (id) {
+                history.push(`/edit/${uuid}`);
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    };
 
-  const { setShowBuy } = useModel('buy');
-  const handleUpdate = () => {
-    setShowBuy(true);
-  };
+    const { setShowBuy } = useModel('buy');
+    const handleUpdate = () => {
+        setShowBuy(true);
+    };
 
-  return (
-    <header className="header">
-      <div className="header-content">
-        <SearchHeader />
-        <div className="header-right">
-          <div className="header-update" onClick={handleUpdate}>
-            <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
-            <span className="update-text">升级</span>
-          </div>
-          <div className="header-create" onClick={handleNewProject}>
-            <IconFont type="icon-jiahao" style={{ fontSize: '28px' }} />
-            <span className="create-text">创建设计</span>
-          </div>
-          <div className="header-user">
-            <Dropdown
-              overlay={menu}
-              trigger={['click']}
-              overlayClassName="avatar-dropdown"
-              placement="bottomRight"
-            >
-              <Avatar src="https://joeschmoe.io/api/v1/random" size={50} />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
+    return (
+        <header className="header">
+            <div className="header-content">
+                <SearchHeader />
+                <div className="header-right">
+                    <div className="header-update" onClick={handleUpdate}>
+                        <IconFont type="icon-huiyuan" style={{ fontSize: '28px' }} />
+                        <span className="update-text">升级</span>
+                    </div>
+                    <div className="header-create" onClick={handleNewProject}>
+                        <IconFont type="icon-jiahao" style={{ fontSize: '28px' }} />
+                        <span className="create-text">创建设计</span>
+                    </div>
+                    <div className="header-user">
+                        <Dropdown
+                            overlay={menu}
+                            trigger={['click']}
+                            overlayClassName="avatar-dropdown"
+                            placement="bottomRight"
+                        >
+                            <Avatar src="https://joeschmoe.io/api/v1/random" size={50} />
+                        </Dropdown>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
 };
 
 export default Nav;

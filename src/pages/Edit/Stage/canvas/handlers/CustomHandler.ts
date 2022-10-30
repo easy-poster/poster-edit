@@ -1,14 +1,14 @@
 import { Handler } from '.';
 
 class CustomHandler {
-  handler: Handler;
+    handler: Handler;
 
-  constructor(handler: Handler) {
-    this.handler = handler;
-    this.initialze();
-  }
+    constructor(handler: Handler) {
+        this.handler = handler;
+        this.initialze();
+    }
 
-  protected initialze() {}
+    protected initialze() {}
 }
 
 export default CustomHandler;

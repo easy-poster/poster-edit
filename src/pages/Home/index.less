@@ -1,262 +1,260 @@
 .home {
-  .swiper-title-wrap {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 40px;
-    .swiper-title {
-      font-size: 24px;
-    }
-    .tips {
-      height: 40px;
-      width: 80px;
-      line-height: 40px;
-      text-align: center;
-      font-size: 20px;
-      background: #eee;
-      font-weight: 300;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-  }
-  .swiper-wrap {
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    .swiper-content {
-      display: inline-block;
-      .swiper-item {
-        display: inline-block;
-        width: 240px;
-        height: 240px;
-        margin: 10px;
-        cursor: pointer;
-        &:first-child {
-          margin-left: 0;
-        }
-        .item_img {
-          display: block;
-          width: 100%;
-          height: 200px;
-          object-fit: cover;
-          border-radius: 5px;
-          position: relative;
-          overflow: hidden;
-          & > img {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-        }
-        & > p {
-          padding: 10px;
-          font-size: 20px;
-          text-align: center;
-        }
-      }
-    }
-    .swiper-btn {
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 1);
-      color: #000;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: rgb(28 28 40 / 25%) 0px 8px 16px,
-        rgb(28 28 40 / 20%) 0px 0px 2px;
-      &:hover {
-        background: rgb(235, 235, 235);
-      }
-    }
-    .left-btn {
-      top: 30%;
-      left: 40px;
-    }
-    .right-btn {
-      top: 30%;
-      right: 40px;
-    }
-  }
-  .myproject {
-    margin-top: 40px;
-    .title-wrap {
-      display: flex;
-      padding: 10px 40px;
-      justify-content: space-between;
-      flex-flow: row nowrap;
-      .swiper-title {
-        font-size: 24px;
-        min-width: 120px;
-      }
-      .project-right {
+    .swiper-title-wrap {
         display: flex;
-        flex-flow: row nowrap;
-        .ant-select {
-          width: 100%;
-          height: 40px;
-          font-size: 18px;
-          .ant-select-selector {
-            height: 100%;
-            border-radius: 25px;
-            padding: 0 20px;
-            background-color: rgb(242, 242, 248);
-            border-color: rgb(242, 242, 248);
-            border: none !important;
-            box-shadow: none !important;
-            .ant-select-selection-search {
-              left: 20px;
-              input {
-                height: 100%;
-                padding-right: 20px;
-              }
-            }
-            .ant-select-selection-placeholder {
-              line-height: 38px;
-              font-size: 16px;
-              font-weight: 300;
-            }
-          }
-          .ant-select-arrow {
-            top: 38%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 40px;
+        .swiper-title {
+            font-size: 24px;
+        }
+        .tips {
+            height: 40px;
+            width: 80px;
+            line-height: 40px;
+            text-align: center;
             font-size: 20px;
+            background: #eee;
             font-weight: 300;
-            color: #bfbfbf;
-          }
-          .ant-select-clear {
-            font-size: 20px;
-            top: 50%;
-            width: 20px;
-            height: 20px;
-            margin-top: -10px;
-            background-color: rgb(242, 242, 248);
-          }
+            border-radius: 20px;
+            cursor: pointer;
         }
-        .ant-select-focused {
-          .ant-select-selector {
-            border: none !important;
-            box-shadow: none !important;
-          }
-        }
-      }
     }
-    .project-content {
-      padding: 20px 40px;
-      .card-item {
+    .swiper-wrap {
         position: relative;
-        box-sizing: border-box;
+        white-space: nowrap;
         overflow: hidden;
-        border-radius: 5px;
-        transition: box-shadow 0.3s, border-color 0.3s;
-        cursor: pointer;
-        color: #fff;
-        .card-cover {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+        .swiper-content {
+            display: inline-block;
+            .swiper-item {
+                display: inline-block;
+                width: 240px;
+                height: 240px;
+                margin: 10px;
+                cursor: pointer;
+                &:first-child {
+                    margin-left: 0;
+                }
+                .item_img {
+                    display: block;
+                    width: 100%;
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 5px;
+                    position: relative;
+                    overflow: hidden;
+                    & > img {
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                & > p {
+                    padding: 10px;
+                    font-size: 20px;
+                    text-align: center;
+                }
+            }
         }
-        .card-edit {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          visibility: hidden;
-          border-radius: 25px;
-          background: #fff;
-          color: #000;
-          &:hover {
-            background: #14787e;
-            color: #fff;
-          }
+        .swiper-btn {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 1);
+            color: #000;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: rgb(28 28 40 / 25%) 0px 8px 16px, rgb(28 28 40 / 20%) 0px 0px 2px;
+            &:hover {
+                background: rgb(235, 235, 235);
+            }
         }
-        .active-edit {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 25px;
-          background: #14787e;
-          color: #fff;
+        .left-btn {
+            top: 30%;
+            left: 40px;
         }
-        .meta-wrap {
-          position: absolute;
-          left: 10px;
-          bottom: 10px;
-          color: #fff;
-          & > h3 {
-            margin: 0;
-            overflow: hidden;
-            font-size: 18px;
-            color: #fff;
-          }
-          & > p {
-            margin: 0;
-            font-size: 14px;
-          }
+        .right-btn {
+            top: 30%;
+            right: 40px;
         }
-        &:hover {
-          border-color: transparent;
-          box-shadow: rgba(0, 0, 0, 0.32) 0px 22px 34px,
-            rgba(1, 1, 1, 0.18) 0px 10px 10px;
-          .card-edit {
-            visibility: visible;
-          }
-        }
-      }
     }
-  }
+    .myproject {
+        margin-top: 40px;
+        .title-wrap {
+            display: flex;
+            padding: 10px 40px;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+            .swiper-title {
+                font-size: 24px;
+                min-width: 120px;
+            }
+            .project-right {
+                display: flex;
+                flex-flow: row nowrap;
+                .ant-select {
+                    width: 100%;
+                    height: 40px;
+                    font-size: 18px;
+                    .ant-select-selector {
+                        height: 100%;
+                        border-radius: 25px;
+                        padding: 0 20px;
+                        background-color: rgb(242, 242, 248);
+                        border-color: rgb(242, 242, 248);
+                        border: none !important;
+                        box-shadow: none !important;
+                        .ant-select-selection-search {
+                            left: 20px;
+                            input {
+                                height: 100%;
+                                padding-right: 20px;
+                            }
+                        }
+                        .ant-select-selection-placeholder {
+                            line-height: 38px;
+                            font-size: 16px;
+                            font-weight: 300;
+                        }
+                    }
+                    .ant-select-arrow {
+                        top: 38%;
+                        font-size: 20px;
+                        font-weight: 300;
+                        color: #bfbfbf;
+                    }
+                    .ant-select-clear {
+                        font-size: 20px;
+                        top: 50%;
+                        width: 20px;
+                        height: 20px;
+                        margin-top: -10px;
+                        background-color: rgb(242, 242, 248);
+                    }
+                }
+                .ant-select-focused {
+                    .ant-select-selector {
+                        border: none !important;
+                        box-shadow: none !important;
+                    }
+                }
+            }
+        }
+        .project-content {
+            padding: 20px 40px;
+            .card-item {
+                position: relative;
+                box-sizing: border-box;
+                overflow: hidden;
+                border-radius: 5px;
+                transition: box-shadow 0.3s, border-color 0.3s;
+                cursor: pointer;
+                color: #fff;
+                .card-cover {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .card-edit {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    visibility: hidden;
+                    border-radius: 25px;
+                    background: #fff;
+                    color: #000;
+                    &:hover {
+                        background: #14787e;
+                        color: #fff;
+                    }
+                }
+                .active-edit {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 25px;
+                    background: #14787e;
+                    color: #fff;
+                }
+                .meta-wrap {
+                    position: absolute;
+                    left: 10px;
+                    bottom: 10px;
+                    color: #fff;
+                    & > h3 {
+                        margin: 0;
+                        overflow: hidden;
+                        font-size: 18px;
+                        color: #fff;
+                    }
+                    & > p {
+                        margin: 0;
+                        font-size: 14px;
+                    }
+                }
+                &:hover {
+                    border-color: transparent;
+                    box-shadow: rgba(0, 0, 0, 0.32) 0px 22px 34px, rgba(1, 1, 1, 0.18) 0px 10px 10px;
+                    .card-edit {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .card-search-wrap {
-  padding: 10px;
-  border-radius: 10px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .card-drop-wrap {
-  .ant-dropdown-menu {
-    border-radius: 10px;
-    padding: 0;
-    overflow: hidden;
-    .ant-dropdown-menu-item {
-      padding: 10px 15px;
-      .menu-wrod {
-        padding-left: 8px;
-        font-size: 16px;
-      }
+    .ant-dropdown-menu {
+        border-radius: 10px;
+        padding: 0;
+        overflow: hidden;
+        .ant-dropdown-menu-item {
+            padding: 10px 15px;
+            .menu-wrod {
+                padding-left: 8px;
+                font-size: 16px;
+            }
+        }
+        .ant-dropdown-menu-item:hover,
+        .ant-dropdown-menu-submenu-title:hover {
+            background-color: rgb(228, 228, 235);
+        }
     }
-    .ant-dropdown-menu-item:hover,
-    .ant-dropdown-menu-submenu-title:hover {
-      background-color: rgb(228, 228, 235);
-    }
-  }
 }
 
 .card-filter-wrap {
-  border-radius: 10px;
-  padding: 0;
-  .ant-select-item {
-    height: 40px;
-    line-height: 40px;
-    font-size: 18px;
-    font-weight: 300;
-    padding: 0 80px 0 20px;
-  }
-  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-    background-color: rgba(77, 201, 145, 0.1);
-  }
+    border-radius: 10px;
+    padding: 0;
+    .ant-select-item {
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+        font-weight: 300;
+        padding: 0 80px 0 20px;
+    }
+    .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+        background-color: rgba(77, 201, 145, 0.1);
+    }
 }

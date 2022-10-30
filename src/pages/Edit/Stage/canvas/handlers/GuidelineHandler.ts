@@ -1,14 +1,14 @@
 import { Handler } from '.';
 
 class GuidelineHandler {
-  handler: Handler;
+    handler: Handler;
 
-  constructor(handler: Handler) {
-    this.handler = handler;
-    this.init();
-  }
+    constructor(handler: Handler) {
+        this.handler = handler;
+        this.init();
+    }
 
-  public init() {}
+    public init() {}
 }
 
 export default GuidelineHandler;

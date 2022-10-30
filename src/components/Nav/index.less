@@ -1,108 +1,104 @@
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  padding: 20px;
-  background: #fff;
-  border-bottom: 1px solid #f2f2f2;
-  margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 20px;
+    background: #fff;
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 20px;
 
-  .header-content {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    .header-right {
-      margin-left: 40px;
-      display: flex;
-      align-items: center;
-      font-weight: 500;
-      & > div:not(:last-of-type) {
+    .header-content {
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex-flow: row nowrap;
-        margin-right: 20px;
-        border-radius: 25px;
-        padding: 0 20px;
-        height: 50px;
-        cursor: pointer;
-      }
-      .header-update {
-        min-width: 120px;
-        background: rgb(242, 242, 242);
-        .update-text {
-          margin-left: 10px;
-        }
-        &:hover {
-          background: rgb(228, 228, 235);
-        }
-      }
-
-      .header-create {
-        min-width: 150px;
-        background-image: linear-gradient(
-          to right,
-          rgb(20, 120, 126),
-          rgb(77, 201, 145)
-        );
-        color: #fff;
-        .create-text {
-          margin-left: 10px;
-        }
-        &:hover {
-          background-image: linear-gradient(
-            to right,
-            rgb(32, 159, 165),
-            rgb(95, 213, 160)
-          );
-        }
-      }
-
-      .header-user {
-        display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        background: rgb(242, 242, 242);
-        height: 50px;
-        width: 50px;
-        border-radius: 25px;
-        cursor: pointer;
-        position: relative;
-        &:hover {
-          background: rgb(228, 228, 235);
+        padding: 0 20px;
+        .header-right {
+            margin-left: 40px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            & > div:not(:last-of-type) {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-flow: row nowrap;
+                margin-right: 20px;
+                border-radius: 25px;
+                padding: 0 20px;
+                height: 50px;
+                cursor: pointer;
+            }
+            .header-update {
+                min-width: 120px;
+                background: rgb(242, 242, 242);
+                .update-text {
+                    margin-left: 10px;
+                }
+                &:hover {
+                    background: rgb(228, 228, 235);
+                }
+            }
+
+            .header-create {
+                min-width: 150px;
+                background-image: linear-gradient(to right, rgb(20, 120, 126), rgb(77, 201, 145));
+                color: #fff;
+                .create-text {
+                    margin-left: 10px;
+                }
+                &:hover {
+                    background-image: linear-gradient(
+                        to right,
+                        rgb(32, 159, 165),
+                        rgb(95, 213, 160)
+                    );
+                }
+            }
+
+            .header-user {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: rgb(242, 242, 242);
+                height: 50px;
+                width: 50px;
+                border-radius: 25px;
+                cursor: pointer;
+                position: relative;
+                &:hover {
+                    background: rgb(228, 228, 235);
+                }
+            }
         }
-      }
     }
-  }
 }
 
 // 头像下拉框
 .avatar-dropdown {
-  padding: 20px;
-  .ant-dropdown-menu {
     padding: 20px;
-    border-radius: 20px 0 20px 20px;
+    .ant-dropdown-menu {
+        padding: 20px;
+        border-radius: 20px 0 20px 20px;
 
-    .ant-dropdown-menu-item {
-      border-radius: 8px;
-      background-color: none;
-      padding: 12px;
-      color: rgb(60, 60, 72);
-      &:first-of-type {
-        margin-bottom: 12px;
-        border-radius: 0;
-        border-bottom: 2px solid #eee;
-      }
-      &:first-of-type:hover,
-      .ant-dropdown-menu-submenu-title:first-of-type:hover {
-        background-color: #fff !important;
-      }
-      &:not(:first-of-type):hover,
-      .ant-dropdown-menu-submenu-title:not(:first-of-type):hover {
-        background-color: rgb(242, 242, 242) !important;
-      }
+        .ant-dropdown-menu-item {
+            border-radius: 8px;
+            background-color: none;
+            padding: 12px;
+            color: rgb(60, 60, 72);
+            &:first-of-type {
+                margin-bottom: 12px;
+                border-radius: 0;
+                border-bottom: 2px solid #eee;
+            }
+            &:first-of-type:hover,
+            .ant-dropdown-menu-submenu-title:first-of-type:hover {
+                background-color: #fff !important;
+            }
+            &:not(:first-of-type):hover,
+            .ant-dropdown-menu-submenu-title:not(:first-of-type):hover {
+                background-color: rgb(242, 242, 242) !important;
+            }
+        }
     }
-  }
 }

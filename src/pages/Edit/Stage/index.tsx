@@ -1,10 +1,10 @@
 import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useLayoutEffect,
+    useRef,
 } from 'react';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useReactive, useSetState, useSize } from 'ahooks';
@@ -22,26 +22,26 @@ import Canvas from './canvas/Canvas';
 // }
 
 interface StageProps {
-  projectProps: epProject;
+    projectProps: epProject;
 }
 
 const Stage: React.FC = () => {
-  const projectState = useSelector((state) => {
-    return state.project.prj;
-  });
-  const layeres = useSelector((state) => {
-    return state.project.layeres;
-  });
-  const dispatch = useDispatch();
+    const projectState = useSelector((state) => {
+        return state.project.prj;
+    });
+    const layeres = useSelector((state) => {
+        return state.project.layeres;
+    });
+    const dispatch = useDispatch();
 
-  // 初始化舞台
-  const stageRef = useRef<HTMLCanvasElement>(null);
-  // 画布大小缩放
-  const scrollDivRef = useRef<HTMLDivElement>(null);
-  const stageWrapSize = useSize(scrollDivRef);
-  const canvasObj = useRef<any>(null);
+    // 初始化舞台
+    const stageRef = useRef<HTMLCanvasElement>(null);
+    // 画布大小缩放
+    const scrollDivRef = useRef<HTMLDivElement>(null);
+    const stageWrapSize = useSize(scrollDivRef);
+    const canvasObj = useRef<any>(null);
 
-  return <Canvas projectInfo={projectState} />;
+    return <Canvas projectInfo={projectState} />;
 };
 
 export default Stage;

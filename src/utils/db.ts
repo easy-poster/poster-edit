@@ -1,82 +1,61 @@
-import { ItemTypeProps } from '@/const';
 import Dexie, { Table } from 'dexie';
 
 interface commonProps {
-  id: number;
-  userId: number;
-  createTime?: Date;
-  updateTime?: Date;
+    /** @name 自定义唯一id */
+    uuid: string;
+    /** @name 用户id */
+    userId: number;
+    /** @name 创建时间 */
+    createTime?: Date;
+    /** @name 更新时间 */
+    updateTime?: Date;
 }
 
 export type fromType = 'url' | 'resource';
 
 export interface epProject extends commonProps {
-  uuid: string; // uuid
-  title: string; // 项目名称
-  cover?: string; // 封面
-  size?: number; // 资源大小
-  width: number; // 原始宽
-  height: number; // 原始高
-  content: string; // 画布资源
+    /** @name 项目名称*/
+    title: string;
+    /** @name 封面 */
+    cover?: string;
+    /** @name 项目资源大小 */
+    size?: number;
+    /** @name 画布宽*/
+    width: number;
+    /** @name 画布高*/
+    height: number;
+    /** @name 画布内容 */
+    content: string;
 }
 
 export interface epImage extends commonProps {
-  name: string;
-  size: number;
-  type: string;
-  blob: Blob;
-  cover?: Blob;
+    /** @name 图片名字*/
+    name: string;
+    /** @name 图片大小 */
+    size: number;
+    /** @name 图片类型 */
+    type: string;
+    /** @name 本地图片blob */
+    src: Blob;
+    /** @name 图片封面blob */
+    cover?: Blob;
+    /** @name 远程图片资源地址 */
+    url?: string;
 }
-
-export interface imageSpriteProps {
-  id: string;
-  name: string;
-  type: ItemTypeProps;
-  size: number;
-  resourceId: number;
-  from: fromType;
-  src: string;
-  url: string;
-  rotation: number;
-  alpha: number;
-  zIndex: number;
-  width: number;
-  height: number;
-  left: number;
-  top: number;
-  filters: Array<string>;
-}
-
-export interface textSpriteProps {
-  id: string;
-  name: string;
-  type: ItemTypeProps;
-  size: number;
-  rotation: number;
-  alpha: number;
-  zIndex: number;
-  width: number;
-  height: number;
-  left: number;
-  top: number;
-}
-
-type epProjectFilter = Omit<epProject, 'id'>;
-type epImageFilter = Omit<epImage, 'id'>;
 
 export class EposterDexie extends Dexie {
-  epProject!: Table<epProjectFilter>;
-  epImage!: Table<epImageFilter>;
+    epProject!: Table<epProject>;
+    epImage!: Table<epImage>;
 
-  constructor(name: string) {
-    super(name);
-    this.version(1).stores({
-      epImage:
-        '++id, userId, createTime, updateTime, name, size, resourceId, type, blob, cover',
-      epProject:
-        '++id, userId, createTime, updateTime, &uuid, title, url, src, cover, size, width, height, background, fps, layeres',
-    });
-  }
+    constructor(name: string) {
+        super(name);
+        this.version(1).stores({
+            epImage:
+                '++id, &uuid, userId, createTime, updateTime, name, size, type, blob, cover, url',
+            epProject:
+                '++id, &uuid, userId, createTime, updateTime, title, cover, size, width, height, content',
+        });
+    }
 }
 
 export const db = new EposterDexie('eposterDatabase');

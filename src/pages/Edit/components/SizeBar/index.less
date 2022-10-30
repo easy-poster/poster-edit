@@ -1,45 +1,41 @@
 .sizebar {
-  position: absolute;
-  bottom: 15px;
-  right: 25px;
-  z-index: 2;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 40px;
-  border-radius: 20px;
-  padding: 4px 10px;
-  background-color: #1c1c26;
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 40px;
+    border-radius: 20px;
+    padding: 4px 10px;
+    background-color: #1c1c26;
 
-  .ant-slider {
-    width: 100px;
-    margin-left: 12px;
-    .ant-slider-track {
-      background-image: linear-gradient(
-        to right,
-        rgb(20, 120, 126),
-        rgb(77, 201, 145)
-      );
+    .ant-slider {
+        width: 100px;
+        margin-left: 12px;
+        .ant-slider-track {
+            background-image: linear-gradient(to right, rgb(20, 120, 126), rgb(77, 201, 145));
+        }
+        .ant-slider-handle {
+            border: 2px solid rgb(77, 201, 145);
+        }
     }
-    .ant-slider-handle {
-      border: 2px solid rgb(77, 201, 145);
+    .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+        border-color: rgb(77, 201, 145);
     }
-  }
-  .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
-    border-color: rgb(77, 201, 145);
-  }
 
-  .sizemid {
-    width: 40px;
-    text-align: center;
-    margin: 0 10px;
-  }
-
-  span {
-    cursor: pointer;
-    opacity: 0.7;
-    &:hover {
-      opacity: 1;
+    .sizemid {
+        width: 40px;
+        text-align: center;
+        margin: 0 10px;
     }
-  }
+
+    span {
+        cursor: pointer;
+        opacity: 0.7;
+        &:hover {
+            opacity: 1;
+        }
+    }
 }

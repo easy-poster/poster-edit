@@ -1,58 +1,58 @@
 {
-  "private": true,
-  "scripts": {
-    "start": "umi dev",
-    "build": "umi build",
-    "postinstall": "umi generate tmp",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
-  },
-  "dependencies": {
-    "@ahooksjs/use-url-state": "^3.3.8",
-    "@ant-design/icons": "^4.7.0",
-    "@better-scroll/core": "^2.4.2",
-    "ahooks": "^3.3.10",
-    "animejs": "^3.2.1",
-    "antd": "^4.20.0",
-    "dayjs": "^1.11.1",
-    "dexie": "^3.2.1",
-    "dexie-react-hooks": "^1.1.1",
-    "fabric": "^5.2.1",
-    "lodash": "^4.17.21",
-    "qrcode.react": "^3.0.1",
-    "react": "17.x",
-    "react-color": "^2.19.3",
-    "react-dom": "17.x",
-    "umi": "^3.5.20",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/animejs": "^3.1.5",
-    "@types/fabric": "^4.5.11",
-    "@types/lodash": "^4.14.182",
-    "@types/react": "^17.0.0",
-    "@types/react-color": "^3.0.6",
-    "@types/react-dom": "^17.0.0",
-    "@types/redux-logger": "^3.0.9",
-    "@types/uuid": "^8.3.4",
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.5.20",
-    "lint-staged": "^10.0.7",
-    "prettier": "^2.2.0",
-    "redux-logger": "^3.0.6",
-    "typescript": "^4.1.2",
-    "yorkie": "^2.0.0"
-  }
+    "private": true,
+    "scripts": {
+        "start": "umi dev",
+        "build": "umi build",
+        "postinstall": "umi generate tmp",
+        "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+        "test": "umi-test",
+        "test:coverage": "umi-test --coverage"
+    },
+    "gitHooks": {
+        "pre-commit": "lint-staged"
+    },
+    "lint-staged": {
+        "*.{js,jsx,less,md,json}": [
+            "prettier --write"
+        ],
+        "*.ts?(x)": [
+            "prettier --parser=typescript --write"
+        ]
+    },
+    "dependencies": {
+        "@ahooksjs/use-url-state": "^3.3.8",
+        "@ant-design/icons": "^4.7.0",
+        "@better-scroll/core": "^2.4.2",
+        "ahooks": "^3.3.10",
+        "animejs": "^3.2.1",
+        "antd": "^4.20.0",
+        "dayjs": "^1.11.1",
+        "dexie": "^3.2.1",
+        "dexie-react-hooks": "^1.1.1",
+        "fabric": "^5.2.1",
+        "lodash": "^4.17.21",
+        "qrcode.react": "^3.0.1",
+        "react": "17.x",
+        "react-color": "^2.19.3",
+        "react-dom": "17.x",
+        "umi": "^3.5.20",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@types/animejs": "^3.1.5",
+        "@types/fabric": "^4.5.11",
+        "@types/lodash": "^4.14.182",
+        "@types/react": "^17.0.0",
+        "@types/react-color": "^3.0.6",
+        "@types/react-dom": "^17.0.0",
+        "@types/redux-logger": "^3.0.9",
+        "@types/uuid": "^8.3.4",
+        "@umijs/preset-react": "1.x",
+        "@umijs/test": "^3.5.20",
+        "lint-staged": "^10.0.7",
+        "prettier": "^2.2.0",
+        "redux-logger": "^3.0.6",
+        "typescript": "^4.1.2",
+        "yorkie": "^2.0.0"
+    }
 }

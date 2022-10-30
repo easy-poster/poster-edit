@@ -1,45 +1,45 @@
 .edit-menu {
-  display: flex;
-  width: 72px;
-  height: 100vh;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  overflow-y: auto;
-  background-color: rgb(28, 28, 38);
-  .edit-nav {
     display: flex;
+    width: 72px;
+    height: 100vh;
     flex-flow: column nowrap;
-    padding-top: 30px;
-    .edit-menu-logo {
-      min-height: 20px;
-      padding: 0 4px;
-      cursor: pointer;
-    }
-    .edit-menu-list {
-      margin-top: 20px;
-      .edit-menu-item {
+    justify-content: space-between;
+    overflow-y: auto;
+    background-color: rgb(28, 28, 38);
+    .edit-nav {
         display: flex;
         flex-flow: column nowrap;
-        justify-content: center;
-        align-items: center;
-        height: 72px;
-        margin-bottom: 4px;
-        color: rgb(234, 234, 250);
-        cursor: pointer;
-        &:hover,
-        &:active {
-          color: rgb(77, 201, 145);
+        padding-top: 30px;
+        .edit-menu-logo {
+            min-height: 20px;
+            padding: 0 4px;
+            cursor: pointer;
         }
+        .edit-menu-list {
+            margin-top: 20px;
+            .edit-menu-item {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: center;
+                height: 72px;
+                margin-bottom: 4px;
+                color: rgb(234, 234, 250);
+                cursor: pointer;
+                &:hover,
+                &:active {
+                    color: rgb(77, 201, 145);
+                }
 
-        & > span {
-          font-size: 16px;
+                & > span {
+                    font-size: 16px;
+                }
+            }
+
+            .active-item {
+                background-color: rgb(39, 39, 49);
+                color: rgb(20, 120, 126);
+            }
         }
-      }
-
-      .active-item {
-        background-color: rgb(39, 39, 49);
-        color: rgb(20, 120, 126);
-      }
     }
-  }
 }
