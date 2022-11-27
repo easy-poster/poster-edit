@@ -1,11 +1,11 @@
 import React from 'react';
-import { IRouteComponentProps, useModel } from 'umi';
+import { Outlet, useModel } from '@umijs/max';
 import Menu from '@/components/Menu';
 import Nav from '@/components/Nav';
 import VipModal from '@/components/VipModal';
 import './index.less';
 
-const Layout = (props: IRouteComponentProps) => {
+const Layout = () => {
     const { isShowBuy } = useModel('buy');
 
     return (
@@ -13,7 +13,7 @@ const Layout = (props: IRouteComponentProps) => {
             <Menu />
             <div className="content">
                 <Nav />
-                {props.children}
+                <Outlet />
             </div>
             <VipModal visible={isShowBuy} />
         </div>

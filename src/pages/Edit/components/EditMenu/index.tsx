@@ -1,12 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { MENU_EDIT } from '@/const';
-import { Link, useHistory, useModel } from 'umi';
+import { Link, history, useModel } from '@umijs/max';
 import { IconFont } from '@/const';
 import LogoColor from '@/assets/logo/color.svg';
 import './index.less';
 
 const EditMenu = () => {
-    const history = useHistory();
 
     const { activeTab, setActiveTab } = useModel('switchEditTab');
 

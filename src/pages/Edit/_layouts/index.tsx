@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { IRouteComponentProps, useModel } from 'umi';
+import { IRouteComponentProps, useModel } from '@umijs/max';
 import EditMenu from '@/pages/Edit/components/EditMenu';
 import VipModal from '@/components/VipModal';
 import { IconFont } from '@/const';
@@ -10,6 +10,7 @@ import TextPage from '../Text';
 import BackgroundPage from '../Background';
 import BrandPage from '../Brand';
 import './index.less';
+import { Outlet } from '@umijs/max';
 
 const EditLayout = (props: IRouteComponentProps) => {
     const resouceRef = useRef<HTMLDivElement>(null);
@@ -134,7 +135,9 @@ const EditLayout = (props: IRouteComponentProps) => {
                     </div>
                 </div>
             </div>
-            <div className="edit-right">{props.children}</div>
+            <div className="edit-right">
+                <Outlet />
+            </div>
             <VipModal visible={isShowBuy} />
         </div>
     );

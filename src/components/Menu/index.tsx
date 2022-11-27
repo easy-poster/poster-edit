@@ -1,16 +1,12 @@
-import React, { useMemo } from 'react';
-import { Link, useHistory } from 'umi';
+import { Link, history } from '@umijs/max';
 import LogoColor from '@/assets/logo/color.svg';
 import { MENU_LAYOUT } from '@/const';
 import { IconFont } from '@/const';
 import './index.less';
+import { useLocation } from '@umijs/max';
 
 const Menu = () => {
-    const history = useHistory();
-
-    const activeMenu = useMemo(() => {
-        return history.location.pathname;
-    }, [history.location.pathname]);
+    const { pathname } = useLocation();
 
     return (
         <div className="menu-wrap">
@@ -25,7 +21,7 @@ const Menu = () => {
                                 key={item.id}
                                 to={item.route}
                                 className={`menu-item ${
-                                    activeMenu === item.route ? 'active-item' : ''
+                                    pathname === item.route ? 'active-item' : ''
                                 }`}
                             >
                                 <div className="menu-icon">
@@ -40,7 +36,7 @@ const Menu = () => {
             <div className="other-setting">
                 <Link
                     to="/setting"
-                    className={`setting-btn ${activeMenu === '/setting' ? 'active-item' : ''}`}
+                    className={`setting-btn ${pathname === '/setting' ? 'active-item' : ''}`}
                 >
                     <div className="setting-icon">
                         <IconFont type="icon-shezhi" style={{ fontSize: '24px' }} />

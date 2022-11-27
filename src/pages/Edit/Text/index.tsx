@@ -3,7 +3,7 @@ import demoImg from '@/assets/demo.png';
 import './index.less';
 import { IconFont, TextDefData } from '@/const';
 import { AutoComplete, message, SelectProps } from 'antd';
-import { useSelector } from 'umi';
+import { useSelector } from '@umijs/max';
 
 function getRandomInt(max: number, min: number = 0) {
     return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators

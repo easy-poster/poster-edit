@@ -1,4 +1,4 @@
-import { Redirect } from 'umi';
+import { Redirect } from '@umijs/max';
 
 export default (props: any) => {
     const { isLogin } = { isLogin: true }; // useAuth();

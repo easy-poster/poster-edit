@@ -129,11 +129,12 @@ const Brand = () => {
         const colorStyle = { default: { picker: { boxShadow: 'none' } } };
 
         return (
-            <ChromePicker
-                styles={colorStyle}
-                color={activeColor}
-                onChange={(color) => handleColorChange(color, index)}
-            />
+            <span></span>
+            // <ChromePicker
+            //     styles={colorStyle}
+            //     color={activeColor}
+            //     onChange={(color) => handleColorChange(color, index)}
+            // />
         );
     };
 

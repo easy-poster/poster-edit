@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { List, Select } from 'antd';
-import { useParams } from 'umi';
+import { useParams } from '@umijs/max';
 import demoImg from '@/assets/demo.png';
 import './index.less';
 

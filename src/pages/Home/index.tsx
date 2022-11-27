@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Link, history, useModel } from 'umi';
+import { Link, history, useModel } from '@umijs/max';
 import { useSize } from 'ahooks';
 import { Input, AutoComplete, Select, List, Card, Menu, Dropdown } from 'antd';
 import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';

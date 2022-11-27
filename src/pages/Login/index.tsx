@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { useHistory } from 'umi';
+import { history } from '@umijs/max';
 import { Divider, Form, Input, message, Tabs } from 'antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import './index.less';
@@ -10,7 +10,6 @@ import { IconFont } from '@/const';
 const { TabPane } = Tabs;
 
 const Login = () => {
-    const history = useHistory();
     const [loginType, setLoginType] = useUrlState({ type: 'log' });
 
     const [form] = Form.useForm();

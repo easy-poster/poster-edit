@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Slider, Tooltip } from 'antd';
 import { IconFont } from '@/const';
 import './index.less';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 const MAX_SIZE = 400;
 const MIN_SIZE = 25;

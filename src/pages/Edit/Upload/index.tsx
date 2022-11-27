@@ -5,7 +5,7 @@ import './index.less';
 import { db } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData, ItemType } from '@/const';
-import { useDispatch, useModel, useParams, useSelector } from 'umi';
+import { useDispatch, useModel, useParams, useSelector } from '@umijs/max';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
 
 const UploadPage = () => {

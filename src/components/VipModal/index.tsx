@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Modal } from 'antd';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 import QRCode from 'qrcode.react';
 import { IconFont } from '@/const';
 import './index.less';

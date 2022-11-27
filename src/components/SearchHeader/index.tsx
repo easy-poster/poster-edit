@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { Input, AutoComplete } from 'antd';
-import { useHistory } from 'umi';
-import { SelectProps } from 'antd/es/select';
+import { AutoComplete } from 'antd';
+import { history } from '@umijs/max';
 
 import './index.less';
 
@@ -50,7 +48,7 @@ const options = [
 ];
 
 const SearchHeader = () => {
-    const history = useHistory();
+
     const handleSearch = (value: string) => {
         history.push(`/search?q=${encodeURIComponent(value)}`);
     };

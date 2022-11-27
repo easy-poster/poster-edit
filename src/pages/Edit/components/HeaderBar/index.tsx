@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Breadcrumb, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 import './index.less';
 import { IconFont } from '@/const';
-import { Link } from 'umi';
+import { Link } from '@umijs/max';
 import { db } from '@/utils/db';
 import { epProject } from '@/utils/db';
 interface HeaderBarProps {

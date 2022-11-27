@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { dynamic, useModel, useParams, connect, useDispatch, useStore, useSelector } from 'umi';
+import { dynamic, useModel, useParams, connect, useDispatch, useStore, useSelector } from '@umijs/max';
 import HeaderBar from './components/HeaderBar';
 import SizeBar from './components/SizeBar';
 import { IconFont, ItemType } from '@/const';
@@ -7,14 +7,6 @@ import './index.less';
 import { useSetState, useSize } from 'ahooks';
 import Stage from './Stage';
 import { db, epProject } from '@/utils/db';
-
-const AsyncStage = dynamic({
-    loader: async function () {
-        // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
-        const { default: Stage } = await import(/* webpackChunkName: "external_A" */ './Stage');
-        return Stage;
-    },
-});
 
 const Edit = () => {
     const params = useParams<{ id: string }>();
@@ -137,7 +129,7 @@ const Edit = () => {
             </div>
             <div className="edit-content">
                 <div className="edit-main">
-                    <AsyncStage />
+                    <Stage />
                     <SizeBar />
                 </div>
                 {/* <div className="edit-footer">

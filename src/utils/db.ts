@@ -25,7 +25,7 @@ export interface epProject extends commonProps {
     /** @name 画布高*/
     height: number;
     /** @name 画布内容 */
-    content: string;
+    content?: string;
 }
 
 export interface epImage extends commonProps {

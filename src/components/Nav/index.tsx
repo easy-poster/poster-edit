@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link, history, useModel } from 'umi';
-import { Avatar, Divider, Dropdown, Menu, message } from 'antd';
+import { Link, history, useModel } from '@umijs/max';
+import { Avatar, Dropdown, Menu } from 'antd';
 import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
 import { db } from '@/utils/db';
 import { v4 as uuidv4 } from 'uuid';
 import './index.less';
-import tools from '@/utils/tools';
 
 const menu = () => {
     const handleLogOut = () => {
@@ -54,9 +53,6 @@ const Nav = () => {
                 updateTime: new Date(),
                 width: 1920,
                 height: 1080,
-                background: '0x000000', // '0x272731',
-                fps: 20,
-                layeres: [],
             });
             console.log('id', id);
             if (id) {

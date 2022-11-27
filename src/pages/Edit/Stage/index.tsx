@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import demoImg from '@/assets/bg/demo.jpg';
 import { useReactive, useSetState, useSize } from 'ahooks';
-import { useDispatch, useModel, useSelector } from 'umi';
+import { useDispatch, useModel, useSelector } from '@umijs/max';
 import { db, epProject } from '@/utils/db';
 import { ItemType } from '@/const';
 import tools from '@/utils/tools';
