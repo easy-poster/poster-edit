@@ -25,6 +25,7 @@ specifiers:
   prettier-plugin-organize-imports: ^2
   prettier-plugin-packagejson: ^2
   qrcode.react: ^3.0.1
+  react-colorful: ^5.6.1
   typescript: ^4.1.2
   uuid: ^8.3.2
 
@@ -42,6 +43,7 @@ dependencies:
   fabric: 5.2.4
   lodash: 4.17.21
   qrcode.react: 3.1.0
+  react-colorful: 5.6.1
   uuid: 8.3.2
 
 devDependencies:
@@ -8244,6 +8246,13 @@ packages:
       classnames: 2.3.2
       rc-resize-observer: 1.2.0
       rc-util: 5.24.6
+    dev: false
+
+  /react-colorful/5.6.1:
+    resolution: {integrity: sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
     dev: false
 
   /react-dom/18.1.0_react@18.1.0:
