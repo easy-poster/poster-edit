@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import { IRouteComponentProps, useModel } from '@umijs/max';
 import EditMenu from '@/pages/Edit/components/EditMenu';
 import VipModal from '@/components/VipModal';
@@ -122,14 +128,18 @@ const EditLayout = (props: IRouteComponentProps) => {
                         <div className="resouce-content" ref={resouceRef}>
                             {renderItem()}
                         </div>
-                        {isOpen && <div className="edit-line" ref={lineDropRef}></div>}
+                        {isOpen && (
+                            <div className="edit-line" ref={lineDropRef}></div>
+                        )}
                     </div>
                     <div className="edit-btn" onClick={handleClick}>
                         <IconFont
                             type="icon-xiangzuo"
                             style={{
                                 fontSize: '14px',
-                                transform: `${isOpen ? `rotate(0deg)` : `rotate(-180deg)`}`,
+                                transform: `${
+                                    isOpen ? `rotate(0deg)` : `rotate(-180deg)`
+                                }`,
                             }}
                         />
                     </div>

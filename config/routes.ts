@@ -19,9 +19,7 @@ export default [
         component: '@/pages/Edit/_layouts',
         exact: true,
         layout: false,
-        routes: [
-            { path: '/edit/:id', component: '@/pages/Edit' },
-        ],
+        routes: [{ path: '/edit/:id', component: '@/pages/Edit' }],
     },
     { path: '/*', component: '@/pages/404' },
 ];

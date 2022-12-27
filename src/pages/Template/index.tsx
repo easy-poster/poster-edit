@@ -23,7 +23,7 @@ const Template = () => {
         <div className="template-wrap">
             <div className="filter-wrap">
                 <Select
-                    dropdownClassName="template-filter-wrap"
+                    popupClassName="template-filter-wrap"
                     dropdownMatchSelectWidth={false}
                     placement="bottomRight"
                     defaultValue="1"
@@ -49,8 +49,15 @@ const Template = () => {
                     dataSource={LIST}
                     renderItem={(item) => (
                         <List.Item>
-                            <div className="card-item" onClick={() => handleGoDetail(item)}>
-                                <img className="card-cover" alt="example" src={item.cover} />
+                            <div
+                                className="card-item"
+                                onClick={() => handleGoDetail(item)}
+                            >
+                                <img
+                                    className="card-cover"
+                                    alt="example"
+                                    src={item.cover}
+                                />
                                 <p className="title">{item.title}</p>
                             </div>
                         </List.Item>

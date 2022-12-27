@@ -27,7 +27,9 @@ const SizeBar = () => {
     return (
         <div className="sizebar">
             <Slider
-                tipFormatter={null}
+                tooltip={{
+                    formatter: null,
+                }}
                 min={MIN_SIZE}
                 max={MAX_SIZE}
                 value={sizeStage}
@@ -42,10 +44,14 @@ const SizeBar = () => {
                 {isAutoSize ? (
                     <Tooltip
                         title="适应屏幕"
-                        color="#1c1c26"
+                        color="rgba(255, 255, 255, 0.1)"
                         overlayInnerStyle={{ borderRadius: '18px' }}
+                        open={true}
                     >
-                        <IconFont type="icon-zishiying" style={{ fontSize: '28px' }} />
+                        <IconFont
+                            type="icon-zishiying"
+                            style={{ fontSize: '28px' }}
+                        />
                     </Tooltip>
                 ) : (
                     `${sizeStage}%`

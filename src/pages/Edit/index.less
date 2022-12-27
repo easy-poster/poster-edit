@@ -16,6 +16,7 @@
         -webkit-box-align: center;
         align-items: center;
         font-weight: 500;
+
         & > div {
             display: flex;
             justify-content: center;
@@ -30,7 +31,7 @@
 
         .header-update {
             min-width: 120px;
-            background-color: rgb(44, 44, 56);
+            background-color: rgb(44 44 56);
             color: #fff;
 
             .update-text {
@@ -38,17 +39,25 @@
             }
 
             &:hover {
-                background-color: rgb(60, 60, 72);
+                background-color: rgb(60 60 72);
             }
         }
 
         .header-export {
             min-width: 150px;
-            background-image: linear-gradient(to right, rgb(20, 120, 126), rgb(77, 201, 145));
+            background-image: linear-gradient(
+                to right,
+                rgb(20 120 126),
+                rgb(77 201 145)
+            );
             color: #fff;
 
             &:hover {
-                background-image: linear-gradient(to right, rgb(32, 159, 165), rgb(95, 213, 160));
+                background-image: linear-gradient(
+                    to right,
+                    rgb(32 159 165),
+                    rgb(95 213 160)
+                );
             }
         }
     }
@@ -68,14 +77,14 @@
     .edit-footer {
         position: relative;
         padding-bottom: env(safe-area-inset-bttom, 0);
-        background-color: rgb(23, 23, 30);
+        background-color: rgb(23 23 30);
 
         .edit-tool-bar {
             display: flex;
             align-items: center;
             height: 40px;
             padding: 0 8px;
-            border-bottom: 1px solid rgb(48, 48, 58);
+            border-bottom: 1px solid rgb(48 48 58);
         }
 
         .edit-list-bar {
@@ -94,15 +103,16 @@
             width: 60px;
             margin-top: -16px;
             border-radius: 8px 8px 0 0;
-            color: rgb(234, 234, 250);
-            background-color: rgb(23, 23, 30);
+            color: rgb(234 234 250);
+            background-color: rgb(23 23 30);
             transition: color 150ms ease-out 0s;
             cursor: pointer;
             text-align: center;
             line-height: 16px;
             overflow: hidden;
+
             &:hover {
-                background: rgb(77, 201, 145);
+                background: rgb(77 201 145);
                 color: #fff;
             }
 

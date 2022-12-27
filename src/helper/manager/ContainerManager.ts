@@ -1,13 +1,13 @@
 import { ComponentType } from 'react';
 
 class ContainerManager {
-  containers: ComponentType[] = [];
+    containers: ComponentType[] = [];
 
-  register(Container: ComponentType) {
-    if (!this.containers.includes(Container)) {
-      this.containers.push(Container);
+    register(Container: ComponentType) {
+        if (!this.containers.includes(Container)) {
+            this.containers.push(Container);
+        }
     }
-  }
 }
 
 export default ContainerManager;

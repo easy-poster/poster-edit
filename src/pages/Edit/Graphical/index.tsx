@@ -97,7 +97,7 @@ const GraphicalPage = () => {
         <div className="image-wrap">
             <div className="search-wrap">
                 <AutoComplete
-                    dropdownClassName="image-search-wrap"
+                    popupClassName="image-search-wrap"
                     // dropdownMatchSelectWidth={252}
                     style={{ width: '100%' }}
                     allowClear
@@ -114,13 +114,18 @@ const GraphicalPage = () => {
                     <div
                         className="pre-list"
                         ref={preListRef}
-                        style={{ gridTemplateColumns: `repeat(${columsNum}, 1fr)` }}
+                        style={{
+                            gridTemplateColumns: `repeat(${columsNum}, 1fr)`,
+                        }}
                     >
                         {LIST.map((item, index) => (
                             <div className="item_img" key={item.title}>
                                 <img src={item.cover} alt={item.title} />
                                 {LIST.length - 1 === index ? (
-                                    <div className="right-btn" onClick={() => handleGoMore(item)}>
+                                    <div
+                                        className="right-btn"
+                                        onClick={() => handleGoMore(item)}
+                                    >
                                         <IconFont
                                             type="icon-xiangyou"
                                             style={{ fontSize: '24px' }}

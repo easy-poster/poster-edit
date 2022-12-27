@@ -115,7 +115,7 @@ const ImagePage = () => {
         <div className="image-wrap">
             <div className="search-wrap">
                 <AutoComplete
-                    dropdownClassName="image-search-wrap"
+                    popupClassName="image-search-wrap"
                     // dropdownMatchSelectWidth={252}
                     style={{ width: '100%' }}
                     allowClear
@@ -127,7 +127,10 @@ const ImagePage = () => {
                 ></AutoComplete>
                 {isMore && (
                     <Breadcrumb separator=">">
-                        <Breadcrumb.Item className="bread-item-all" onClick={handleGoAll}>
+                        <Breadcrumb.Item
+                            className="bread-item-all"
+                            onClick={handleGoAll}
+                        >
                             所有分类
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>images demo</Breadcrumb.Item>
@@ -140,7 +143,11 @@ const ImagePage = () => {
                         return (
                             <div className="img-item" key={item.id}>
                                 <div className="img-wrap">
-                                    <img className="img-cover" alt="example" src={item.cover} />
+                                    <img
+                                        className="img-cover"
+                                        alt="example"
+                                        src={item.cover}
+                                    />
                                     <div className="edit-wrap">
                                         <div
                                             className="img-btn edit-del"
@@ -173,7 +180,9 @@ const ImagePage = () => {
                         <div
                             className="pre-list"
                             ref={preListRef}
-                            style={{ gridTemplateColumns: `repeat(${columsNum}, 1fr)` }}
+                            style={{
+                                gridTemplateColumns: `repeat(${columsNum}, 1fr)`,
+                            }}
                         >
                             {LIST.map((item, index) => (
                                 <div className="item_img" key={item.title}>

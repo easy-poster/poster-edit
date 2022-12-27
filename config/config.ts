@@ -3,15 +3,15 @@ import routes from './routes';
 import theme from './theme';
 
 export default defineConfig({
-  npmClient: 'pnpm',
-  fastRefresh: true,
-  dva: {},
-  theme,
-  routes,
-  antd: {},
-  access: {},
-  model: {},
-  initialState: {},
-  request: {},
-  layout: false,
+    npmClient: 'pnpm',
+    fastRefresh: true,
+    dva: {},
+    theme,
+    routes,
+    antd: {},
+    access: {},
+    model: {},
+    initialState: {},
+    request: {},
+    layout: false,
 });

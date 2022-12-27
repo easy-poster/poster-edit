@@ -25,7 +25,10 @@ const Menu = () => {
                                 }`}
                             >
                                 <div className="menu-icon">
-                                    <IconFont type={item.icon} style={{ fontSize: '24px' }} />
+                                    <IconFont
+                                        type={item.icon}
+                                        style={{ fontSize: '24px' }}
+                                    />
                                 </div>
                                 <span>{item.name}</span>
                             </Link>
@@ -36,10 +39,15 @@ const Menu = () => {
             <div className="other-setting">
                 <Link
                     to="/setting"
-                    className={`setting-btn ${pathname === '/setting' ? 'active-item' : ''}`}
+                    className={`setting-btn ${
+                        pathname === '/setting' ? 'active-item' : ''
+                    }`}
                 >
                     <div className="setting-icon">
-                        <IconFont type="icon-shezhi" style={{ fontSize: '24px' }} />
+                        <IconFont
+                            type="icon-shezhi"
+                            style={{ fontSize: '24px' }}
+                        />
                     </div>
                     <span>设置</span>
                 </Link>

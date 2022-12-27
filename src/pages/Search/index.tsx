@@ -30,7 +30,7 @@ const Search = () => {
                     <p>搜索结果：233条</p>
                 </div>
                 <Select
-                    dropdownClassName="search-filter-wrap"
+                    popupClassName="search-filter-wrap"
                     dropdownMatchSelectWidth={false}
                     placement="bottomRight"
                     defaultValue="1"
@@ -56,8 +56,15 @@ const Search = () => {
                     dataSource={LIST}
                     renderItem={(item) => (
                         <List.Item>
-                            <div className="card-item" onClick={() => handleGoDetail(item)}>
-                                <img className="card-cover" alt="example" src={item.cover} />
+                            <div
+                                className="card-item"
+                                onClick={() => handleGoDetail(item)}
+                            >
+                                <img
+                                    className="card-cover"
+                                    alt="example"
+                                    src={item.cover}
+                                />
                                 <p className="title">{item.title}</p>
                             </div>
                         </List.Item>

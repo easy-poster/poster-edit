@@ -18,20 +18,20 @@ const tools = {
     },
     randomColor: () => {
         let color = '#';
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             color += parseInt(Math.random() * 16 + '').toString(16);
         }
         return color;
     },
     getWebUrl: (file) => {
         let url = null;
-        if (window.createObjectURL != undefined) {
+        if (window.createObjectURL !== undefined) {
             // basic
             url = window.createObjectURL(file);
-        } else if (window.URL != undefined) {
+        } else if (window.URL !== undefined) {
             // mozilla(firefox)
             url = window.URL.createObjectURL(file);
-        } else if (window.webkitURL != undefined) {
+        } else if (window.webkitURL !== undefined) {
             // webkit or chrome
             url = window.webkitURL.createObjectURL(file);
         }
@@ -39,7 +39,7 @@ const tools = {
     },
     // base64转blob
     dataURLtoBlob: (dataurl: string) => {
-        var arr = dataurl.split(','),
+        let arr = dataurl.split(','),
             mime = arr[0].match(/:(.*?);/)[1],
             bstr = atob(arr[1]),
             n = bstr.length,
@@ -73,7 +73,10 @@ const tools = {
                 let canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 let imgAspectRatio = img.width / img.height;
-                let Maxbd = img.width / width > img.height / height ? 'width' : 'height';
+                let Maxbd =
+                    img.width / width > img.height / height
+                        ? 'width'
+                        : 'height';
                 switch (Maxbd) {
                     case 'width':
                         canvas.width = width;
@@ -115,7 +118,10 @@ const tools = {
             let curTitleName = curTitle.substr(0, curTitle.lastIndexOf('.'));
             let curTitleSuffix = curTitle.substr(curTitle.lastIndexOf('.'));
             resources.forEach((item) => {
-                let itemName = item.title.substr(0, item.title.lastIndexOf('.'));
+                let itemName = item.title.substr(
+                    0,
+                    item.title.lastIndexOf('.'),
+                );
 
                 if (itemName.indexOf(curTitleName) !== -1) {
                     let repeatIndex = itemName.substring(
@@ -128,7 +134,9 @@ const tools = {
             allRepeatIndex.sort((a, b) => {
                 return b - a;
             });
-            return `${curTitleName}[${allRepeatIndex[0] / 1 + 1}]${curTitleSuffix}`;
+            return `${curTitleName}[${
+                allRepeatIndex[0] / 1 + 1
+            }]${curTitleSuffix}`;
         } else {
             return curTitle;
         }

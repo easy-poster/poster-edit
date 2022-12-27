@@ -1,93 +1,93 @@
 .menu-wrap {
-  display: flex;
-  width: 264px;
-  min-width: 264px;
-  height: 100vh;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
-  background: white;
-  border-right: 1px solid rgb(242 242 242);
-
-  .menu-nav {
     display: flex;
+    width: 264px;
+    min-width: 264px;
+    height: 100vh;
     flex-flow: column nowrap;
-    padding-top: 30px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    background: white;
+    border-right: 1px solid rgb(242 242 242);
 
-    .menu-logo {
-      height: 50px;
-      padding: 0 20px;
-      cursor: pointer;
-    }
-
-    .menu-list {
-      margin-top: 40px;
-      padding: 0 20px;
-
-      .menu-item {
+    .menu-nav {
         display: flex;
-        align-items: center;
-        padding: 0 10px;
-        height: 48px;
-        border-radius: 8px;
-        margin-bottom: 4px;
-        color: #000;
-        font-size: 16px;
-        font-weight: 300;
+        flex-flow: column nowrap;
+        padding-top: 30px;
 
-        &:not(.active-item):hover,
-        &:not(.active-item):active {
-          background: rgb(77 201 145 / 10%);
-          color: rgb(77 201 145);
-          font-weight: 400;
+        .menu-logo {
+            height: 50px;
+            padding: 0 20px;
+            cursor: pointer;
         }
 
-        .menu-icon {
-          margin-right: 10px;
+        .menu-list {
+            margin-top: 40px;
+            padding: 0 20px;
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+                height: 48px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                color: #000;
+                font-size: 16px;
+                font-weight: 300;
+
+                &:not(.active-item):hover,
+                &:not(.active-item):active {
+                    background: rgb(77 201 145 / 10%);
+                    color: rgb(77 201 145);
+                    font-weight: 400;
+                }
+
+                .menu-icon {
+                    margin-right: 10px;
+                }
+            }
+
+            .active-item {
+                color: rgb(20 120 126);
+                background: rgb(77 201 145 / 30%);
+                font-weight: 400;
+            }
         }
-      }
-
-      .active-item {
-        color: rgb(20 120 126);
-        background: rgb(77 201 145 / 30%);
-        font-weight: 400;
-      }
-    }
-  }
-
-  .other-setting {
-    height: auto;
-    padding: 20px;
-
-    .setting-btn {
-      display: flex;
-      align-items: center;
-      padding: 12px 10px;
-      height: 48px;
-      border-radius: 8px;
-      margin-bottom: 4px;
-      color: #000;
-      font-size: 16px;
-      font-weight: 300;
-
-      &:not(.active-item):hover,
-      &:not(.active-item):active {
-        background: rgb(77 201 145 / 10%);
-        color: rgb(77 201 145);
-        font-weight: 400;
-      }
-
-      .setting-icon {
-        margin-right: 10px;
-      }
     }
 
-    .active-item {
-      color: rgb(20 120 126);
-      background: rgb(77 201 145 / 30%);
-      font-weight: 600;
+    .other-setting {
+        height: auto;
+        padding: 20px;
+
+        .setting-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            height: 48px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 300;
+
+            &:not(.active-item):hover,
+            &:not(.active-item):active {
+                background: rgb(77 201 145 / 10%);
+                color: rgb(77 201 145);
+                font-weight: 400;
+            }
+
+            .setting-icon {
+                margin-right: 10px;
+            }
+        }
+
+        .active-item {
+            color: rgb(20 120 126);
+            background: rgb(77 201 145 / 30%);
+            font-weight: 600;
+        }
     }
-  }
 }

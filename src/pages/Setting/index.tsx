@@ -1,11 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Button, Divider, Form, Input, message, Upload } from 'antd';
+import {
+    Avatar,
+    Button,
+    Divider,
+    Form,
+    Input,
+    InputRef,
+    message,
+    Upload,
+} from 'antd';
+import avatarImg from '@/assets/avatar.jpg';
 import './index.less';
 
 const Setting = () => {
     const [form] = Form.useForm();
 
-    const [avatar, setAvatar] = useState('https://joeschmoe.io/api/v1/random');
+    const [avatar, setAvatar] = useState(avatarImg);
 
     const uploadImgProps = {
         accept: 'image/*',
@@ -29,7 +39,7 @@ const Setting = () => {
     // name
     const [isNameEdit, setIsNameEdit] = useState(false);
     const [userName, setUserName] = useState('落沙123');
-    const inputNameRef = useRef(null);
+    const inputNameRef = useRef<InputRef>(null);
     const handleEdit = () => {
         setIsNameEdit(true);
     };
@@ -58,7 +68,7 @@ const Setting = () => {
     // email
     const [isEmailEdit, setIsEmailEdit] = useState(false);
     const [email, setEmail] = useState('418788724@qq.com');
-    const inputEmailRef = useRef(null);
+    const inputEmailRef = useRef<InputRef>(null);
     const handleEmailEdit = () => {
         setIsEmailEdit(true);
     };

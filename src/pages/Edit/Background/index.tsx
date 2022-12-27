@@ -70,7 +70,7 @@ const BackgroundPage = () => {
         <div className="background-wrap">
             <div className="bg-search">
                 <AutoComplete
-                    dropdownClassName="image-search-wrap"
+                    popupClassName="image-search-wrap"
                     // dropdownMatchSelectWidth={252}
                     style={{ width: '100%' }}
                     allowClear
@@ -87,8 +87,15 @@ const BackgroundPage = () => {
                     return (
                         <div className="img-item" key={item.id}>
                             <div className="img-wrap">
-                                <img className="img-cover" alt="example" src={item.cover} />
-                                <div className="img-btn edit-add" onClick={() => handleAdd(item)}>
+                                <img
+                                    className="img-cover"
+                                    alt="example"
+                                    src={item.cover}
+                                />
+                                <div
+                                    className="img-btn edit-add"
+                                    onClick={() => handleAdd(item)}
+                                >
                                     <IconFont
                                         type="icon-tianjia_huaban"
                                         style={{ fontSize: '16px' }}

@@ -6,7 +6,6 @@ import LogoColor from '@/assets/logo/color.svg';
 import './index.less';
 
 const EditMenu = () => {
-
     const { activeTab, setActiveTab } = useModel('switchEditTab');
 
     return (
@@ -26,7 +25,10 @@ const EditMenu = () => {
                                 onClick={() => setActiveTab(item.id)}
                             >
                                 <div className="edit-menu-icon">
-                                    <IconFont type={item.icon} style={{ fontSize: '18px' }} />
+                                    <IconFont
+                                        type={item.icon}
+                                        style={{ fontSize: '18px' }}
+                                    />
                                 </div>
                                 <span>{item.name}</span>
                             </div>

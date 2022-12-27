@@ -35,11 +35,17 @@ const renderItem = (title: string, count: number) => ({
 const options = [
     {
         label: renderTitle('Libraries'),
-        options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
+        options: [
+            renderItem('AntDesign', 10000),
+            renderItem('AntDesign UI', 10600),
+        ],
     },
     {
         label: renderTitle('Solutions'),
-        options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
+        options: [
+            renderItem('AntDesign UI FAQ', 60100),
+            renderItem('AntDesign FAQ', 30010),
+        ],
     },
     {
         label: renderTitle('Articles'),
@@ -48,7 +54,6 @@ const options = [
 ];
 
 const SearchHeader = () => {
-
     const handleSearch = (value: string) => {
         history.push(`/search?q=${encodeURIComponent(value)}`);
     };
@@ -56,7 +61,7 @@ const SearchHeader = () => {
     return (
         <div className="search-header">
             <AutoComplete
-                dropdownClassName="search-drop-wrap"
+                popupClassName="search-drop-wrap"
                 dropdownMatchSelectWidth={252}
                 style={{ minWidth: 300, maxWidth: 500 }}
                 allowClear

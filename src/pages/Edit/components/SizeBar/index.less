@@ -9,20 +9,32 @@
     height: 40px;
     border-radius: 20px;
     padding: 4px 10px;
-    background-color: #1c1c26;
+    background-color: rgb(255 255 255 / 10%);
 
     .ant-slider {
         width: 100px;
         margin-left: 12px;
+
         .ant-slider-track {
-            background-image: linear-gradient(to right, rgb(20, 120, 126), rgb(77, 201, 145));
+            background-image: linear-gradient(
+                to right,
+                rgb(20 120 126),
+                rgb(77 201 145)
+            );
         }
-        .ant-slider-handle {
-            border: 2px solid rgb(77, 201, 145);
+
+        .ant-slider-rail {
+            background-color: #fff;
+        }
+
+        .ant-slider-handle::after {
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgb(77 201 145);
         }
     }
+
     .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
-        border-color: rgb(77, 201, 145);
+        border-color: rgb(77 201 145);
     }
 
     .sizemid {
@@ -34,6 +46,7 @@
     span {
         cursor: pointer;
         opacity: 0.7;
+
         &:hover {
             opacity: 1;
         }

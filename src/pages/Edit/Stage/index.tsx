@@ -4,15 +4,15 @@ import Canvas from './canvas/Canvas';
 import Loading from './loading';
 
 const Stage: React.FC = () => {
-  const projectState = useSelector((state: { project: any }) => {
-    return state.project;
-  });
+    const projectState = useSelector((state: { project: any }) => {
+        return state.project;
+    });
 
-  return projectState?.uuid ? (
-    <Canvas projectInfo={projectState} />
-  ) : (
-    <Loading />
-  );
+    return projectState?.uuid ? (
+        <Canvas projectInfo={projectState} />
+    ) : (
+        <Loading />
+    );
 };
 
 export default Stage;

@@ -4,17 +4,21 @@
         height: 100%;
         padding-bottom: 0;
         max-width: 100%;
+
         .ant-modal-content {
             width: 100%;
             height: 100%;
             overflow-y: scroll;
+
             &::-webkit-scrollbar {
                 width: 0;
             }
+
             .ant-modal-close {
                 top: 50px;
                 right: 50px;
             }
+
             .ant-modal-body {
                 width: 100%;
                 height: 100%;
@@ -25,11 +29,15 @@
                     font-weight: 300;
                     font-size: 32px;
                 }
+
                 .vip-content {
+                    flex: 1;
+
                     .vip-list {
                         display: flex;
                         flex-flow: row wrap;
                         justify-content: center;
+
                         .vip-item {
                             display: flex;
                             flex-flow: column nowrap;
@@ -40,17 +48,21 @@
                             margin: 20px 10px;
                             padding: 20px;
                             cursor: pointer;
+
                             .type {
                                 font-size: 28px;
                                 font-weight: 400;
                             }
+
                             .money {
                                 margin-top: 10px;
                                 font-size: 30px;
                                 font-weight: 400;
                             }
+
                             .package {
                                 margin-top: 30px;
+
                                 .package-item {
                                     .text {
                                         margin-left: 10px;
@@ -67,44 +79,57 @@
                                 width: 220px;
                                 height: 60px;
                                 border-radius: 20px;
-                                background-color: rgb(242, 242, 248);
-                                color: rgb(111, 111, 125);
+                                background-color: rgb(242 242 248);
+                                color: rgb(111 111 125);
                                 font-size: 24px;
                             }
                         }
+
                         .un-active {
                             &:hover {
                                 border-color: #5fd5a0;
+
                                 .active {
-                                    background-image: linear-gradient(to right, #209fa5, #5fd5a0);
+                                    background-image: linear-gradient(
+                                        to right,
+                                        #209fa5,
+                                        #5fd5a0
+                                    );
                                     color: #fff;
                                 }
                             }
                         }
                     }
+
                     .pay-modal {
                         .ant-modal {
                             top: 20%;
+
                             .ant-modal-content {
                                 height: 500px;
                                 border-radius: 10px;
+
                                 .ant-modal-close {
                                     top: 20px;
                                     right: 20px;
                                 }
                             }
                         }
+
                         .pay-wrap {
                             margin-top: 70px;
+
                             .divider-line {
                                 border-width: 2px 0 0;
-                                border-color: rgba(0, 0, 0, 0.4);
+                                border-color: rgb(0 0 0 / 40%);
                             }
+
                             .qrcode-wrap {
                                 display: flex;
                                 flex-direction: row;
                                 align-items: center;
                                 justify-content: space-around;
+
                                 .qrcode {
                                     width: 220px;
                                     height: 220px;
@@ -112,22 +137,28 @@
                                     border: 2px solid #eee;
                                     border-radius: 10px;
                                 }
+
                                 .pay-right {
                                     margin-left: 20px;
+
                                     .pay-money {
                                         font-weight: 400;
+
                                         & > span {
                                             font-size: 20px;
                                             color: #f00;
                                         }
                                     }
+
                                     .pay-type {
                                         margin-top: 10px;
                                     }
                                 }
                             }
+
                             .tips {
                                 margin-top: 50px;
+
                                 & > a {
                                     text-decoration: underline;
                                 }

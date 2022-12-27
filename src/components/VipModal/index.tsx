@@ -18,12 +18,12 @@ const VIPLIST = [
         money: '19',
         package: ['最高1080p导出', '无限导出', '全部滤镜选择', '全部贴纸选择'],
     },
-    {
-        id: 3,
-        title: '商业版',
-        money: '29',
-        package: ['最高1080p导出', '无限导出', '全部滤镜选择', '全部贴纸选择', '品牌套件'],
-    },
+    // {
+    //     id: 3,
+    //     title: '商业版',
+    //     money: '29',
+    //     package: ['最高1080p导出', '无限导出', '全部滤镜选择', '全部贴纸选择', '品牌套件'],
+    // },
 ];
 
 interface VipModalProps {
@@ -56,10 +56,15 @@ const VipModal = ({ visible }: VipModalProps) => {
     return (
         <Modal
             wrapClassName="vip-modal"
-            closeIcon={<IconFont type="icon-chacha" style={{ fontSize: '28px', color: '#000' }} />}
+            closeIcon={
+                <IconFont
+                    type="icon-chacha"
+                    style={{ fontSize: '28px', color: '#000' }}
+                />
+            }
             width={'100%'}
             footer={null}
-            visible={visible}
+            open={visible}
             onCancel={handleCancel}
         >
             <h3 className="title">选择你的方案</h3>
@@ -68,17 +73,24 @@ const VipModal = ({ visible }: VipModalProps) => {
                     {VIPLIST.map((item) => {
                         return (
                             <div
-                                className={`vip-item ${activePkg >= item.id ? '' : 'un-active'}`}
+                                className={`vip-item ${
+                                    activePkg >= item.id ? '' : 'un-active'
+                                }`}
                                 key={item.id}
                                 onClick={() => handleChoice(item)}
                             >
                                 <div>
                                     <div className="type">{item.title}</div>
-                                    <div className="money">￥{item.money}/月</div>
+                                    <div className="money">
+                                        ￥{item.money}/月
+                                    </div>
                                     <div className="package">
                                         {item.package.map((it) => {
                                             return (
-                                                <div className="package-item" key={it}>
+                                                <div
+                                                    className="package-item"
+                                                    key={it}
+                                                >
                                                     <IconFont
                                                         type="icon-duigou"
                                                         style={{
@@ -86,7 +98,9 @@ const VipModal = ({ visible }: VipModalProps) => {
                                                             color: '#5fd5a0',
                                                         }}
                                                     />
-                                                    <span className="text">{it}</span>
+                                                    <span className="text">
+                                                        {it}
+                                                    </span>
                                                 </div>
                                             );
                                         })}
@@ -105,11 +119,14 @@ const VipModal = ({ visible }: VipModalProps) => {
                 <Modal
                     wrapClassName="pay-modal"
                     closeIcon={
-                        <IconFont type="icon-chacha" style={{ fontSize: '28px', color: '#000' }} />
+                        <IconFont
+                            type="icon-chacha"
+                            style={{ fontSize: '28px', color: '#000' }}
+                        />
                     }
                     width={500}
                     footer={null}
-                    visible={isShowPay}
+                    open={isShowPay}
                     getContainer={false}
                     onCancel={handlePayCancel}
                 >
@@ -131,10 +148,17 @@ const VipModal = ({ visible }: VipModalProps) => {
                                     付费金额：<span>¥{currentMoney}</span>
                                 </div>
                                 <div className="pay-type">
-                                    <IconFont type="icon-weixin" style={{ fontSize: '24px' }} />
+                                    <IconFont
+                                        type="icon-weixin"
+                                        style={{ fontSize: '24px' }}
+                                    />
                                     <IconFont
                                         type="icon-zhifubao"
-                                        style={{ fontSize: '24px', marginLeft: 5, marginRight: 10 }}
+                                        style={{
+                                            fontSize: '24px',
+                                            marginLeft: 5,
+                                            marginRight: 10,
+                                        }}
                                     />
                                     微信或支付宝扫码支付
                                 </div>
@@ -143,7 +167,8 @@ const VipModal = ({ visible }: VipModalProps) => {
                         <Divider className="divider-line" dashed />
                         <p className="tips">
                             订阅即表示你同意
-                            <a href="#">eposter使用条款</a>和<a href="#">自动续订服务</a>
+                            <a href="#">eposter使用条款</a>和
+                            <a href="#">自动续订服务</a>
                         </p>
                     </div>
                 </Modal>

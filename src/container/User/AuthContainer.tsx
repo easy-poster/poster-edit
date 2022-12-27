@@ -31,7 +31,9 @@ const AuthContainer = React.memo<React.PropsWithChildren<unknown>>((props) => {
         };
     }, []);
 
-    return <AuthContext.Provider value={memoCtx}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={memoCtx}>{children}</AuthContext.Provider>
+    );
 });
 
 export default AuthContainer;

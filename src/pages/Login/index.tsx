@@ -13,6 +13,7 @@ const Login = () => {
     const [loginType, setLoginType] = useUrlState({ type: 'log' });
 
     const [form] = Form.useForm();
+    const [sendEmail, setSendEmail] = useState('');
 
     const handleGotget = () => {
         setSendEmail('');
@@ -21,7 +22,6 @@ const Login = () => {
         });
     };
 
-    const [sendEmail, setSendEmail] = useState('');
     useEffect(() => {
         setSendEmail('');
     }, []);
@@ -37,21 +37,21 @@ const Login = () => {
         }
     };
 
-    const res = (e) => {
-        message.config({
-            top: (e?.target?.innerHeight || window.innerHeight) / 2,
-        });
-    };
+    // const res = (e) => {
+    //     message.config({
+    //         top: (e?.target?.innerHeight || window.innerHeight) / 2,
+    //     });
+    // };
 
-    useEffect(() => {
-        res();
+    // useEffect(() => {
+    //     res();
 
-        window.addEventListener('resize', res);
+    //     window.addEventListener('resize', res);
 
-        return () => {
-            window.removeEventListener('resize', res);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('resize', res);
+    //     };
+    // }, []);
 
     const handleLogin = async () => {
         // message.destroy();
@@ -77,13 +77,23 @@ const Login = () => {
                     !!sendEmail ? (
                         <div className="result">
                             <div className="title">请您查看收件箱</div>
-                            <p className="tips">我们向{sendEmail}发送了一封电子邮件。</p>
+                            <p className="tips">
+                                我们向{sendEmail}发送了一封电子邮件。
+                            </p>
                             <p>单击邮件里的链接以重置密码。</p>
+                            <div
+                                className="btn gologin"
+                                onClick={() => setLoginType({ type: 'log' })}
+                            >
+                                去登录
+                            </div>
                         </div>
                     ) : (
                         <div className="forget">
                             <div className="title">忘记密码</div>
-                            <p className="tips">输入您的电子邮件，我们将联系您以重置密码。</p>
+                            <p className="tips">
+                                输入您的电子邮件，我们将联系您以重置密码。
+                            </p>
                             <Form
                                 form={form}
                                 initialValues={{
@@ -107,11 +117,16 @@ const Login = () => {
                             <div className="btn-wrap">
                                 <div
                                     className="btn cancer"
-                                    onClick={() => setLoginType({ type: 'log' })}
+                                    onClick={() =>
+                                        setLoginType({ type: 'log' })
+                                    }
                                 >
                                     我记得密码了
                                 </div>
-                                <div className="btn comfirm" onClick={handleResetPass}>
+                                <div
+                                    className="btn comfirm"
+                                    onClick={handleResetPass}
+                                >
                                     重置密码
                                 </div>
                             </div>
@@ -124,21 +139,30 @@ const Login = () => {
                             <div className="item">
                                 <IconFont
                                     type="icon-weixin"
-                                    style={{ fontSize: '30px', marginRight: 10 }}
+                                    style={{
+                                        fontSize: '30px',
+                                        marginRight: 10,
+                                    }}
                                 />
                                 微信登录
                             </div>
                             <div className="item">
                                 <IconFont
                                     type="icon-QQ"
-                                    style={{ fontSize: '32px', marginRight: 10 }}
+                                    style={{
+                                        fontSize: '32px',
+                                        marginRight: 10,
+                                    }}
                                 />
                                 QQ登录
                             </div>
                             <div className="item">
                                 <IconFont
                                     type="icon-weibo"
-                                    style={{ fontSize: '30px', marginRight: 10 }}
+                                    style={{
+                                        fontSize: '30px',
+                                        marginRight: 10,
+                                    }}
                                 />
                                 微博登录
                             </div>
@@ -189,7 +213,7 @@ const Login = () => {
                             <a href="#">条款</a>和<a href="#">隐私政策</a>。
                         </div>
                         <div className="login-btn" onClick={handleLogin}>
-                            登录
+                            登录/注册
                         </div>
                     </>
                 )}
