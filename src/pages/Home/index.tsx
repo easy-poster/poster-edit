@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { history } from '@umijs/max';
 import { useSize } from 'ahooks';
 import { AutoComplete, Select, List, Menu, Dropdown } from 'antd';
@@ -11,6 +17,7 @@ import noImage from '@/assets/noImage.jpeg';
 import dayjs from 'dayjs';
 import { db } from '@/utils/db';
 import './index.less';
+import { useSelector } from '@umijs/max';
 
 const { Option } = Select;
 
@@ -57,6 +64,11 @@ const Home = () => {
   const rightRef = useRef(null);
   const size = useSize(swiperRef);
   const [activeCard, setActiveCard] = useState('');
+  const { userId } = useSelector((state: any) => {
+    return {
+      userId: state.user.userId,
+    };
+  });
 
   const LIST = useMemo(() => {
     let arr = [];
@@ -100,17 +112,18 @@ const Home = () => {
 
   // 最近作品
   const [project, setProject] = useState([]);
-  const getProject = async () => {
+  const getProject = useCallback(async () => {
+    if (!userId) return;
     let result = [];
     result = await db.epProject
       .where({
-        userId: 1,
+        userId: userId,
       })
       .reverse()
       .sortBy('updateTime');
 
     setProject(result);
-  };
+  }, [userId]);
 
   useEffect(() => {
     getProject();
@@ -126,7 +139,7 @@ const Home = () => {
     console.log('onSelect', value);
   };
 
-  const handleGoEdit = async (e, item: any) => {
+  const handleGoEdit = async (item: any) => {
     if (item.uuid) {
       const updated = await db.epProject.update(item.id, {
         updateTime: new Date(),
@@ -197,7 +210,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="swiper-title-wrap">
+      {/* <div className="swiper-title-wrap">
         <h3 className="swiper-title">你可能想尝试</h3>
         <span className="tips">更多</span>
       </div>
@@ -226,7 +239,7 @@ const Home = () => {
         >
           <IconFont type="icon-xiangyou" style={{ fontSize: '24px' }} />
         </div>
-      </div>
+      </div> */}
       <div className="myproject">
         <div className="title-wrap">
           <h3 className="swiper-title">最近的作品</h3>
@@ -270,10 +283,7 @@ const Home = () => {
             dataSource={project}
             renderItem={(item) => (
               <List.Item>
-                <div
-                  className="card-item"
-                  onClick={(e) => handleGoEdit(e, item)}
-                >
+                <div className="card-item" onClick={() => handleGoEdit(item)}>
                   <img
                     className="card-cover"
                     alt="example"
@@ -288,7 +298,7 @@ const Home = () => {
                   >
                     <div
                       className={`${
-                        activeCard === item.id ? 'active-edit' : 'card-edit'
+                        activeCard === item?.id ? 'active-edit' : 'card-edit'
                       }`}
                       onClick={(e) => handleEdit(e, item.id)}
                     >

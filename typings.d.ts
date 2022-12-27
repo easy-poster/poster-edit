@@ -1,15 +1,17 @@
 import '@umijs/max/typings';
-/**
- * 画布相关
- */
 
-// 把canvas 和 handler 挂载在window上
-declare interface Window {
+declare global {
+  /**
+   * 画布相关
+   */
+
+  // 把canvas 和 handler 挂载在window上
+  interface Window {
     canvas: FabricCanvas | null;
     handler: any;
-}
+  }
 
-declare type AnimationType =
+  type AnimationType =
     | 'fade'
     | 'bounce'
     | 'shake'
@@ -19,7 +21,7 @@ declare type AnimationType =
     | 'custom'
     | 'none';
 
-declare interface AnimationProperty {
+  interface AnimationProperty {
     delay?: number;
     duration?: number;
     autoplay?: boolean;
@@ -33,35 +35,35 @@ declare interface AnimationProperty {
     angle?: number;
     fill?: string | fabric.Pattern;
     stroke?: string;
-}
+  }
 
-declare interface LinkProperty {
+  interface LinkProperty {
     enabled?: boolean;
     type?: string;
     state?: string;
     [key: string]: any;
-}
+  }
 
-declare interface TooltipProperty {
+  interface TooltipProperty {
     enabled?: boolean;
     type?: string;
     template?: string;
-}
+  }
 
-declare interface TriggerProperty {
+  interface TriggerProperty {
     enabled?: boolean;
     type?: string;
     script?: string;
     effect?: string;
-}
+  }
 
-declare interface FabricCanvasOption {
+  interface FabricCanvasOption {
     wrapperEl?: HTMLElement;
-}
+  }
 
-declare type FabricCanvas<T extends any = fabric.Canvas> = T & FabricCanvasOption;
+  type FabricCanvas<T extends any = fabric.Canvas> = T & FabricCanvasOption;
 
-declare interface KeyEvent {
+  interface KeyEvent {
     /**
      * Arrow key
      * @type {boolean}
@@ -118,9 +120,9 @@ declare interface KeyEvent {
      * 拖拽
      */
     grab?: boolean;
-}
+  }
 
-declare type InteractionMode =
+  type InteractionMode =
     | 'selection'
     | 'grab'
     | 'polygon'
@@ -129,7 +131,8 @@ declare type InteractionMode =
     | 'link'
     | 'crop';
 
-declare interface FabricEvent<T extends any = Event> extends Omit<fabric.IEvent, 'e'> {
+  interface FabricEvent<T extends any = Event>
+    extends Omit<fabric.IEvent, 'e'> {
     e: T;
     target?: FabricObject;
     subTargets?: FabricObject[];
@@ -138,29 +141,29 @@ declare interface FabricEvent<T extends any = Event> extends Omit<fabric.IEvent,
     pointer?: fabric.Point;
     absolutePointer?: fabric.Point;
     transform?: {
-        corner: string;
-        original: FabricObject;
-        originX: string;
-        originY: string;
-        width: number;
+      corner: string;
+      original: FabricObject;
+      originX: string;
+      originY: string;
+      width: number;
     };
-}
+  }
 
-declare type FabricObjects = {
+  type FabricObjects = {
     [key: string]: {
-        create: (...args: any) => FabricObject;
+      create: (...args: any) => FabricObject;
     };
-};
+  };
 
-declare interface CanvasOption extends fabric.ICanvasOptions {
+  interface CanvasOption extends fabric.ICanvasOptions {
     /**
      * Unique id of Canvas
      * @type {string}
      */
     id?: string;
-}
+  }
 
-declare type FabricObjectOption<T extends any = fabric.IObjectOptions> = T & {
+  type FabricObjectOption<T extends any = fabric.IObjectOptions> = T & {
     /**
      * Object id
      * @type {string}
@@ -296,11 +299,11 @@ declare type FabricObjectOption<T extends any = fabric.IObjectOptions> = T & {
      */
     clickable?: boolean;
     [key: string]: any;
-};
+  };
 
-declare type FabricObject<T extends any = fabric.Object> = T & FabricObjectOption;
+  type FabricObject<T extends any = fabric.Object> = T & FabricObjectOption;
 
-declare interface GridOption {
+  interface GridOption {
     /**
      * 是否编辑
      * @type {boolean}
@@ -326,17 +329,17 @@ declare interface GridOption {
      * @type {string}
      */
     borderColor?: string;
-}
+  }
 
-declare interface GuidelineOption {
+  interface GuidelineOption {
     /**
      * When have moved object, whether should show guideline
      * @type {boolean}
      */
     enabled?: boolean;
-}
+  }
 
-declare type TransactionType =
+  type TransactionType =
     | 'add'
     | 'remove'
     | 'moved'
@@ -353,7 +356,7 @@ declare type TransactionType =
     | 'redo'
     | 'undo';
 
-declare interface TransactionTransform {
+  interface TransactionTransform {
     scaleX?: number;
     scaleY?: number;
     skewX?: number;
@@ -365,14 +368,14 @@ declare interface TransactionTransform {
     flipY?: number;
     originX?: string;
     originY?: string;
-}
+  }
 
-declare interface TransactionEvent {
+  interface TransactionEvent {
     json: string;
     type: TransactionType;
-}
+  }
 
-declare type FILTER_TYPES =
+  type FILTER_TYPES =
     | 'grayscale'
     | 'invert'
     | 'remove-color'
@@ -401,32 +404,32 @@ declare type FILTER_TYPES =
     | 'multiply'
     | 'sepia2';
 
-declare interface IFilter {
+  interface IFilter {
     type: FILTER_TYPES;
     [key: string]: any;
-}
+  }
 
-declare type FabricImage = FabricObject &
+  type FabricImage = FabricObject &
     fabric.Image & {
-        /**
-         * Image URL
-         * @type {string}
-         */
-        src?: string;
-        /**
-         * Image File or Blob
-         * @type {File}
-         */
-        file?: File;
-        /**
-         * Image Filter
-         * @type {IFilter[]}
-         */
-        filters?: IFilter[];
-        _element?: any;
+      /**
+       * Image URL
+       * @type {string}
+       */
+      src?: string;
+      /**
+       * Image File or Blob
+       * @type {File}
+       */
+      file?: File;
+      /**
+       * Image Filter
+       * @type {IFilter[]}
+       */
+      filters?: IFilter[];
+      _element?: any;
     };
 
-declare interface FabricElement extends FabricObject<fabric.Rect> {
+  interface FabricElement extends FabricObject<fabric.Rect> {
     /**
      * Wrapped Element
      * @type {HTMLDivElement}
@@ -441,11 +444,11 @@ declare interface FabricElement extends FabricObject<fabric.Rect> {
      * Source of Element Object
      */
     setSource: (source: any) => void;
-}
+  }
 
-declare type WorkareaLayout = 'fixed' | 'responsive' | 'fullscreen';
+  type WorkareaLayout = 'fixed' | 'responsive' | 'fullscreen';
 
-declare interface WorkareaOption {
+  interface WorkareaOption {
     /**
      * Image URL
      * @type {string}
@@ -476,9 +479,9 @@ declare interface WorkareaOption {
      * @type {WorkareaLayout}
      */
     layout?: WorkareaLayout;
-}
+  }
 
-declare type WorkareaObject = FabricImage & {
+  type WorkareaObject = FabricImage & {
     /**
      * Workarea Layout Type
      * @type {WorkareaLayout}
@@ -494,14 +497,5 @@ declare type WorkareaObject = FabricImage & {
      * @type {boolean}
      */
     isElement?: boolean;
-    /**
-     * Stored width in workarea
-     * @type {number}
-     */
-    workareaWidth?: number;
-    /**
-     * Stored height in workarea
-     * @type {number}
-     */
-    workareaHeight?: number;
-};
+  };
+}

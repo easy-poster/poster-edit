@@ -23,6 +23,7 @@
     "dexie-react-hooks": "^1.1.1",
     "fabric": "^5.2.4",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.0",
     "qrcode.react": "^3.0.1",
     "react-colorful": "^5.6.1",
     "uuid": "^8.3.2"

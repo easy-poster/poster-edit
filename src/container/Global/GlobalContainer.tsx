@@ -2,10 +2,12 @@ import React, { ComponentType, useMemo } from 'react';
 import ContainerManager from '@/helper/manager/ContainerManager';
 import BrowserContainer from './BrowserContainer';
 import PWAContainer from './PWAContainer';
+import UserContainer from '../User/UserContainer';
 
 export const GlobalContainerManager = new ContainerManager();
 GlobalContainerManager.register(BrowserContainer);
 GlobalContainerManager.register(PWAContainer);
+GlobalContainerManager.register(UserContainer);
 
 /**
  * @discription 全局容器管理组件
