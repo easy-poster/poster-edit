@@ -9,6 +9,7 @@ declare global {
     interface Window {
         canvas: FabricCanvas | null;
         handler: any;
+        createObjectURL: any;
     }
 
     type AnimationType =
@@ -499,3 +500,5 @@ declare global {
         isElement?: boolean;
     };
 }
+
+export {};

@@ -46,6 +46,20 @@ class ZoomHandler {
     };
 
     /**
+     * @name 放大缩小到指定大小
+     * @param zoom
+     */
+    public zoomToNumber = (zoom: number) => {
+        this.handler.zoomHandler.zoomToPoint(
+            new fabric.Point(
+                this.handler.canvas.getWidth() / 2,
+                this.handler.canvas.getHeight() / 2,
+            ),
+            zoom,
+        );
+    };
+
+    /**
      * @name 1比1放大
      */
     public zoomOneToOne = () => {

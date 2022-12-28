@@ -1,27 +1,43 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { List, message } from 'antd';
-import demoImg from '@/assets/demo.png';
-import './index.less';
-import { db } from '@/utils/db';
+import React, {
+    ChangeEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+import { message } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
+import { db, epImage } from '@/utils/db';
 import tools from '@/utils/tools';
-import { IconFont, ImageDefData, ItemType } from '@/const';
-import { useDispatch, useModel, useParams, useSelector } from '@umijs/max';
+import { IconFont, ImageDefData } from '@/const';
+import { useDispatch, useSelector } from '@umijs/max';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
+import './index.less';
+
+type imagesRes = epImage & {
+    coverBlob?: string;
+};
 
 const UploadPage = () => {
     const inputImgRef = useRef<HTMLInputElement>(null);
+    const [images, setImages] = useState<imagesRes[]>([]);
+    const [isOver, setIsOver] = useState(false);
 
-    const [images, setImages] = useState([]);
     const dispatch = useDispatch();
-    const projectState = useSelector((state) => {
+    const { userId } = useSelector((state: any) => {
+        return {
+            userId: state.user.userId,
+        };
+    });
+    const projectState = useSelector((state: any) => {
         return state.project;
     });
 
-    const getImage = async () => {
-        let result = [];
+    const getImage = useCallback(async () => {
+        let result: imagesRes[] = [];
         result = await db.epImage
             .where({
-                userId: 1,
+                userId: userId,
             })
             .reverse()
             .sortBy('updateTime');
@@ -31,51 +47,48 @@ const UploadPage = () => {
             });
         }
         setImages(result);
-    };
+    }, [userId]);
 
-    useEffect(() => {
-        getImage();
-        return () => {};
-    }, []);
-
-    const addImage = async (file) => {
-        if (db && file) {
-            try {
-                let images = {
-                    type: file.type,
-                    blob: new Blob([file], { type: file.type }),
-                };
-                let coverBlob = await tools.compressImg(images, 240, 140);
-                let result = await db.epImage.add({
-                    userId: 1,
-                    createTime: new Date(),
-                    updateTime: new Date(),
-                    name: file.name, // tools.resourceRepeat(myImage, file?.name) || file?.name
-                    size: file.size,
-                    type: file.type,
-                    blob: images.blob,
-                    cover: coverBlob,
-                });
-                return result;
-            } catch (error) {
-                console.log('error', error);
+    const addImage = useCallback(
+        async (file: File) => {
+            if (db && file) {
+                try {
+                    let images = {
+                        type: file.type,
+                        blob: new Blob([file], { type: file.type }),
+                    };
+                    let coverBlob = await tools.compressImg(images, 240, 140);
+                    let result = await db.epImage.add({
+                        userId: userId,
+                        uuid: uuidv4(),
+                        createTime: new Date(),
+                        updateTime: new Date(),
+                        name: file.name, // tools.resourceRepeat(myImage, file?.name) || file?.name
+                        size: file.size,
+                        type: file.type,
+                        src: images.blob,
+                        cover: coverBlob,
+                    });
+                    return result;
+                } catch (error) {
+                    console.log('error', error);
+                }
             }
-        }
-    };
+        },
+        [userId],
+    );
 
-    const [isOver, setIsOver] = useState(false);
-
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsOver(true);
     };
 
-    const handleLeave = (e) => {
+    const handleLeave = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsOver(false);
     };
 
-    const uploadQueue = (files: Array<any>) => {
+    const uploadQueue = (files: FileList | never[]) => {
         let promiseAry = [];
 
         for (const key in files) {
@@ -84,7 +97,6 @@ const UploadPage = () => {
                 let type = file.type;
                 if (type.substring(0, 6) !== 'image/') continue;
                 promiseAry.push(
-                    // eslint-disable-next-line no-async-promise-executor
                     new Promise((resolve, reject) => {
                         addImage(file).then((result) => {
                             resolve({ key, result });
@@ -95,22 +107,17 @@ const UploadPage = () => {
         }
 
         Promise.allSettled(promiseAry)
-            .then((result) => {
-                console.log('result', result);
+            .then(() => {
                 // 重新请求数据
                 getImage();
                 message.success('添加成功');
-                // message.success({
-                //   content: '添加成功',
-                //   // className: 'custom-class',
-                // });
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsOver(false);
         let files = e.dataTransfer.files || [];
@@ -120,8 +127,9 @@ const UploadPage = () => {
         uploadQueue(files);
     };
 
-    const inputImageChange = (e) => {
-        let files = e?.target?.files || [];
+    const inputImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let target = e.target as HTMLInputElement;
+        let files = target.files || [];
         if (files?.length === 0) {
             return false;
         }
@@ -151,96 +159,20 @@ const UploadPage = () => {
         }
     };
 
-    const handleAdd = (data: any) => {
-        if (window.handler) {
-            window.handler.add({ type: FabricObjectType.IMAGE });
-        }
-        return;
-
-        if (!window.app && Object.keys(projectState).length !== 0) {
+    const handleAdd = (data: imagesRes) => {
+        if (!window.handler) {
             message.warning('项目正在初始化');
-            return false;
+            return;
         }
-
-        let img = new Image();
-        let blobUrl = URL.createObjectURL(data.blob);
-        img.src = blobUrl;
-        img.onload = () => {
-            if (
-                img.width * img.height >
-                projectState.width * projectState.height
-            ) {
-                let imgAspectRatio = img.width / img.height;
-                let Maxbd =
-                    img.width / projectState.width >
-                    img.height / projectState.height
-                        ? 'width'
-                        : 'height';
-                switch (Maxbd) {
-                    case 'width':
-                        img.width = projectState.width;
-                        img.height = img.width / imgAspectRatio;
-                        break;
-                    case 'height':
-                        img.height = projectState.height;
-                        img.width = img.height * imgAspectRatio;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            let result = {
-                ...ImageDefData,
-                id: `${new Date().getTime()}_${data.id}`,
-                name: data.name,
-                resourceId: data.id,
-                size: data.size,
-                width: img.width,
-                height: img.height,
-                left: projectState.width / 2,
-                top: projectState.height / 2,
-            };
-            let resources = [];
-            resources.push({
-                alias: result.id,
-                source: blobUrl,
-                options: {
-                    loadType: 2,
-                    xhrType: 'document',
-                },
-            });
-            if (resources.length) {
-                const objectContainer = window.app.getContainer(
-                    window.app,
-                    'STAGE',
-                );
-                window.app
-                    .addNode(
-                        window.app,
-                        result,
-                        resources,
-                        layeres.length + 10,
-                        objectContainer,
-                    )
-                    .then(async (sprite) => {
-                        // 存储到数据库
-                        try {
-                            let newLayeres = [...layeres, result];
-                            dispatch({
-                                type: 'project/updateLayeres',
-                                payload: {
-                                    id: projectState.id,
-                                    uuid: projectState.uuid,
-                                    newLayeres,
-                                },
-                            });
-                        } catch (err) {
-                            console.log('err', err);
-                        }
-                    });
-            }
-        };
+        window.handler.add({
+            type: FabricObjectType.IMAGE,
+            url: tools.getWebUrl(data.src || ''),
+        });
     };
+
+    useEffect(() => {
+        getImage();
+    }, []);
 
     return (
         <div className="upload-wrap">
@@ -274,7 +206,7 @@ const UploadPage = () => {
             <div className="upload-list">
                 {images.map((item) => {
                     return (
-                        <div className="img-item" key={item.id}>
+                        <div className="img-item" key={item.uuid}>
                             <div className="img-wrap">
                                 <img
                                     className="img-cover"

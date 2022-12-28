@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import demoImg from '@/assets/demo.png';
 import './index.less';
-import { IconFont, TextDefData } from '@/const';
+import { IconFont } from '@/const';
 import { AutoComplete, message, SelectProps } from 'antd';
-import { useSelector } from '@umijs/max';
+import { FabricObjectType } from '../Stage/canvas/const/defaults';
 
 function getRandomInt(max: number, min: number = 0) {
     return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
@@ -41,10 +41,6 @@ const searchResult = (query: string) =>
         });
 
 const TextPage = () => {
-    const projectState = useSelector((state: any) => {
-        return state.project;
-    });
-
     const LIST = useMemo(() => {
         let arr = [];
         for (let i = 0; i < 18; i++) {
@@ -68,39 +64,11 @@ const TextPage = () => {
     };
 
     const handleAdd = (data: any) => {
-        if (window.handler) {
-            window.handler.add({ type: 'textbox', text: data });
-        }
-        return;
-
-        console.log('data', data);
-        if (!window.app && Object.keys(projectState).length !== 0) {
+        if (!window.handler) {
             message.warning('项目正在初始化');
-            return false;
+            return;
         }
-        let result = {
-            ...TextDefData,
-            id: `${new Date().getTime()}_t`,
-            name: data,
-            style: {
-                fontFamily: 'Arial',
-                fontSize: 24,
-                fill: 0xffffff,
-                align: 'center',
-            },
-            left: projectState.width / 2,
-            top: projectState.height / 2,
-        };
-        const objectContainer = window.app.getContainer(window.app, 'STAGE');
-        window.app
-            .addNode(
-                window.app,
-                result,
-                null,
-                layeres.length + 10,
-                objectContainer,
-            )
-            .then(async (sprite) => {});
+        window.handler.add({ type: FabricObjectType.TEXTBOX, text: data });
     };
 
     return (
@@ -108,7 +76,6 @@ const TextPage = () => {
             <div className="text-search">
                 <AutoComplete
                     popupClassName="image-search-wrap"
-                    // dropdownMatchSelectWidth={252}
                     style={{ width: '100%' }}
                     allowClear
                     backfill

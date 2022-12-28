@@ -13,10 +13,11 @@ import {
     WorkareaHandler,
     ZoomHandler,
     ShortcutHandler,
+    ContextmenuHandler,
 } from '.';
 import CanvasObject from '../CanvasObject';
 import { defaults } from '../const';
-import { FabricObjectType, WorkareaLayoutType } from '../const/defaults';
+import { FabricObjectType } from '../const/defaults';
 import initControls from '../utils/controls';
 
 export interface Option {
@@ -220,6 +221,7 @@ class Handler implements HandlerOptions {
     public eventHandler!: EventHandler;
     public workareaHandler!: WorkareaHandler;
     public shortcutHandler!: ShortcutHandler;
+    public contextmenuHandler!: ContextmenuHandler;
 
     public objectMap: Record<string, FabricObject> = {};
     public objects!: FabricObject[];
@@ -312,6 +314,7 @@ class Handler implements HandlerOptions {
         this.transactionHandler = new TransactionHandler(this);
         this.eventHandler = new EventHandler(this);
         this.shortcutHandler = new ShortcutHandler(this);
+        this.contextmenuHandler = new ContextmenuHandler(this);
     };
 
     // 初始化设置---------
@@ -701,13 +704,8 @@ class Handler implements HandlerOptions {
      * @param group
      * @returns
      */
-    public add = (
-        obj: FabricObjectOption,
-        centered = true,
-        loaded = false,
-        group = false,
-    ) => {
-        const { editable, onAdd, gridOption, objectOption } = this;
+    public add = async (obj: FabricObjectOption, centered = true) => {
+        const { editable, onAdd, objectOption } = this;
         const option: any = {
             hasControls: editable,
             hasBorders: editable,
@@ -716,18 +714,10 @@ class Handler implements HandlerOptions {
             lockMovementY: !editable,
             hoverCursor: !editable ? 'pointer' : 'move',
         };
-        if (obj.type === FabricObjectType.ITEXT) {
+        if (obj.type === FabricObjectType.TEXTBOX) {
             option.editable = true;
         } else {
             option.editable = editable;
-        }
-
-        if (
-            editable &&
-            this.workarea!.layout === WorkareaLayoutType.FULLSCREEN
-        ) {
-            option.scaleX = this.workarea!.scaleX;
-            option.scaleY = this.workarea!.scaleY;
         }
 
         const newOption = {
@@ -739,7 +729,7 @@ class Handler implements HandlerOptions {
         let createObj;
         switch (obj.type) {
             case FabricObjectType.IMAGE:
-                createObj = this.addImage({
+                createObj = await this.addImage({
                     ...newOption,
                     ...{
                         lockUniScaling: true,
@@ -747,6 +737,7 @@ class Handler implements HandlerOptions {
                         absolutePositioned: true,
                     },
                 });
+
                 createObj.setControlsVisibility({
                     mt: false,
                     mb: false,
@@ -771,7 +762,8 @@ class Handler implements HandlerOptions {
         this.centerObject(createObj, centered);
 
         this.canvas.add(createObj);
-        if (onAdd && editable && !loaded) {
+
+        if (onAdd && editable) {
             onAdd(createObj);
         }
         // 添加选中
@@ -783,54 +775,21 @@ class Handler implements HandlerOptions {
     /**
      * @name 设置图片
      * @param {FabricImage} obj
-     * @param {(File | string)} [source]
+     * @param {string} [source]
      * @returns
      */
     public setImage = (
         obj: FabricImage,
-        source?: File | string,
+        source: string,
     ): Promise<FabricImage> => {
         return new Promise((resolve) => {
-            if (!source) {
-                obj.set('file', undefined);
-                obj.set('src', undefined);
-                resolve(
-                    obj.setSrc(
-                        'http://localhost:8000/demo.png',
-                        () => this.canvas.renderAll(),
-                        {
-                            dirty: true,
-                        },
-                    ) as FabricImage,
-                );
-            }
-            if (source instanceof File) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    obj.set('file', source);
-                    obj.set('src', undefined);
-                    resolve(
-                        obj.setSrc(
-                            reader.result as string,
-                            () => this.canvas.renderAll(),
-                            {
-                                dirty: true,
-                            },
-                        ) as FabricImage,
-                    );
-                };
-                reader.readAsDataURL(source);
-            } else {
-                obj.set('file', undefined);
-                obj.set('src', source);
-                if (source) {
-                    resolve(
-                        obj.setSrc(source, () => this.canvas.renderAll(), {
-                            dirty: true,
-                        }) as FabricImage,
-                    );
-                }
-            }
+            obj.set('file', undefined);
+            obj.set('src', undefined);
+            resolve(
+                obj.setSrc(source, () => this.canvas.renderAll(), {
+                    dirty: true,
+                }) as FabricImage,
+            );
         });
     };
 
@@ -841,20 +800,51 @@ class Handler implements HandlerOptions {
      */
     public addImage = (obj: FabricImage) => {
         const { objectOption } = this;
-        const { filters = [], src, file, ...otherOption } = obj;
-        const image = new Image();
+        const { url, ...otherOption } = obj;
+        return new Promise<FabricImage>((resolve, reject) => {
+            if (!url) return;
+            const image = new Image();
+            image.src = url;
+            image.onload = () => {
+                if (this.workarea?.width && this.workarea?.height) {
+                    let scaleX = 1;
+                    let scaleY = 1;
+                    if (
+                        image.width * image.height >
+                        this.workarea.width * this.workarea.height
+                    ) {
+                        let Maxbd =
+                            image.width / this.workarea.width >
+                            image.height / this.workarea.height
+                                ? 'width'
+                                : 'height';
+                        switch (Maxbd) {
+                            case 'width':
+                                scaleX = this.workarea.width / image.width;
+                                scaleY = this.workarea.width / image.width;
+                                break;
+                            case 'height':
+                                scaleX = this.workarea.height / image.height;
+                                scaleY = this.workarea.height / image.height;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    const createdObj = new fabric.Image(image, {
+                        originX: 'center',
+                        originY: 'center',
+                        scaleX: scaleX,
+                        scaleY: scaleY,
+                        ...objectOption,
+                        ...otherOption,
+                    }) as FabricImage;
 
-        const createdObj = new fabric.Image(image, {
-            originX: 'center',
-            originY: 'center',
-            ...objectOption,
-            ...otherOption,
-        }) as FabricImage;
-        // createdObj.set({
-        // 	filters: this.imageHandler.createFilters(filters),
-        // });
-        this.setImage(createdObj, src || file);
-        return createdObj;
+                    this.setImage(createdObj, url);
+                    resolve(createdObj);
+                }
+            };
+        });
     };
 
     /**
@@ -1141,6 +1131,22 @@ class Handler implements HandlerOptions {
                 onAdd(cloneObj);
             }
             cloneObj.setCoords();
+            switch (cloneObj?.type) {
+                case FabricObjectType.IMAGE:
+                    cloneObj.setControlsVisibility({
+                        mt: false,
+                        mb: false,
+                        ml: false,
+                        mr: false,
+                    });
+                case FabricObjectType.TEXTBOX:
+                    cloneObj.setControlsVisibility({
+                        mt: false,
+                        mb: false,
+                    });
+                default:
+                    break;
+            }
             this.canvas.setActiveObject(cloneObj);
             this.canvas.requestRenderAll();
         }, propertiesToInclude);
@@ -1292,7 +1298,7 @@ class Handler implements HandlerOptions {
             obj.left! += diffLeft;
             obj.top! += diffTop;
 
-            this.add(obj, false, true);
+            this.add(obj, false);
             this.canvas.renderAll();
         });
 
@@ -1337,6 +1343,7 @@ class Handler implements HandlerOptions {
     public destroy = () => {
         this.eventHandler.destroy();
         this.guidelineHandler.destroy();
+        this.contextmenuHandler.destroy();
         this.clear();
     };
 }

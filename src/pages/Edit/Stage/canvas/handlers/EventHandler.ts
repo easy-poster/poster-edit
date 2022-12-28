@@ -540,8 +540,18 @@ class EventHandler {
         }
     };
 
-    public onMouseDown = (_e: MouseEvent) => {};
+    /**
+     * @name 鼠标在画布上按下时
+     * @param _e
+     */
+    public onMouseDown = (_e: MouseEvent) => {
+        this.handler.contextmenuHandler.hide();
+    };
 
+    /**
+     * @name 右键上下文菜单
+     * @param e
+     */
     public contextMenu = (e: MouseEvent) => {
         e.preventDefault();
         const editable = this.handler?.editable;
@@ -554,10 +564,15 @@ class EventHandler {
             if (target && target.type !== 'activeSelection') {
                 this.handler.select(target);
             }
-            // this.handler.contextmenuHandler.show(e, target);
+            this.handler.contextmenuHandler.show(e, target);
         }
     };
 
+    /**
+     * @name 粘贴
+     * @param e
+     * @returns
+     */
     public paste = (e: ClipboardEvent) => {
         if (this.handler.canvas.wrapperEl !== document.activeElement) {
             return false;
@@ -570,7 +585,7 @@ class EventHandler {
         }
         const clipboardData = e.clipboardData;
         if (clipboardData?.types?.length) {
-            clipboardData.types.forEach((clipboardType: string) => {
+            clipboardData.types.forEach(async (clipboardType: string) => {
                 if (clipboardType === 'text/plain') {
                     const textPlain = clipboardData.getData('text/plain');
                     try {
@@ -594,14 +609,15 @@ class EventHandler {
                                 }
                                 obj.left = obj.properties.left + padding;
                                 obj.top = obj.properties.top + padding;
-                                const createdObj = this.handler.add(
+                                const createdObj = await this.handler.add(
                                     obj,
                                     false,
-                                    true,
                                 );
-                                this.handler.canvas.setActiveObject(
-                                    createdObj as FabricObject,
-                                );
+                                if (createdObj) {
+                                    this.handler.canvas.setActiveObject(
+                                        createdObj as FabricObject,
+                                    );
+                                }
                                 this.handler.canvas.requestRenderAll();
                             } else {
                                 const nodes = [] as any[];
@@ -616,7 +632,6 @@ class EventHandler {
                                     const createdObj = this.handler.add(
                                         obj,
                                         false,
-                                        true,
                                     );
                                     targets.push(createdObj);
                                 });

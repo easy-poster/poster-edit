@@ -3,6 +3,10 @@ import { imageSpriteProps } from './utils/db';
 
 export type ItemTypeProps = 'IMAGE' | 'TEXT' | 'AUDIO' | 'LOGO';
 
+// 画布最大最小值
+export const MAX_SIZE = 400;
+export const MIN_SIZE = 25;
+
 export const ItemType = {
     IMAGE: 'IMAGE',
     TEXT: 'TEXT',

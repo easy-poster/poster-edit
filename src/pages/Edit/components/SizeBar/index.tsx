@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Slider, Tooltip } from 'antd';
-import { IconFont } from '@/const';
+import { IconFont, MAX_SIZE, MIN_SIZE } from '@/const';
 import './index.less';
 import { useModel } from '@umijs/max';
-
-const MAX_SIZE = 400;
-const MIN_SIZE = 25;
 
 const SizeBar = () => {
     const { sizeStage, setSizeStage } = useModel('sizeStage');
@@ -17,11 +14,18 @@ const SizeBar = () => {
 
     const handleChangeAutoSize = () => {
         // 自适应屏幕
-        setSizeStage(100);
+        if (window.handler) {
+            window.handler.zoomHandler.zoomToFit();
+        }
     };
 
     const handleChangeSize = (value: number) => {
+        if (!value) return;
         setSizeStage(value);
+        if (window.handler) {
+            let zoom = (value / 100).toFixed(2);
+            window.handler.zoomHandler.zoomToNumber(zoom);
+        }
     };
 
     return (

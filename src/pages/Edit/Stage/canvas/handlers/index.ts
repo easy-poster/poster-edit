@@ -8,3 +8,4 @@ export { default as InteractionHandler } from './InteractionHandler';
 export { default as AlignmentHandler } from './AlignmentHandler';
 export { default as TransactionHandler } from './TransactionHandler';
 export { default as ShortcutHandler } from './ShortcutHandler';
+export { default as ContextmenuHandler } from './ContextmenuHandler';

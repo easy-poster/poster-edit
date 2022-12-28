@@ -23,7 +23,7 @@ const tools = {
         }
         return color;
     },
-    getWebUrl: (file) => {
+    getWebUrl: (file: any) => {
         let url = null;
         if (window.createObjectURL !== undefined) {
             // basic
