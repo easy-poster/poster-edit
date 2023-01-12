@@ -15,9 +15,10 @@ import { IconFont } from '@/const';
 import demoImg from '@/assets/demo.png';
 import noImage from '@/assets/noImage.jpeg';
 import dayjs from 'dayjs';
-import { db } from '@/utils/db';
+import db from '@/utils/db';
 import './index.less';
 import { useSelector } from '@umijs/max';
+import { useModel } from '@umijs/max';
 
 const { Option } = Select;
 
@@ -64,11 +65,8 @@ const Home = () => {
     const rightRef = useRef(null);
     const size = useSize(swiperRef);
     const [activeCard, setActiveCard] = useState('');
-    const { userId } = useSelector((state: any) => {
-        return {
-            userId: state.user.userId,
-        };
-    });
+    const { initialState } = useModel('@@initialState');
+    const userId = initialState?.currentUser?.id;
 
     const LIST = useMemo(() => {
         let arr = [];

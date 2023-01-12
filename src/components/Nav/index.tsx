@@ -3,17 +3,16 @@ import { Link, history, useModel, useSelector } from '@umijs/max';
 import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
 import { IconFont } from '@/const';
 import SearchHeader from '../SearchHeader';
-import { db } from '@/utils/db';
+import { db, storage } from '@/utils';
 import { v4 as uuidv4 } from 'uuid';
 import avatarImg from '@/assets/avatar.jpg';
 import './index.less';
+import { logout } from '@/services/user';
 
 const Nav = () => {
-    const { userId } = useSelector((state: any) => {
-        return {
-            userId: state.user.userId,
-        };
-    });
+    const { initialState } = useModel('@@initialState');
+    const user = initialState?.currentUser;
+    const userId = initialState?.currentUser?.id;
 
     const handleNewProject = useCallback(async () => {
         if (!userId) return;
@@ -49,8 +48,11 @@ const Nav = () => {
         setShowBuy(true);
     };
 
-    const handleLogOut = () => {
-        history.push('/login');
+    const handleLogOut = async () => {
+        try {
+            await logout();
+            storage.logout();
+        } catch (error) {}
     };
 
     // 下拉菜单
@@ -58,10 +60,8 @@ const Nav = () => {
         {
             label: (
                 <Link to="#">
-                    MOMO
-                    <p style={{ color: 'rgb(111, 111, 125)' }}>
-                        418788724@qq.com
-                    </p>
+                    {user?.username}
+                    <p style={{ color: 'rgb(111, 111, 125)' }}>{user?.email}</p>
                 </Link>
             ),
             key: 1,

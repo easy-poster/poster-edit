@@ -14,7 +14,7 @@ import { IconFont, ItemType } from '@/const';
 import './index.less';
 import { useSetState, useSize } from 'ahooks';
 import Stage from './Stage';
-import { db, epProject } from '@/utils/db';
+import db, { epProject } from '@/utils/db';
 
 const Edit = () => {
     const params = useParams<{ id: string }>();

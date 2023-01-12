@@ -1,6 +1,8 @@
 import '@umijs/max/typings';
 
 declare global {
+    const ENV: 'DEV' | 'PROD';
+
     /**
      * 画布相关
      */

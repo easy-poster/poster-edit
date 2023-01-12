@@ -11,9 +11,14 @@ import {
 } from 'antd';
 import avatarImg from '@/assets/avatar.jpg';
 import './index.less';
+import { useModel } from '@umijs/max';
+import { updateUserInfo } from '@/services/user';
+import { flushSync } from 'react-dom';
 
 const Setting = () => {
     const [form] = Form.useForm();
+    const { initialState, setInitialState } = useModel('@@initialState');
+    const user = initialState?.currentUser;
 
     const [avatar, setAvatar] = useState(avatarImg);
 
@@ -36,9 +41,23 @@ const Setting = () => {
         },
     };
 
+    /**
+     * @name 获取最新用户信息
+     */
+    const fetchUserInfo = async () => {
+        const userInfo = await initialState?.getCurrentUserInfo?.();
+        if (userInfo) {
+            flushSync(() => {
+                setInitialState((s) => ({
+                    ...s,
+                    currentUser: userInfo,
+                }));
+            });
+        }
+    };
+
     // name
     const [isNameEdit, setIsNameEdit] = useState(false);
-    const [userName, setUserName] = useState('落沙123');
     const inputNameRef = useRef<InputRef>(null);
     const handleEdit = () => {
         setIsNameEdit(true);
@@ -53,45 +72,46 @@ const Setting = () => {
     const handleNameSave = async () => {
         try {
             const values = await form.validateFields();
-            console.log('values', values);
-            setUserName(values.username);
+
+            await updateUserInfo(values);
+            await fetchUserInfo();
             if (isNameEdit) {
                 setIsNameEdit(false);
             }
-            // toggleEdit();
-            // handleSave({ ...record, ...values });
-        } catch (errInfo) {
-            console.log('Save failed:', errInfo);
+            message.success('更新成功');
+        } catch (error) {
+            form.setFieldsValue({ username: user?.username });
+            message.error('更新失败');
+        } finally {
         }
     };
 
-    // email
-    const [isEmailEdit, setIsEmailEdit] = useState(false);
-    const [email, setEmail] = useState('418788724@qq.com');
-    const inputEmailRef = useRef<InputRef>(null);
-    const handleEmailEdit = () => {
-        setIsEmailEdit(true);
+    // description
+    const [isDescEdit, setIsDescEdit] = useState(false);
+    const inputDescRef = useRef<InputRef>(null);
+    const handleDescEdit = () => {
+        setIsDescEdit(true);
     };
 
     useEffect(() => {
-        if (isEmailEdit) {
-            inputEmailRef.current!.focus();
+        if (isDescEdit) {
+            inputDescRef.current!.focus();
         }
-    }, [isEmailEdit]);
+    }, [isDescEdit]);
 
-    const handleEmailSave = async () => {
+    const handleDescSave = async () => {
         try {
             console.log('form', form);
             const values = await form.validateFields();
-            console.log('values', values);
-            setEmail(values.email);
-            if (isEmailEdit) {
-                setIsEmailEdit(false);
+            await updateUserInfo(values);
+            await fetchUserInfo();
+            if (isDescEdit) {
+                setIsDescEdit(false);
             }
-            // toggleEdit();
-            // handleSave({ ...record, ...values });
+            message.success('更新成功');
         } catch (errInfo) {
-            console.log('Save failed:', errInfo);
+            form.setFieldsValue({ description: user?.description });
+            message.error('更新失败');
         }
     };
 
@@ -115,13 +135,13 @@ const Setting = () => {
                 <div className="content">
                     {!isNameEdit ? (
                         <div className="name" onClick={() => handleEdit()}>
-                            {userName}
+                            {user?.username}
                         </div>
                     ) : (
                         <Form
                             form={form}
                             initialValues={{
-                                username: userName,
+                                username: user?.username,
                             }}
                             component={false}
                         >
@@ -135,8 +155,8 @@ const Setting = () => {
                                         whitespace: true,
                                     },
                                     {
-                                        max: 50,
-                                        message: '名字不能超过50个字',
+                                        max: 100,
+                                        message: '名字不能超过100个字',
                                     },
                                 ]}
                             >
@@ -148,45 +168,36 @@ const Setting = () => {
                             </Form.Item>
                         </Form>
                     )}
-                    {/* <Button size='large' shape='round' onClick={() => handleEdit()}>编辑</Button> */}
                 </div>
             </div>
             <Divider />
             <div className="name-wrap">
-                <div className="title">电子邮件</div>
+                <div className="title">个人介绍</div>
                 <div className="content">
-                    {!isEmailEdit ? (
-                        <div className="name" onClick={() => handleEmailEdit()}>
-                            {email || '添加电子邮件'}
+                    {!isDescEdit ? (
+                        <div className="desc" onClick={() => handleDescEdit()}>
+                            {user?.description || '介绍下自己吧'}
                         </div>
                     ) : (
                         <Form
                             form={form}
                             initialValues={{
-                                email: email,
+                                description: user?.description,
                             }}
                             component={false}
                         >
-                            <Form.Item
-                                style={{ margin: 0 }}
-                                name="email"
-                                rules={[
-                                    {
-                                        type: 'email',
-                                        message: '请输入有效的电子邮件地址',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    ref={inputEmailRef}
-                                    onPressEnter={handleEmailSave}
-                                    onBlur={handleEmailSave}
+                            <Form.Item style={{ margin: 0 }} name="description">
+                                <Input.TextArea
+                                    ref={inputDescRef}
+                                    onPressEnter={handleDescSave}
+                                    onBlur={handleDescSave}
+                                    rows={4}
+                                    maxLength={150}
+                                    showCount
                                 />
                             </Form.Item>
                         </Form>
                     )}
-                    {/* <div className='name'>添加电子邮件</div>
-          <Button size='large' shape='round'>添加</Button> */}
                 </div>
             </div>
             {/* <div className='name-wrap'>

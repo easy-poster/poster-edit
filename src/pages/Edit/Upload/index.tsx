@@ -7,10 +7,10 @@ import React, {
 } from 'react';
 import { message } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import { db, epImage } from '@/utils/db';
+import db, { epImage } from '@/utils/db';
 import tools from '@/utils/tools';
 import { IconFont, ImageDefData } from '@/const';
-import { useDispatch, useSelector } from '@umijs/max';
+import { useModel } from '@umijs/max';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
 import './index.less';
 
@@ -23,15 +23,8 @@ const UploadPage = () => {
     const [images, setImages] = useState<imagesRes[]>([]);
     const [isOver, setIsOver] = useState(false);
 
-    const dispatch = useDispatch();
-    const { userId } = useSelector((state: any) => {
-        return {
-            userId: state.user.userId,
-        };
-    });
-    const projectState = useSelector((state: any) => {
-        return state.project;
-    });
+    const { initialState } = useModel('@@initialState');
+    const userId = initialState?.currentUser?.id;
 
     const getImage = useCallback(async () => {
         let result: imagesRes[] = [];

@@ -60,4 +60,6 @@ export class EposterDexie extends Dexie {
     }
 }
 
-export const db = new EposterDexie('eposterDatabase');
+const db = new EposterDexie('eposterDatabase');
+
+export default db;

@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 import './index.less';
 import { IconFont } from '@/const';
 import { Link } from '@umijs/max';
-import { db } from '@/utils/db';
+import db from '@/utils/db';
 import { epProject } from '@/utils/db';
 interface HeaderBarProps {
     projectProps: epProject;
