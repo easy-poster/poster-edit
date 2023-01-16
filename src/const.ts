@@ -1,5 +1,4 @@
 import { createFromIconfontCN } from '@ant-design/icons';
-import { imageSpriteProps } from './utils/db';
 
 export type ItemTypeProps = 'IMAGE' | 'TEXT' | 'AUDIO' | 'LOGO';
 
@@ -12,25 +11,6 @@ export const ItemType = {
     TEXT: 'TEXT',
     AUDIO: 'AUDIO',
     LOGO: 'LOGO',
-};
-
-export const ImageDefData: imageSpriteProps = {
-    id: '',
-    name: '',
-    type: 'IMAGE',
-    size: 0,
-    resourceId: 0,
-    from: 'resource', // 默认本地资源 url resource
-    src: '', // 本地地址
-    url: '', // 远程在线资源
-    rotation: 0,
-    alpha: 1,
-    zIndex: 0,
-    width: 0,
-    height: 0,
-    left: 0,
-    top: 0,
-    filters: [],
 };
 
 export const TextDefData = {
@@ -47,7 +27,9 @@ export const TextDefData = {
     top: 0,
 };
 
-// 展示页菜单
+/**
+ * @name 展示页菜单
+ */
 export const MENU_LAYOUT = [
     {
         name: '主页',
@@ -69,7 +51,9 @@ export const MENU_LAYOUT = [
     // },
 ];
 
-// 编辑页菜单
+/**
+ * @name 编辑页菜单配置
+ */
 export const MENU_EDIT = [
     {
         name: '上传',
@@ -110,8 +94,29 @@ export const MENU_EDIT = [
     // },
 ];
 
+export const SETTING_MENU_LAYOUT = [
+    {
+        name: '个人账户',
+        id: 1,
+        icon: 'icon-zhanghao',
+        route: '/setting/account',
+    },
+    {
+        name: '登录 & 安全',
+        id: 2,
+        icon: 'icon-anquan',
+        route: '/setting/secure',
+    },
+    {
+        name: '账单',
+        id: 3,
+        icon: 'icon-zhangdanguanli',
+        route: '/setting/bill',
+    },
+];
+
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
-        '//at.alicdn.com/t/font_2919693_z5laxqknl3.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+        '//at.alicdn.com/t/c/font_2919693_4pddohngwzk.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
     ],
 });

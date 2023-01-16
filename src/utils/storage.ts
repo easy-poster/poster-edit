@@ -105,7 +105,7 @@ class EStorage {
         this.set('token', data.token, data.expire);
 
         // 刷新token
-        this.set('refreshToken', data.token, data.refreshExpire);
+        this.set('refreshToken', data.refreshToken, data.refreshExpire);
     }
 
     /**
@@ -117,7 +117,7 @@ class EStorage {
             refreshToken()
                 .then((res) => {
                     this.setTokenStore(res);
-                    resolve(res);
+                    resolve(res?.token);
                 })
                 .catch((err) => {
                     this.logout();
@@ -130,8 +130,9 @@ class EStorage {
      * @name 清除用户信息
      */
     clear() {
-        this.remove('userInfo');
+        this.remove('vcImgId');
         this.remove('token');
+        this.remove('refreshToken');
     }
 
     /**

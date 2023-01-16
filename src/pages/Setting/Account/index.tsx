@@ -15,7 +15,7 @@ import { useModel } from '@umijs/max';
 import { updateUserInfo } from '@/services/user';
 import { flushSync } from 'react-dom';
 
-const Setting = () => {
+const Account = () => {
     const [form] = Form.useForm();
     const { initialState, setInitialState } = useModel('@@initialState');
     const user = initialState?.currentUser;
@@ -116,8 +116,8 @@ const Setting = () => {
     };
 
     return (
-        <div className="setting-wrap">
-            <div className="title">你的账户</div>
+        <div className="accountWrap">
+            <h2 className="title">你的账户</h2>
             <div className="account">
                 <div className="avatar-wrap">
                     <Avatar size={90} src={avatar} />
@@ -191,7 +191,7 @@ const Setting = () => {
                                     ref={inputDescRef}
                                     onPressEnter={handleDescSave}
                                     onBlur={handleDescSave}
-                                    rows={4}
+                                    autoSize={{ minRows: 3, maxRows: 6 }}
                                     maxLength={150}
                                     showCount
                                 />
@@ -208,4 +208,4 @@ const Setting = () => {
     );
 };
 
-export default Setting;
+export default Account;

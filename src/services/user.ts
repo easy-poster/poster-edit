@@ -35,10 +35,10 @@ export async function getImgCaptcha(
  * @returns
  */
 export async function refreshToken() {
-    return request('/app/refreshtoken', {
+    return request('/app/base/open/refreshToken', {
         method: 'POST',
         data: {
-            refreshToken: storage.get('refreshtoken'),
+            refreshToken: storage.get('refreshToken'),
         },
     });
 }
@@ -141,6 +141,26 @@ export async function updateUserInfo(
     options?: { [key: string]: any },
 ) {
     return request('/app/base/comm/updateUserInfo', {
+        method: 'PUT',
+        data,
+        ...(options || {}),
+    });
+}
+
+/**
+ * @name 更新密码
+ * @param data
+ * @param options
+ * @returns
+ */
+export async function updatePass(
+    data: {
+        oldPassword: string;
+        newPassword: string;
+    },
+    options?: { [key: string]: any },
+) {
+    return request('/app/base/comm/updatePassword', {
         method: 'PUT',
         data,
         ...(options || {}),

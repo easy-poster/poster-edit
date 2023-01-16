@@ -9,7 +9,7 @@ import { message } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import db, { epImage } from '@/utils/db';
 import tools from '@/utils/tools';
-import { IconFont, ImageDefData } from '@/const';
+import { IconFont } from '@/const';
 import { useModel } from '@umijs/max';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
 import './index.less';

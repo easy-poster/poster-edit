@@ -1,0 +1,71 @@
+.secure {
+    padding: 0 40px 40px;
+
+    .title {
+        margin-top: 40px;
+        font-size: 26px;
+        font-weight: 400;
+        margin-bottom: 40px;
+    }
+
+    .content {
+        min-width: 500px;
+
+        :global {
+            .modifyPsWrap {
+                .ant-form-item {
+                    width: 80%;
+
+                    input {
+                        padding: 8px 10px;
+                        font-size: 20px;
+                        border-radius: 5px;
+                    }
+                }
+            }
+
+            .ant-form-item {
+                width: 80%;
+
+                input {
+                    padding: 8px 10px;
+                    font-size: 20px;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .tips {
+            margin-top: 20px;
+        }
+    }
+}
+
+// 修改密码modal
+:global {
+    .modifyPsWrap {
+        .ant-modal-title {
+            font-size: 20px;
+        }
+
+        .ant-modal-body {
+            padding: 30px 0;
+        }
+
+        .ant-form-item {
+            width: 100%;
+
+            input {
+                padding: 8px 10px;
+                font-size: 20px;
+                border-radius: 5px;
+            }
+        }
+    }
+}

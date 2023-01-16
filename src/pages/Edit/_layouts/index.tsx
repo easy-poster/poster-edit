@@ -18,7 +18,7 @@ import BrandPage from '../Brand';
 import './index.less';
 import { Outlet } from '@umijs/max';
 
-const EditLayout = (props: IRouteComponentProps) => {
+const EditLayout = () => {
     const resouceRef = useRef<HTMLDivElement>(null);
     const lineDropRef = useRef<HTMLDivElement>(null);
     const resouceWrapRef = useRef<HTMLDivElement>(null);

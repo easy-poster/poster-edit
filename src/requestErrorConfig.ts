@@ -41,8 +41,6 @@ export const errorConfig: RequestConfig = {
                 // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
                 const { status } = error.response;
 
-                console.log('error', error);
-
                 if (status === 401) {
                     storage.logout();
                 } else {
@@ -79,12 +77,14 @@ export const errorConfig: RequestConfig = {
                 console.groupEnd();
             }
             const data = storage.getAll();
+
             if (data?.token) {
                 // 请求标识
                 if (config.headers) {
                     config.headers['Authorization'] = data.token;
                 }
 
+                // 刷新token接口放行
                 if (config.url?.includes('refreshToken')) {
                     return config;
                 }
@@ -93,7 +93,7 @@ export const errorConfig: RequestConfig = {
                 if (storage.isExpired('token')) {
                     // 判断refreshToken是否过期
                     if (storage.isExpired('refreshToken')) {
-                        return storage.clear();
+                        return storage.logout();
                     }
 
                     // 是否在刷新中
@@ -108,7 +108,7 @@ export const errorConfig: RequestConfig = {
                                 isRefreshing = false;
                             })
                             .catch(() => {
-                                storage.clear();
+                                // storage.clear();
                             });
                     }
 
