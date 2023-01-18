@@ -1,7 +1,15 @@
-import { EventEmitter } from 'events';
-
 const tools = {
-    EventBus: new EventEmitter(),
+    /**
+     * @name 十六进制颜色随机
+     * @returns
+     */
+    randomColor16() {
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += parseInt(Math.random() * 16 + '').toString(16);
+        }
+        return color;
+    },
     addEventHandler: (target, type, fn) => {
         if (target.addEventListener) {
             target.addEventListener(type, fn);
@@ -15,13 +23,6 @@ const tools = {
         } else {
             target.detachEvent('on' + type, fn);
         }
-    },
-    randomColor: () => {
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += parseInt(Math.random() * 16 + '').toString(16);
-        }
-        return color;
     },
     getWebUrl: (file: any) => {
         let url = null;

@@ -115,7 +115,7 @@ const Canvas = React.memo((props: CanvasProps) => {
         },
         [containerSize],
         {
-            wait: 300,
+            wait: 16.67,
         },
     );
 

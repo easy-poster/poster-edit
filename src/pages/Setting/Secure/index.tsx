@@ -33,6 +33,7 @@ const Secure = React.memo(() => {
     }, []);
 
     const handleCancelPs = useCallback(() => {
+        form.resetFields();
         setisModify(false);
     }, []);
 
