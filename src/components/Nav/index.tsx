@@ -51,8 +51,8 @@ const Nav = () => {
     const handleLogOut = async () => {
         try {
             await logout();
-            storage.logout();
         } catch (error) {}
+        storage.logout();
     };
 
     // 下拉菜单

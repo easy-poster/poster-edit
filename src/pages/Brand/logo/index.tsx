@@ -1,5 +1,11 @@
 import { Button, message, Upload } from 'antd';
-import React, { useCallback } from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import { useDynamicList } from 'ahooks';
 import Header from '../components/Header';
 import logoSvg from '@/assets/logo/color.svg';
@@ -7,43 +13,72 @@ import logoBlack from '@/assets/logo/black.svg';
 import styles from './index.less';
 import { IconFont } from '@/const';
 import LogoItem from './logoItem';
-
-const LOGOLIST = [
-    {
-        id: 1,
-        logo: logoSvg,
-    },
-    {
-        id: 2,
-        logo: logoBlack,
-    },
-];
+import { BrandContext } from '../container';
+import {
+    brandType,
+    delBrand,
+    getBrandDetail,
+    saveBrand,
+} from '@/services/brand';
+import { BrandKitContext } from '../container/BrandKitContainer';
 
 const Logo = React.memo(() => {
+    const { kitInfo } = useContext(BrandKitContext);
+
     const {
         list: logoList,
-        remove: logoRemove,
+        resetList: logoReset,
         getKey: logoGetKey,
-        unshift: logoUnshift,
-    } = useDynamicList(LOGOLIST);
+    } = useDynamicList([]);
 
-    const handleAddLogo = useCallback(() => {
-        logoUnshift({
-            id: 0,
-            logo: logoSvg,
+    const getLogoList = useCallback(async () => {
+        if (!kitInfo?.id) return;
+        let res = await getBrandDetail({
+            type: brandType.LOGO,
+            id: kitInfo.id,
         });
-    }, []);
+        logoReset(res || []);
+    }, [kitInfo]);
+
+    const handleAddLogo = useCallback(async () => {
+        if (!kitInfo?.id) return;
+        try {
+            await saveBrand(
+                {
+                    type: brandType.LOGO,
+                    brandId: kitInfo.id,
+                },
+                {
+                    logoName: 'logo名称',
+                    logoType: 'png',
+                    logoUrl:
+                        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                },
+            );
+            await getLogoList();
+        } catch (error) {
+            message.error('添加失败');
+        }
+    }, [kitInfo]);
 
     const handleLogoDel = useCallback(
-        (
+        async (
             item: any,
-            index: number,
+            _: number,
             event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
         ) => {
             event?.stopPropagation();
-            logoRemove(index);
+            try {
+                await delBrand({
+                    type: brandType.LOGO,
+                    id: item.id,
+                });
+                getLogoList();
+            } catch (error) {
+                message.error('删除失败');
+            }
         },
-        [],
+        [kitInfo],
     );
 
     const uploadImgProps = {
@@ -58,7 +93,7 @@ const Logo = React.memo(() => {
                 console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
+                // message.success(`${info.file.name} file uploaded successfully`);
                 handleAddLogo();
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
@@ -66,26 +101,13 @@ const Logo = React.memo(() => {
         },
     };
 
+    useEffect(() => {
+        getLogoList();
+    }, [kitInfo?.id]);
+
     return (
         <div className={styles.logo}>
-            <Header
-                title="品牌Logo"
-                rightExtra={
-                    <Button
-                        icon={
-                            <IconFont
-                                type="icon-tianjia_huaban"
-                                style={{
-                                    fontSize: '18px',
-                                }}
-                            />
-                        }
-                        onClick={handleAddLogo}
-                    >
-                        上传Logo
-                    </Button>
-                }
-            />
+            <Header title="品牌Logo" />
             <div className={styles.content}>
                 <Upload {...uploadImgProps}>
                     <div className={styles.uploadWrap}>

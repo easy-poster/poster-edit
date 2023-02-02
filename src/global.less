@@ -10,8 +10,39 @@ body {
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
+    user-select: none;
 }
 
 #root {
     height: 100vh;
+}
+
+// 卡片的dropdown
+.card-drop-wrap {
+    .ant-dropdown-menu {
+        border-radius: 4px;
+        padding: 0;
+        overflow: hidden;
+
+        .ant-dropdown-menu-item {
+            padding: 10px 15px;
+
+            .menu-wrod {
+                padding-left: 8px;
+                font-size: 16px;
+            }
+        }
+
+        .ant-dropdown-menu-item:hover,
+        .ant-dropdown-menu-submenu-title:hover {
+            background-color: rgb(228 228 235);
+        }
+    }
+}
+
+// modal
+.ant-modal-root {
+    .ant-modal-mask {
+        backdrop-filter: blur(5px);
+    }
 }

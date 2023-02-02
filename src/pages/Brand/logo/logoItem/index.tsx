@@ -15,7 +15,9 @@ interface LogoItemProps {
 const LogoItem = React.memo(({ item, index, handleDelete }: LogoItemProps) => {
     return (
         <div className={styles.logoItem}>
-            <img src={item.logo} alt="" />
+            <div className={styles.imgWrap}>
+                <img src={item.logoUrl} alt="" />
+            </div>
             <IconFont
                 className={styles.delete}
                 onClick={(event) => handleDelete(item, index, event)}

@@ -1,12 +1,19 @@
+import React, { useMemo } from 'react';
 import { Link, history } from '@umijs/max';
 import LogoColor from '@/assets/logo/color.svg';
 import { MENU_LAYOUT } from '@/const';
 import { IconFont } from '@/const';
 import './index.less';
 import { useLocation } from '@umijs/max';
+import { Divider } from 'antd';
 
-const Menu = () => {
+const Menu = React.memo(() => {
     const { pathname } = useLocation();
+
+    const menuPath = useMemo(() => {
+        let index = pathname.indexOf('/', 1);
+        return index > 0 ? pathname.substring(0, index) : pathname;
+    }, [pathname]);
 
     return (
         <div className="menu-wrap">
@@ -21,7 +28,7 @@ const Menu = () => {
                                 key={item.id}
                                 to={item.route}
                                 className={`menu-item ${
-                                    pathname === item.route ? 'active-item' : ''
+                                    menuPath === item.route ? 'active-item' : ''
                                 }`}
                             >
                                 <div className="menu-icon">
@@ -51,9 +58,24 @@ const Menu = () => {
                     </div>
                     <span>设置</span>
                 </Link>
+                <Divider style={{ marginTop: 6, marginBottom: 6 }} />
+                <Link
+                    to="/trash"
+                    className={`setting-btn ${
+                        pathname === '/trash' ? 'active-item' : ''
+                    }`}
+                >
+                    <div className="setting-icon">
+                        <IconFont
+                            type="icon-lajitong"
+                            style={{ fontSize: '24px' }}
+                        />
+                    </div>
+                    <span>回收站</span>
+                </Link>
             </div>
         </div>
     );
-};
+});
 
 export default Menu;

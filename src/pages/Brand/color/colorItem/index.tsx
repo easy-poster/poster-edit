@@ -1,56 +1,176 @@
 import { IconFont } from '@/const';
 import { tools } from '@/utils';
 import { useDynamicList } from 'ahooks';
-import { Card, Popover, Typography } from 'antd';
+import { Card, MenuProps, Modal, Popover, Typography } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ColorResult } from 'react-color';
 import ColorPicker from '@/pages/Brand/components/ColorPicker';
 import MoreEditMenu from '../../components/MoreEditMenu';
 import styles from './index.less';
+import { brandType, delBrand, saveBrand, updateBrand } from '@/services/brand';
+import { kitItem } from '../../container';
 
 interface ColorItemProps {
-    colorItem: { title: string; id: string; list: Array<string> };
-    index: number;
-    handleChange: (color: string, index: number) => void;
-    handleAdd: (color: string) => void;
-    handleDelete: (
-        colorItem: any,
-        index: number,
-        event?: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-    ) => void;
+    kitInfo?: kitItem;
+    colorItem: { colorName: string; id?: string; colorValues: Array<string> };
+    isNew: boolean;
+    getColorList: () => void;
 }
 
 const ColorItem = React.memo(
-    ({
-        colorItem,
-        index,
-        handleAdd,
-        handleChange,
-        handleDelete,
-    }: ColorItemProps) => {
-        const {
-            list: colors,
-            remove: colorsRemove,
-            getKey: colorsGetKey,
-            insert: colorsInsert,
-            replace: colorsRelace,
-        } = useDynamicList(colorItem?.list || []);
-
-        const [title, setTitle] = useState(colorItem.title);
-
-        const handleChangeTitle = useCallback((value: string) => {
-            setTitle(value);
-        }, []);
-
-        const handleChangeEnd = useCallback(() => {
-            // 更新标题
-        }, [title, colorItem.title]);
+    ({ kitInfo, colorItem, isNew, getColorList }: ColorItemProps) => {
+        console.log('colorItem', colorItem);
 
         const [activePopover, setActivePopover] = useState<
             number | undefined
         >();
+        const {
+            list: colors,
+            resetList: colorsReset,
+            getKey: colorsGetKey,
+            insert: colorsInsert,
+            replace: colorsRelace,
+        } = useDynamicList(colorItem?.colorValues || []);
 
-        const handleUpdateColor = useCallback(() => {}, []);
+        const [title, setTitle] = useState('');
+
+        // 修改调色板名字
+        const handleChangeTitle = useCallback(
+            async (value: string) => {
+                if (value) {
+                    setTitle(value);
+                    try {
+                        if (isNew && kitInfo?.id) {
+                            await saveBrand(
+                                {
+                                    type: brandType.COLOR,
+                                    brandId: kitInfo.id,
+                                },
+                                {
+                                    colorName: value,
+                                },
+                            );
+                        } else {
+                            if (!colorItem.id) return;
+                            await updateBrand(
+                                {
+                                    type: brandType.COLOR,
+                                    id: colorItem.id,
+                                },
+                                {
+                                    colorName: value,
+                                },
+                            );
+                        }
+                    } catch (error) {}
+                    getColorList();
+                } else {
+                    if (colorItem?.colorName) {
+                        setTitle(colorItem.colorName);
+                    }
+                }
+            },
+            [title, colorItem?.id, isNew, kitInfo?.id],
+        );
+
+        /**
+         * @todo 应该后台处理复制
+         */
+        const handleCopy = useCallback(async () => {
+            if (!kitInfo?.id) return;
+            try {
+                await saveBrand(
+                    {
+                        type: brandType.COLOR,
+                        brandId: kitInfo.id,
+                    },
+                    {
+                        colorName: colorItem.colorName,
+                        colorValues: colors,
+                    },
+                );
+
+                getColorList();
+            } catch (error) {}
+        }, [colors, kitInfo?.id, colorItem]);
+
+        const handleOkDel = useCallback(async () => {
+            if (!colorItem.id) return;
+            try {
+                await delBrand({
+                    type: brandType.COLOR,
+                    id: colorItem.id,
+                });
+                getColorList();
+            } catch (error) {}
+        }, [colorItem?.id]);
+
+        const handleDel = useCallback(() => {
+            Modal.confirm({
+                title: '是否确定删除？',
+                className: styles.delModal,
+                content: (
+                    <>
+                        <p>
+                            你将删除
+                            <span style={{ fontWeight: 'bolder' }}>
+                                &nbsp;{colorItem.colorName}&nbsp;
+                            </span>
+                            的颜色，此操作无法撤销
+                        </p>
+                        <p>现有设计不会受到影响</p>
+                    </>
+                ),
+                icon: null,
+                centered: true,
+                cancelText: '取消',
+                okText: '是, 删除',
+                okButtonProps: {
+                    type: 'primary',
+                    danger: true,
+                },
+                onOk: handleOkDel,
+            });
+        }, [colorItem]);
+
+        const items: MenuProps['items'] = [
+            {
+                key: '1',
+                label: <div onClick={handleCopy}>复制</div>,
+            },
+            {
+                key: '2',
+                label: <div onClick={handleDel}>删除调色板</div>,
+            },
+        ];
+
+        const handleUpdateColor = useCallback(async () => {
+            try {
+                if (isNew && kitInfo?.id) {
+                    await saveBrand(
+                        {
+                            type: brandType.COLOR,
+                            brandId: kitInfo.id,
+                        },
+                        {
+                            colorValues: colors,
+                        },
+                    );
+                } else {
+                    if (!colorItem.id) return;
+                    await updateBrand(
+                        {
+                            type: brandType.COLOR,
+                            id: colorItem.id,
+                        },
+                        {
+                            colorValues: colors,
+                        },
+                    );
+                }
+            } catch (error) {}
+            getColorList();
+        }, [colors, colorItem?.id, isNew, kitInfo?.id]);
 
         const handleAddColor = (
             index: number,
@@ -72,13 +192,27 @@ const ColorItem = React.memo(
             [],
         );
 
-        const handleColorDelete = (
-            index: number,
-            event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-        ) => {
-            event?.stopPropagation();
-            colorsRemove(index);
-        };
+        const handleColorDelete = useCallback(
+            async (
+                index: number,
+                event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+            ) => {
+                event?.stopPropagation();
+                if (!colorItem.id) return;
+                colors.splice(index, 1);
+                await updateBrand(
+                    {
+                        type: brandType.COLOR,
+                        id: colorItem.id,
+                    },
+                    {
+                        colorValues: colors,
+                    },
+                );
+                getColorList();
+            },
+            [colors, colorItem?.id],
+        );
 
         const handleChangePickerColor = (color: ColorResult, index: number) => {
             if (color?.hex) {
@@ -86,13 +220,28 @@ const ColorItem = React.memo(
             }
         };
 
-        const handlePopoverOpenChange = useCallback((open: boolean) => {
-            console.log('open', open);
-            // 关闭时对比数据， 不同就更新服务器修改
-            if (!open) {
-                handleUpdateColor();
-            }
-        }, []);
+        // 这个有闭包，有问题
+        const handlePopoverOpenChange = useCallback(
+            (open: boolean) => {
+                console.log('open', open);
+                // 关闭时对比数据， 不同就更新服务器修改
+                if (!open) {
+                    handleUpdateColor();
+                }
+            },
+            [colorItem?.id, colors],
+        );
+
+        /**
+         * @todo 有闪烁问题，要解决掉
+         */
+        useEffect(() => {
+            setTitle(colorItem.colorName || '');
+        }, [colorItem.colorName]);
+
+        useEffect(() => {
+            colorsReset(colorItem.colorValues || []);
+        }, [colorItem.colorValues]);
 
         // 点击其他地方关闭popover
         useEffect(() => {
@@ -115,17 +264,18 @@ const ColorItem = React.memo(
                                 minRows: 1,
                                 maxRows: 1,
                             },
-                            tooltip: '重命名',
+                            text: title,
+                            tooltip: '点击重命名',
                             maxLength: 80,
-                            onChange: (value) => handleChangeTitle(value),
-                            onEnd: handleChangeEnd,
+                            enterIcon: null,
+                            onChange: handleChangeTitle,
                         }}
                         level={5}
                     >
-                        {colorItem.title}
+                        {title}
                     </Typography.Title>
                 }
-                extra={<MoreEditMenu colorItem={colorItem} />}
+                extra={<MoreEditMenu items={items} />}
             >
                 <div className={styles.colorContent}>
                     {colors.map((it: string, i: number) => {

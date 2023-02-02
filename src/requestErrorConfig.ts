@@ -10,7 +10,7 @@ interface ResponseStructure {
 
 const HttpBaseUrl = env.base_url;
 
-const TIMEOUT = 1000 * 20;
+const TIMEOUT = 1000 * 60;
 
 // 是否刷新中
 let isRefreshing = false;

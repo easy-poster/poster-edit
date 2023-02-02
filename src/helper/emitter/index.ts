@@ -25,4 +25,8 @@ export enum AUTH {
  */
 export enum USER {}
 
+export enum BRAND {
+    REFRESH_FONT = 'Resfresh.font',
+}
+
 export default emitter;

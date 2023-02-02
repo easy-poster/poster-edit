@@ -1,13 +1,18 @@
 import { IconFont } from '@/const';
+import emitter, { BRAND } from '@/helper/emitter';
+import { brandType, getBrandDetail, saveBrand } from '@/services/brand';
 import { useDynamicList } from 'ahooks';
 import { Button, message, Tabs, Tooltip, Upload } from 'antd';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
+import { BrandKitContext } from '../container/BrandKitContainer';
 import FontList from './fontList';
 import FontStyle from './fontStyle';
 import styles from './index.less';
 
 const Font = React.memo(() => {
+    const { kitInfo, getDetail } = useContext(BrandKitContext);
+
     const [activeTab, setActiveTab] = useState('1');
 
     const FONTLIST = [
@@ -28,27 +33,24 @@ const Font = React.memo(() => {
         },
     ];
 
-    const {
-        list: fontList,
-        resetList: fontResetList,
-        remove: fontRemove,
-        getKey: fontGetKey,
-        unshift: fontUnshift,
-        replace: fontRelace,
-    } = useDynamicList(FONTLIST);
-
-    const handleFontDel = (item: any, index: number) => {
-        console.log('item del', item);
-        fontRemove(index);
-    };
-
-    const handleAddFont = () => {
-        fontUnshift({
-            title: '新添加的',
-            src: '',
-            family: `Weibei SC`,
-        });
-    };
+    const handleAddFont = useCallback(async () => {
+        if (!kitInfo?.id) return;
+        try {
+            await saveBrand(
+                {
+                    type: brandType.FONT,
+                    brandId: kitInfo.id,
+                },
+                {
+                    fontName: '字体名字',
+                    fontNormalUrl: 'https://aaaa.com',
+                },
+            );
+            setActiveTab('2');
+            emitter.emit(BRAND.REFRESH_FONT);
+            message.success('上传成功');
+        } catch (error) {}
+    }, [kitInfo]);
 
     const uploadFontProps = {
         accept: 'text/*',
@@ -90,7 +92,6 @@ const Font = React.memo(() => {
                                         }}
                                     />
                                 }
-                                onClick={handleAddFont}
                             >
                                 上传字体文件
                             </Button>

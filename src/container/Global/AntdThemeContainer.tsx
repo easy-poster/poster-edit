@@ -11,6 +11,11 @@ const AntdThemeContainer = React.memo<React.PropsWithChildren>((props) => {
                     colorLink: '#209fa5',
                     colorLinkHover: '#25b8c0',
                 },
+                components: {
+                    Button: {
+                        borderRadius: 4,
+                    },
+                },
             }}
         >
             {children}

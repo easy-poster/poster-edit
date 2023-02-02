@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useSetState } from 'ahooks';
 import cx from 'classnames';
 import styles from './index.less';
+import { getBrandActFonts } from '@/services/brand';
+import { BrandKitContext } from '../../container/BrandKitContainer';
 
 const FontStyle = React.memo(() => {
     const stylesList = [
@@ -51,6 +53,23 @@ const FontStyle = React.memo(() => {
         fontWeight: 'bold',
         fontStyle: 'normal',
     });
+
+    const { kitInfo, getDetail } = useContext(BrandKitContext);
+
+    const handleGetFontsActive = useCallback(async () => {
+        if (!kitInfo?.id) return;
+        try {
+            let res = await getBrandActFonts({
+                brandId: kitInfo.id,
+            });
+
+            console.log('active fonts', res);
+        } catch (error) {}
+    }, [kitInfo]);
+
+    useEffect(() => {
+        handleGetFontsActive();
+    }, [kitInfo?.id]);
 
     return (
         <div className={styles.fontStyle}>

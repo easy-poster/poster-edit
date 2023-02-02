@@ -1,0 +1,40 @@
+.title {
+    margin-top: 30px;
+    height: 42px;
+    padding: 0 4px;
+    width: 96%;
+
+    :global {
+        .ant-typography {
+            font-size: 32px;
+            margin-bottom: 0 !important;
+            height: 42px;
+            line-height: 1;
+
+            .ant-typography-edit {
+                color: #000;
+                display: none !important;
+            }
+
+            &:hover {
+                .ant-typography-edit {
+                    color: #000;
+                    display: inline-block !important;
+                }
+            }
+
+            & > textarea {
+                margin: 0;
+                border: 0;
+                border-radius: 0;
+                border-bottom: 1px dashed #000;
+                padding: 0 10px;
+                font-size: 32px;
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}

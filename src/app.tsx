@@ -43,6 +43,9 @@ export async function getInitialState(): Promise<{
             let res = await getUserInfo();
             return res;
         } catch (error) {
+            /**
+             * @todo 先注释，后面释放
+             */
             // history.push(loginPath);
         }
         return undefined;

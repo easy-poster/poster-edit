@@ -6,9 +6,18 @@ export default [
         routes: [
             { path: '/', component: '@/pages/Home' },
             { path: '/user', component: '@/pages/User' },
-            { path: '/brand', component: '@/pages/Brand' },
+            {
+                path: '/brand',
+                component: '@/pages/Brand',
+                routes: [
+                    { path: '/brand', redirect: '/brand/kit' },
+                    { path: '/brand/kit', component: '@/pages/Brand/Kit' },
+                    { path: '/brand/:id', component: '@/pages/Brand/Detail' },
+                ],
+            },
             { path: '/template', component: '@/pages/Template' },
             { path: '/search', component: '@/pages/Search' },
+            { path: '/trash', component: '@/pages/Trash' },
             { path: '/*', component: '@/pages/404' },
         ],
     },

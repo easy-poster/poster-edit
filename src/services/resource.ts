@@ -1,24 +1,19 @@
-import db from '@/utils/db';
 import { request } from '@umijs/max';
 
-export function getProject({ uuid }: { uuid: string }) {
-    return db.epProject.get({ uuid });
-}
-
 /**
- * @name 获取项目列表
+ * @name 获取资源列表
  * @param params
  * @param options
  * @returns
  */
-export async function getProjectList(
+export async function getResourceList(
     params: {
         current: number;
         pageSize: number;
     },
     options?: { [key: string]: any },
 ) {
-    return request('/app/base/project/list', {
+    return request('/app/base/resource/list', {
         method: 'GET',
         params: {
             ...params,
@@ -28,18 +23,18 @@ export async function getProjectList(
 }
 
 /**
- * @name 获取项目详情
+ * @name 获取资源详情
  * @param params
  * @param options
  * @returns
  */
-export async function getProjectDetail(
+export async function getResourceDetail(
     params: {
         id: string;
     },
     options?: { [key: string]: any },
 ) {
-    return request('/app/base/project/detail', {
+    return request('/app/base/resource/detail', {
         method: 'GET',
         params: {
             ...params,
@@ -49,16 +44,16 @@ export async function getProjectDetail(
 }
 
 /**
- * @name 创建项目
+ * @name 创建资源
  * @param data
  * @param options
  * @returns
  */
-export async function saveProject(
+export async function saveResource(
     data?: any,
     options?: { [key: string]: any },
 ) {
-    return request(`/app/base/project/save`, {
+    return request(`/app/base/resource/save`, {
         method: 'POST',
         data,
         ...(options || {}),
@@ -66,16 +61,16 @@ export async function saveProject(
 }
 
 /**
- * @name 更新项目相关信息
+ * @name 更新资源相关信息
  * @param data
  * @param options
  * @returns
  */
-export async function updateProject(
+export async function updateResource(
     data?: any,
     options?: { [key: string]: any },
 ) {
-    return request(`/app/base/project/update`, {
+    return request(`/app/base/resource/update`, {
         method: 'PUT',
         data,
         ...(options || {}),
@@ -83,18 +78,18 @@ export async function updateProject(
 }
 
 /**
- * @name 删除一个项目
+ * @name 删除一个资源
  * @param data
  * @param options
  * @returns
  */
-export async function delProject(
+export async function delResource(
     data?: {
         id: string;
     },
     options?: { [key: string]: any },
 ) {
-    return request(`/app/base/project/delete`, {
+    return request(`/app/base/resource/delete`, {
         method: 'DELETE',
         data,
         ...(options || {}),
