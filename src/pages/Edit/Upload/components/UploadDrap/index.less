@@ -1,0 +1,41 @@
+.btnWrap {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: rgb(39 39 49);
+    height: 160px;
+    padding: 20px;
+
+    .uploadDrop {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        border: 2px solid rgb(21 21 26);
+        border-radius: 20px;
+        background-color: rgb(21 21 26);
+        font-size: 16px;
+        color: #fff;
+    }
+
+    .over {
+        background-image: linear-gradient(
+            to right,
+            rgb(40 144 149 / 26.9%),
+            rgb(85 207 152 / 8.1%)
+        );
+        border-color: #209fa5;
+    }
+
+    .btn {
+        text-decoration: underline;
+        color: #209fa5;
+        cursor: pointer;
+
+        &:hover {
+            color: #66e9ae;
+        }
+    }
+}

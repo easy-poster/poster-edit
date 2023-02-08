@@ -1,0 +1,36 @@
+.headerWrap {
+    padding: 10px 40px;
+
+    .rightExtra {
+        display: flex;
+    }
+}
+
+.cardSearchWrap {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.cardFilterWrap {
+    border-radius: 10px;
+    padding: 0;
+
+    :global {
+        .ant-select-item {
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: 300;
+            padding: 0 20px;
+            border-radius: 0;
+        }
+
+        .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+            background-color: rgb(77 201 145 / 30%) !important;
+        }
+
+        .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+            background-color: rgb(77 201 145 / 10%);
+        }
+    }
+}

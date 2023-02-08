@@ -5,6 +5,32 @@ export function getProject({ uuid }: { uuid: string }) {
     return db.epProject.get({ uuid });
 }
 
+export enum OrderTypes {
+    TIME = 'time',
+    NAME = 'name',
+    SIZE = 'size',
+}
+
+export interface ProjectInfo {
+    id: string;
+    uuid: string;
+    createTime: Date;
+    updateTime: Date;
+    title: string;
+    description: string;
+    content: string;
+    cover?: string;
+    width: number;
+    height: number;
+    background?: string;
+    userId: string;
+}
+
+interface listType<T> {
+    list: T[];
+    total: number;
+}
+
 /**
  * @name 获取项目列表
  * @param params
@@ -15,10 +41,12 @@ export async function getProjectList(
     params: {
         current: number;
         pageSize: number;
+        search?: string;
+        orderType?: OrderTypes;
     },
     options?: { [key: string]: any },
 ) {
-    return request('/app/base/project/list', {
+    return request<listType<ProjectInfo>>('/app/base/project/list', {
         method: 'GET',
         params: {
             ...params,
@@ -55,7 +83,7 @@ export async function getProjectDetail(
  * @returns
  */
 export async function saveProject(
-    data?: any,
+    data?: Partial<ProjectInfo>,
     options?: { [key: string]: any },
 ) {
     return request(`/app/base/project/save`, {
@@ -72,7 +100,7 @@ export async function saveProject(
  * @returns
  */
 export async function updateProject(
-    data?: any,
+    data?: Partial<ProjectInfo>,
     options?: { [key: string]: any },
 ) {
     return request(`/app/base/project/update`, {

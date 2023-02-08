@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { Button, Input, message, Modal } from 'antd';
 import { IconFont } from '@/const';
-import Header from '../../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import { BrandContext } from '../../container';
 import styles from './index.less';
 import { saveBrandItem } from '@/services/brand';
@@ -48,7 +48,7 @@ const NewKitModal = React.memo(() => {
 
     return (
         <>
-            <Header
+            <HeaderTitle
                 size="large"
                 title="品牌工具箱"
                 rightExtra={
@@ -68,7 +68,7 @@ const NewKitModal = React.memo(() => {
                 }
             />
             <Modal
-                title={<Header title="创建品牌工具箱" />}
+                title={<HeaderTitle title="创建品牌工具箱" />}
                 centered
                 keyboard={false}
                 maskClosable={false}

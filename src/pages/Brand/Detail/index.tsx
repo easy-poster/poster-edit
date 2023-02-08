@@ -1,11 +1,5 @@
 import { Breadcrumb, Typography } from 'antd';
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useLayoutEffect,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { BrandKitContext } from '../container/BrandKitContainer';
 import { Link } from '@umijs/max';
 import Color from '../color';

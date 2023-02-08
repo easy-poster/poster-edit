@@ -10,6 +10,8 @@ export enum CANVAS {
     ADD_RESOURCE = 'Canvas.AddResource',
     /** @name 删除资源 */
     DEL_RESOURCE = 'Canvas.delResource',
+    /**  @name 画布大小调节 */
+    SIZE_STAGE = 'Canvas.SizeStage',
 }
 
 /**
@@ -25,6 +27,9 @@ export enum AUTH {
  */
 export enum USER {}
 
+/**
+ * @description 品牌相关
+ */
 export enum BRAND {
     REFRESH_FONT = 'Resfresh.font',
 }

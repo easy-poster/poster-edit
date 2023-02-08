@@ -1,0 +1,82 @@
+.cardItem {
+    margin: 8px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 5px;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgb(64 87 109 / 7%);
+
+    .cardCover {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cardEdit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        visibility: hidden;
+        border-radius: 25px;
+        background: #fff;
+        color: #000;
+
+        &:hover {
+            background: #14787e;
+            color: #fff;
+        }
+    }
+
+    .activeEdit {
+        background: #14787e;
+        color: #fff;
+        visibility: visible;
+    }
+
+    .metaWrap {
+        position: absolute;
+        left: 0;
+        bottom: 4px;
+        width: 100%;
+        color: #000;
+
+        & > h3 {
+            padding-left: 10px;
+            margin: 0;
+            font-size: 18px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .sub {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            color: rgb(13 18 22 / 70%);
+
+            & > p {
+                margin: 0;
+                font-size: 12px;
+            }
+        }
+    }
+
+    &:hover {
+        border-color: transparent;
+        box-shadow: rgb(0 0 0 / 32%) 0 22px 34px, rgb(1 1 1 / 18%) 0 10px 10px;
+
+        .cardEdit {
+            visibility: visible;
+        }
+    }
+}

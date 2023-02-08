@@ -1,15 +1,32 @@
 import * as prjService from '@/services/project';
 import { epProject } from '@/utils/db';
 
-export type ProjectModalState = epProject;
+export type ProjectModalState = {
+    id: string;
+    uuid: string;
+    createTime?: Date;
+    updateTime?: Date;
+    title: string;
+    description: string;
+    content: string;
+    cover: string;
+    width: number;
+    height: number;
+    background: string;
+};
 
 const initialState: ProjectModalState = {
+    id: '',
+    uuid: '',
+    createTime: undefined,
+    updateTime: undefined,
     title: '',
+    description: '',
+    content: '',
+    cover: '',
     width: 0,
     height: 0,
     background: '',
-    uuid: '',
-    userId: 0,
 };
 
 export default {
@@ -24,8 +41,8 @@ export default {
         },
     },
     effects: {
-        *getPrj({ payload: { uuid } }, { call, put }) {
-            const prj = yield call(prjService.getProject, { uuid });
+        *getPrj({ payload: { id } }, { call, put }) {
+            const prj = yield call(prjService.getProjectDetail, { id });
             yield put({
                 type: 'setState',
                 payload: prj,

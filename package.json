@@ -29,6 +29,7 @@
         "mitt": "^3.0.0",
         "qrcode.react": "^3.0.1",
         "react-color": "^2.19.3",
+        "react-infinite-scroll-component": "^6.1.0",
         "store2": "^2.14.2",
         "uuid": "^8.3.2"
     },

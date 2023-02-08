@@ -22,7 +22,7 @@ export default function useAuth() {
 
     useEffect(() => {
         return () => {
-            emitter.all.clear();
+            emitter.off(AUTH.REFRESH_VC);
         };
     }, []);
 

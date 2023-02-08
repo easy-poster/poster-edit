@@ -1,0 +1,50 @@
+.editFooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: env(safe-area-inset-bttom, 0);
+    background-color: rgb(23 23 30);
+
+    .editToolBar {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        padding: 0 8px;
+        border-bottom: 1px solid rgb(48 48 58);
+    }
+
+    .editListBar {
+        height: 0;
+        will-change: height;
+        display: flex;
+        flex-flow: row nowrap;
+        transition: height 500ms ease-in-out 0s;
+    }
+
+    .editFooterBtn {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        height: 16px;
+        width: 60px;
+        margin-top: -16px;
+        border-radius: 8px 8px 0 0;
+        color: rgb(234 234 250);
+        background-color: rgb(23 23 30);
+        transition: color 150ms ease-out 0s;
+        cursor: pointer;
+        text-align: center;
+        line-height: 16px;
+        overflow: hidden;
+
+        &:hover {
+            background: rgb(77 201 145);
+            color: #fff;
+        }
+
+        & > span {
+            height: 16px;
+            transition: transform 0.5s ease 0.2s;
+        }
+    }
+}

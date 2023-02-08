@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import avatarImg from '@/assets/avatar.jpg';
 import './index.less';
 import { logout } from '@/services/user';
+import { saveProject } from '@/services/project';
 
 const Nav = () => {
     const { initialState } = useModel('@@initialState');
@@ -17,24 +18,13 @@ const Nav = () => {
     const handleNewProject = useCallback(async () => {
         if (!userId) return;
         try {
-            let count = await db.epProject
-                .where({
-                    userId: userId,
-                })
-                .count();
-
-            let uuid = uuidv4();
-            const id = await db.epProject.add({
-                title: `title_${count + 1}`,
-                userId: userId,
-                uuid: uuid,
-                createTime: new Date(),
-                updateTime: new Date(),
+            let res = await saveProject({
+                title: '未命名的设计',
                 width: 720,
-                height: 480,
-                background: '#FFF',
+                height: 680,
             });
-            if (id) {
+            let uuid = res?.uuid;
+            if (uuid) {
                 history.push(`/edit/${uuid}`);
             }
         } catch (error) {

@@ -22,6 +22,7 @@ const SizeBar = () => {
     const handleChangeSize = (value: number) => {
         if (!value) return;
         setSizeStage(value);
+
         if (window.handler) {
             let zoom = (value / 100).toFixed(2);
             window.handler.zoomHandler.zoomToNumber(zoom);

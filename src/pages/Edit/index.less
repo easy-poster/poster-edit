@@ -1,125 +1,46 @@
-.edit-header {
-    padding: 12px 20px;
+.editRight {
     display: flex;
-    -webkit-box-pack: end;
-    justify-content: flex-end;
-    user-select: none;
-
-    .header-left {
-        flex: 1 1 0%;
-        overflow-x: hidden;
-    }
-
-    .header-right {
-        display: flex;
-        margin-left: 8px;
-        -webkit-box-align: center;
-        align-items: center;
-        font-weight: 500;
-
-        & > div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-flow: row nowrap;
-            margin-right: 20px;
-            border-radius: 25px;
-            padding: 0 20px;
-            height: 50px;
-            cursor: pointer;
-        }
-
-        .header-update {
-            min-width: 120px;
-            background-color: rgb(44 44 56);
-            color: #fff;
-
-            .update-text {
-                margin-left: 10px;
-            }
-
-            &:hover {
-                background-color: rgb(60 60 72);
-            }
-        }
-
-        .header-export {
-            min-width: 150px;
-            background-image: linear-gradient(
-                to right,
-                rgb(20 120 126),
-                rgb(77 201 145)
-            );
-            color: #fff;
-
-            &:hover {
-                background-image: linear-gradient(
-                    to right,
-                    rgb(32 159 165),
-                    rgb(95 213 160)
-                );
-            }
-        }
-    }
-}
-
-.edit-content {
     flex: 1 1 0%;
-    display: flex;
     flex-direction: column;
+    overflow: hidden;
+    background-color: #1c1c26;
+    color: #fff;
 
-    .edit-main {
-        position: relative;
-        display: flex;
-        flex: 1;
+    ::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
     }
 
-    .edit-footer {
-        position: relative;
-        padding-bottom: env(safe-area-inset-bttom, 0);
+    ::-webkit-scrollbar-corner {
         background-color: rgb(23 23 30);
+    }
 
-        .edit-tool-bar {
+    ::-webkit-scrollbar-thumb {
+        box-shadow: none;
+        border: 4px solid transparent;
+        border-radius: 16px;
+        background-color: rgb(88 88 100);
+        background-clip: content-box;
+        transition: all 150ms ease 0s;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+        box-shadow: none;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .editContent {
+        flex: 1 1 0%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .editMain {
+            position: relative;
             display: flex;
-            align-items: center;
-            height: 40px;
-            padding: 0 8px;
-            border-bottom: 1px solid rgb(48 48 58);
-        }
-
-        .edit-list-bar {
-            height: 0;
-            will-change: height;
-            display: flex;
-            flex-flow: row nowrap;
-            transition: height 500ms ease-in-out 0s;
-        }
-
-        .edit-footer-btn {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            height: 16px;
-            width: 60px;
-            margin-top: -16px;
-            border-radius: 8px 8px 0 0;
-            color: rgb(234 234 250);
-            background-color: rgb(23 23 30);
-            transition: color 150ms ease-out 0s;
-            cursor: pointer;
-            text-align: center;
-            line-height: 16px;
-            overflow: hidden;
-
-            &:hover {
-                background: rgb(77 201 145);
-                color: #fff;
-            }
-
-            & > span {
-                height: 16px;
-                transition: transform 0.5s ease 0.2s;
-            }
+            flex: 1;
         }
     }
 }

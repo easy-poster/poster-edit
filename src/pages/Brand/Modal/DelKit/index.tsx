@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { Alert, Button, Checkbox, Input, message, Modal } from 'antd';
 import { IconFont } from '@/const';
-import Header from '../../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import { BrandContext } from '../../container';
 import styles from './index.less';
 import { delBrandItem, saveBrandItem } from '@/services/brand';
@@ -48,7 +48,7 @@ const DelKitModal = React.memo(() => {
 
     return (
         <Modal
-            title={<Header title="你确定要删除品牌工具箱吗" />}
+            title={<HeaderTitle title="你确定要删除品牌工具箱吗" />}
             centered
             maskClosable={false}
             closable={false}

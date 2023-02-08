@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { Button, Checkbox, Input, message, Modal } from 'antd';
 import { IconFont } from '@/const';
-import Header from '../../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import { BrandContext } from '../../container';
 import styles from './index.less';
 import { saveBrandItem } from '@/services/brand';
@@ -47,7 +47,7 @@ const CopyKitModal = React.memo(() => {
 
     return (
         <Modal
-            title={<Header title="复制品牌工具箱" />}
+            title={<HeaderTitle title="复制品牌工具箱" />}
             centered
             maskClosable={false}
             closable={false}

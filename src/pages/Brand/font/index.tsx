@@ -4,7 +4,7 @@ import { brandType, getBrandDetail, saveBrand } from '@/services/brand';
 import { useDynamicList } from 'ahooks';
 import { Button, message, Tabs, Tooltip, Upload } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import Header from '../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import { BrandKitContext } from '../container/BrandKitContainer';
 import FontList from './fontList';
 import FontStyle from './fontStyle';
@@ -78,7 +78,7 @@ const Font = React.memo(() => {
 
     return (
         <div className={styles.font}>
-            <Header
+            <HeaderTitle
                 title="品牌字体"
                 rightExtra={
                     <Tooltip title="字体文件一般是带有eot、otf、fon、font、ttf、ttc、woff等后缀的文件">

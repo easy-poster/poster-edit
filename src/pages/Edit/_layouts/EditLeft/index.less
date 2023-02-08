@@ -1,0 +1,72 @@
+.editLeft {
+    display: flex;
+    height: 100%;
+    position: relative;
+
+    .editResouce {
+        position: relative;
+        background-color: rgb(39 39 49);
+        color: rgb(234 234 250);
+
+        .resouceWrap {
+            position: relative;
+            height: 100%;
+            will-change: width;
+            transition: width 0.5s ease 0.05s;
+
+            .resouceContent {
+                position: relative;
+                box-sizing: border-box;
+                will-change: width;
+                user-select: auto;
+                height: 100%;
+                max-width: 40vw;
+                min-width: 296px;
+                overflow-y: auto;
+            }
+
+            .editLine {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: -3px;
+                width: 6px;
+                cursor: ew-resize;
+                border-left: 4px solid rgb(20 120 126);
+                opacity: 0;
+                transition: opacity 200ms ease-in-out 0s;
+                height: 100%;
+                z-index: 2;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .editBtn {
+            position: absolute;
+            left: 99.9%;
+            top: 40%;
+            height: 60px;
+            width: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: -20px;
+            color: rgb(234 234 250);
+            background-color: rgb(39 39 49);
+            transition: color 150ms ease-out 0s;
+            cursor: pointer;
+            line-height: 60px;
+            z-index: 1;
+
+            &:hover {
+                background: rgb(77 201 145);
+                color: #fff;
+            }
+
+            & > span {
+                transition: transform 0.5s ease 0.2s;
+            }
+        }
+    }
+}

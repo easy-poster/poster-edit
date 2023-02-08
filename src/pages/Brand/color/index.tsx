@@ -2,7 +2,7 @@ import { IconFont } from '@/const';
 import { useDynamicList } from 'ahooks';
 import { Button, List } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import Header from '../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import { BrandKitContext } from '../container/BrandKitContainer';
 import ColorItem from './colorItem';
 import { brandType, getBrandDetail, saveBrand } from '@/services/brand';
@@ -65,7 +65,7 @@ const Color = React.memo(() => {
 
     return (
         <div className={styles.color}>
-            <Header
+            <HeaderTitle
                 title="品牌颜色"
                 rightExtra={
                     <Button

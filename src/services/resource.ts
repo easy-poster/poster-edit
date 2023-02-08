@@ -1,5 +1,23 @@
 import { request } from '@umijs/max';
 
+interface listType<T> {
+    list: T[];
+    total: number;
+}
+
+export interface Resource {
+    id: string;
+    uuid: string;
+    name: string;
+    cover: string;
+    size: number;
+    // type： 1：图片（默认）， 2：视频
+    type: number;
+    url: string;
+    createTime: Date;
+    updateTime: Date;
+}
+
 /**
  * @name 获取资源列表
  * @param params
@@ -13,7 +31,7 @@ export async function getResourceList(
     },
     options?: { [key: string]: any },
 ) {
-    return request('/app/base/resource/list', {
+    return request<listType<Resource>>('/app/base/resource/list', {
         method: 'GET',
         params: {
             ...params,
@@ -50,7 +68,7 @@ export async function getResourceDetail(
  * @returns
  */
 export async function saveResource(
-    data?: any,
+    data?: Partial<Resource>,
     options?: { [key: string]: any },
 ) {
     return request(`/app/base/resource/save`, {
@@ -67,7 +85,7 @@ export async function saveResource(
  * @returns
  */
 export async function updateResource(
-    data?: any,
+    data?: Partial<Resource>,
     options?: { [key: string]: any },
 ) {
     return request(`/app/base/resource/update`, {

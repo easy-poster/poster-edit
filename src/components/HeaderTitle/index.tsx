@@ -8,7 +8,7 @@ interface HeaderProps {
     className?: string;
 }
 
-const Header = React.memo(
+const HeaderTitle = React.memo(
     ({ title, size = 'middle', rightExtra }: HeaderProps) => {
         return (
             <div className={styles.header}>
@@ -19,4 +19,4 @@ const Header = React.memo(
     },
 );
 
-export default Header;
+export default HeaderTitle;

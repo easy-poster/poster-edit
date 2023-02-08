@@ -30,6 +30,7 @@ specifiers:
   prettier-plugin-packagejson: ^2
   qrcode.react: ^3.0.1
   react-color: ^2.19.3
+  react-infinite-scroll-component: ^6.1.0
   store2: ^2.14.2
   typescript: ^4.1.2
   uuid: ^8.3.2
@@ -52,6 +53,7 @@ dependencies:
   mitt: 3.0.0
   qrcode.react: 3.1.0
   react-color: 2.19.3
+  react-infinite-scroll-component: 6.1.0
   store2: 2.14.2
   uuid: 8.3.2
 
@@ -8962,6 +8964,14 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
+  /react-infinite-scroll-component/6.1.0:
+    resolution: {integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      throttle-debounce: 2.3.0
+    dev: false
+
   /react-intl/3.12.1:
     resolution: {integrity: sha512-cgumW29mwROIqyp8NXStYsoIm27+8FqnxykiLSawWjOxGIBeLuN/+p2srei5SRIumcJefOkOIHP+NDck05RgHg==}
     peerDependencies:
@@ -10059,6 +10069,11 @@ packages:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
     dependencies:
       real-require: 0.1.0
+    dev: false
+
+  /throttle-debounce/2.3.0:
+    resolution: {integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==}
+    engines: {node: '>=8'}
     dev: false
 
   /throttle-debounce/5.0.0:

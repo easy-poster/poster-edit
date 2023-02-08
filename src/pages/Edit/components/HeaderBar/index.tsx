@@ -1,29 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input } from 'antd';
-import './index.less';
+import { Form, Input, InputRef, message } from 'antd';
 import { IconFont } from '@/const';
 import { Link } from '@umijs/max';
-import db from '@/utils/db';
-import { epProject } from '@/utils/db';
-interface HeaderBarProps {
-    projectProps: epProject;
-}
+import { useSelector } from '@umijs/max';
+import './index.less';
+import { updateProject } from '@/services/project';
+import useProject from './useProject';
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ projectProps }) => {
+const HeaderBar = React.memo(() => {
     const [form] = Form.useForm();
+    const { getProjectHooks } = useProject();
+
+    const projectState = useSelector((state: any) => {
+        return state.project;
+    });
 
     // title
     const [isTitleEdit, setIsTitleEdit] = useState(false);
     const [title, setTitle] = useState('');
-    const inputTitleRef = useRef(null);
+    const inputTitleRef = useRef<InputRef>(null);
 
     useEffect(() => {
-        if (projectProps.title) {
-            setTitle(projectProps.title);
+        if (projectState.title) {
+            setTitle(projectState.title);
         }
 
         return () => {};
-    }, [projectProps]);
+    }, [projectState]);
 
     const handleEdit = () => {
         setIsTitleEdit(true);
@@ -31,7 +34,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ projectProps }) => {
 
     useEffect(() => {
         if (isTitleEdit) {
-            inputTitleRef.current!.focus();
+            inputTitleRef.current?.focus();
         }
     }, [isTitleEdit]);
 
@@ -39,17 +42,17 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ projectProps }) => {
         try {
             const values = await form.validateFields();
             setTitle(values.title || title);
-            const updated = await db.epProject.update(projectProps.id, {
+            await updateProject({
+                id: projectState.id,
                 title: values.title || title,
-                updateTime: new Date(),
             });
-            if (updated) {
-                if (isTitleEdit) {
-                    setIsTitleEdit(false);
-                }
+            if (isTitleEdit) {
+                setIsTitleEdit(false);
             }
+            getProjectHooks();
         } catch (errInfo) {
             console.log('Save failed:', errInfo);
+            message.error('修改名字失败，请稍后再试');
         }
     };
 
@@ -93,6 +96,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ projectProps }) => {
             </div>
         </div>
     );
-};
+});
 
 export default HeaderBar;

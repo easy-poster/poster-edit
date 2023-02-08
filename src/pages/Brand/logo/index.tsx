@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react';
 import { useDynamicList } from 'ahooks';
-import Header from '../components/Header';
+import HeaderTitle from '@/components/HeaderTitle';
 import logoSvg from '@/assets/logo/color.svg';
 import logoBlack from '@/assets/logo/black.svg';
 import styles from './index.less';
@@ -107,7 +107,7 @@ const Logo = React.memo(() => {
 
     return (
         <div className={styles.logo}>
-            <Header title="品牌Logo" />
+            <HeaderTitle title="品牌Logo" />
             <div className={styles.content}>
                 <Upload {...uploadImgProps}>
                     <div className={styles.uploadWrap}>

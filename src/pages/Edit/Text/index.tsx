@@ -53,6 +53,8 @@ const TextPage = () => {
         return arr;
     }, []);
 
+    console.log('text');
+
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
 
     const handleSearch = (value: string) => {

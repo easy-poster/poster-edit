@@ -6,39 +6,45 @@
     height: 100%;
     overflow-x: hidden;
     color: #fff;
+
     .bread {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
         font-size: 18px;
         color: #fff;
+
         .bread-item {
-            min-width: 92px;
+            // min-width: 92px;
             max-width: 120px;
             padding: 6px 10px;
             cursor: pointer;
             overflow: hidden;
             text-overflow: clip;
             white-space: nowrap;
+
             &:hover {
                 background: #272731;
             }
+
             & > a {
                 color: #fff;
             }
         }
+
         .ant-input {
             padding: 4px 8px;
             background-color: transparent;
             background-image: linear-gradient(
                 to right,
-                rgba(40, 144, 149, 0.269),
-                rgba(85, 207, 152, 0.081)
+                rgb(40 144 149 / 26.9%),
+                rgb(85 207 152 / 8.1%)
             );
             border-color: #209fa5;
             color: #fff;
             font-size: 16px;
         }
+
         .bread-item-separator {
             margin: 0 4px;
         }

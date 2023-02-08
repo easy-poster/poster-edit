@@ -1,0 +1,64 @@
+.editHeader {
+    padding: 12px 20px;
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    user-select: none;
+
+    .headerLeft {
+        flex: 1 1 0%;
+        overflow-x: hidden;
+    }
+
+    .headerRight {
+        display: flex;
+        margin-left: 8px;
+        -webkit-box-align: center;
+        align-items: center;
+        font-weight: 500;
+
+        & > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: row nowrap;
+            margin-right: 20px;
+            border-radius: 25px;
+            padding: 0 20px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .headerUpdate {
+            min-width: 120px;
+            background-color: rgb(44 44 56);
+            color: #fff;
+
+            .updateText {
+                margin-left: 10px;
+            }
+
+            &:hover {
+                background-color: rgb(60 60 72);
+            }
+        }
+
+        .headerExport {
+            min-width: 150px;
+            background-image: linear-gradient(
+                to right,
+                rgb(20 120 126),
+                rgb(77 201 145)
+            );
+            color: #fff;
+
+            &:hover {
+                background-image: linear-gradient(
+                    to right,
+                    rgb(32 159 165),
+                    rgb(95 213 160)
+                );
+            }
+        }
+    }
+}

@@ -1,0 +1,94 @@
+.uploadList {
+    margin: 0 auto;
+    padding: 16px 20px 30px;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-rows: repeat(2, minmax(120px, 1fr));
+
+    .imgItem {
+        // height: 140px;
+        position: relative;
+        box-sizing: border-box;
+        cursor: pointer;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+
+        .imgWrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            height: 140px;
+            overflow: hidden;
+            position: relative;
+
+            .imgCover {
+                display: block;
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                transition: width 0.3s, height 0.3s;
+            }
+
+            .editWrap {
+                position: absolute;
+                right: 5px;
+                top: 0;
+                bottom: 0;
+                visibility: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                color: #fff;
+                font-size: 20px;
+
+                .imgBtn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 40px;
+                    height: 30px;
+                    border-radius: 8px;
+                }
+
+                .editDel {
+                    background: #209fa5;
+
+                    &:hover {
+                        background: #fff;
+
+                        span {
+                            color: #f00;
+                        }
+                    }
+                }
+
+                .editAdd {
+                    background: #209fa5;
+
+                    &:hover {
+                        background: #66e9ae;
+                    }
+                }
+            }
+
+            &:hover {
+                .editWrap {
+                    visibility: visible;
+                }
+            }
+        }
+
+        .title {
+            margin: 0;
+            text-align: left;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: rgb(171 171 184);
+        }
+    }
+}

@@ -1,91 +1,26 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
-import {
-    dynamic,
-    useModel,
-    useParams,
-    connect,
-    useDispatch,
-    useStore,
-    useSelector,
-} from '@umijs/max';
-import HeaderBar from './components/HeaderBar';
+import React from 'react';
 import SizeBar from './components/SizeBar';
-import { IconFont, ItemType } from '@/const';
-import './index.less';
-import { useSetState, useSize } from 'ahooks';
 import Stage from './Stage';
-import db, { epProject } from '@/utils/db';
+import StageContainer from './StageContainer';
+import EditHeader from './components/EditHeader';
+// import EditFooter from './components/EditFooter';
+import styles from './index.less';
 
-const Edit = () => {
-    const params = useParams<{ id: string }>();
-
-    const dispatch = useDispatch();
-    const projectState = useSelector((state: any) => {
-        return state.project;
-    });
-
-    useEffect(() => {
-        if (params?.id) {
-            dispatch({
-                type: 'project/getPrj',
-                payload: { uuid: params.id },
-            });
-        }
-
-        return () => {};
-    }, []);
-
-    const { setShowBuy } = useModel('buy');
-    const handleUpdate = () => {
-        setShowBuy(true);
-    };
-
-    const handleImgExport = () => {
-        window?.handler?.saveCanvasImage();
-    };
-
+const Edit = React.memo(() => {
     return (
-        <>
-            <div className="edit-header">
-                <div className="header-left">
-                    <HeaderBar projectProps={projectState} />
-                </div>
-                <div className="header-right">
-                    <div className="header-update" onClick={handleUpdate}>
-                        <IconFont
-                            type="icon-huiyuan"
-                            style={{ fontSize: '28px' }}
-                        />
-                        <span className="update-text">升级</span>
+        <div className={styles.editRight}>
+            <StageContainer>
+                <EditHeader />
+                <div className={styles.editContent}>
+                    <div className={styles.editMain}>
+                        <Stage />
+                        <SizeBar />
                     </div>
-                    <div className="header-export" onClick={handleImgExport}>
-                        导出
-                    </div>
+                    {/* <EditFooter /> */}
                 </div>
-            </div>
-            <div className="edit-content">
-                <div className="edit-main">
-                    <Stage />
-                    <SizeBar />
-                </div>
-                {/* <div className="edit-footer">
-          <div className="edit-tool-bar">tool bar</div>
-          <div className="edit-list-bar" ref={listRef}>
-            list bar
-          </div>
-          <div className="edit-footer-btn" onClick={handleBtnClick}>
-            <IconFont
-              type="icon-xiangzuo"
-              style={{
-                fontSize: '14px',
-                transform: `${isOpen ? `rotate(270deg)` : `rotate(90deg)`}`,
-              }}
-            />
-          </div>
-        </div> */}
-            </div>
-        </>
+            </StageContainer>
+        </div>
     );
-};
+});
 
 export default Edit;
