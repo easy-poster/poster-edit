@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { message } from 'antd';
 import cn from 'classnames';
-import { IconFont } from '@/const';
+import BridgeController from '@/helper/bridge/BridgeController';
+import { FabricObjectType, IconFont } from '@/const';
 import styles from './index.less';
-import { ResourceContext } from '../../container/ResourceContainer';
 import { Resource } from '@/services/resource';
-import { FabricObjectType } from '@/pages/Edit/Stage/canvas/const/defaults';
+import { ResourceContext } from '../../container/ResourceContainer';
 
 const UploadList = React.memo(() => {
     const { resourceList } = useContext(ResourceContext);
@@ -20,7 +20,8 @@ const UploadList = React.memo(() => {
     };
 
     const handleAdd = (data: Resource) => {
-        window.handler.add({
+        BridgeController.AddResource({
+            id: data.id,
             type: FabricObjectType.IMAGE,
             url: data.url,
         });

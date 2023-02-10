@@ -6,6 +6,19 @@ export type ItemTypeProps = 'IMAGE' | 'TEXT' | 'AUDIO' | 'LOGO';
 export const MAX_SIZE = 400;
 export const MIN_SIZE = 25;
 
+export enum FabricObjectType {
+    IMAGE = 'image',
+    ITEXT = 'i-text',
+    TEXTBOX = 'textbox',
+    SVG = 'svg',
+    VIDEO = 'video',
+    CIRCLE = 'circle',
+    POLYGON = 'polygon',
+    RECT = 'rect',
+    TRIANGLE = 'triangle',
+    LINE = 'line',
+}
+
 export const ItemType = {
     IMAGE: 'IMAGE',
     TEXT: 'TEXT',

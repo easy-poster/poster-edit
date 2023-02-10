@@ -56,8 +56,6 @@ export enum FabricObjectType {
 
 export const canvasOption = {
     preserveObjectStacking: true,
-    // width: 300,
-    // height: 150,
     selection: true,
     defaultCursor: 'default',
     backgroundColor: '#1c1c26',

@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 
-const emitter = mitt();
+const FunctionEmitter = mitt();
 
 /**
  * @description 画布相关
@@ -34,4 +34,4 @@ export enum BRAND {
     REFRESH_FONT = 'Resfresh.font',
 }
 
-export default emitter;
+export default FunctionEmitter;

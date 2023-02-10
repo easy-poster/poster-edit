@@ -1,5 +1,5 @@
 import { IconFont } from '@/const';
-import emitter, { BRAND } from '@/helper/emitter';
+import FunctionEmitter, { BRAND } from '@/helper/function';
 import { brandType, getBrandDetail, saveBrand } from '@/services/brand';
 import { useDynamicList } from 'ahooks';
 import { Button, message, Tabs, Tooltip, Upload } from 'antd';
@@ -47,7 +47,7 @@ const Font = React.memo(() => {
                 },
             );
             setActiveTab('2');
-            emitter.emit(BRAND.REFRESH_FONT);
+            FunctionEmitter.emit(BRAND.REFRESH_FONT);
             message.success('上传成功');
         } catch (error) {}
     }, [kitInfo]);

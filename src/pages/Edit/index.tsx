@@ -5,6 +5,7 @@ import StageContainer from './StageContainer';
 import EditHeader from './components/EditHeader';
 // import EditFooter from './components/EditFooter';
 import styles from './index.less';
+import EditTopBar from './components/EditTopBar';
 
 const Edit = React.memo(() => {
     return (
@@ -12,6 +13,7 @@ const Edit = React.memo(() => {
             <StageContainer>
                 <EditHeader />
                 <div className={styles.editContent}>
+                    <EditTopBar />
                     <div className={styles.editMain}>
                         <Stage />
                         <SizeBar />

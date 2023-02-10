@@ -1,5 +1,5 @@
 import { IconFont } from '@/const';
-import emitter, { BRAND } from '@/helper/emitter';
+import FunctionEmitter, { BRAND } from '@/helper/function';
 import { brandType, delBrand, getBrandDetail } from '@/services/brand';
 import { useDynamicList } from 'ahooks';
 import { List, message, Popconfirm } from 'antd';
@@ -63,9 +63,9 @@ const FontList = React.memo(() => {
         let fn = () => {
             getFontList();
         };
-        emitter.on(BRAND.REFRESH_FONT, fn);
+        FunctionEmitter.on(BRAND.REFRESH_FONT, fn);
         return () => {
-            emitter.off(BRAND.REFRESH_FONT, fn);
+            FunctionEmitter.off(BRAND.REFRESH_FONT, fn);
         };
     }, []);
 

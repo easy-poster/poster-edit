@@ -252,15 +252,15 @@ class Handler implements HandlerOptions {
     activeSelectOptions?:
         | Partial<FabricObjectOption<ActiveSelection>>
         | undefined;
-    handlers?: { [key: string]: any } | undefined;
+    handlers?: Handler | undefined;
     onDbClick?:
         | ((canvas: FabricCanvas<Canvas>, target: FabricObject<any>) => void)
         | undefined;
 
     public init(options: HandlerOptions) {
         this.initOptions(options);
-        this.initCallback(options);
         this.initHandler();
+        this.initCallback(options);
     }
 
     public initOptions = (options: HandlerOptions) => {
@@ -302,6 +302,8 @@ class Handler implements HandlerOptions {
         this.onTransaction = options.onTransaction;
         this.onInteraction = options.onInteraction;
         this.onLoad = options.onLoad;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        // options.onLoad && this.handlers && options.onLoad(this.handlers, this.canvas);
     };
 
     public initHandler = () => {
@@ -1263,6 +1265,7 @@ class Handler implements HandlerOptions {
         json: any,
         callback?: (canvas: FabricCanvas) => void,
     ) => {
+        if (_.isEmpty(json)) return;
         if (typeof json === 'string') {
             // eslint-disable-next-line no-param-reassign
             json = JSON.parse(json);

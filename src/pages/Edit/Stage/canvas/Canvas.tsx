@@ -8,6 +8,7 @@ import { epProject } from '@/utils/db';
 import { MAX_SIZE, MIN_SIZE } from '@/const';
 import styles from './index.less';
 import './styles/contextmenu.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const objectOption: FabricObjectOption = {
     stroke: 'rgba(255, 255, 255, 0)',
@@ -44,7 +45,7 @@ export type CanvasProps = Partial<Callback> & {
 };
 
 const Canvas = React.memo((props: CanvasProps) => {
-    const { projectInfo, ...other } = props;
+    const { projectInfo, onLoad, ...other } = props;
 
     const containerRef = useRef<HTMLDivElement>(null);
     const containerSize = useSize(containerRef);
@@ -58,8 +59,8 @@ const Canvas = React.memo((props: CanvasProps) => {
         )
             return;
 
+        // 初始化
         const fabricCanvas = new fabric.Canvas(stageRef.current, {
-            backgroundColor: '#000',
             width: containerRef.current.offsetWidth,
             height: containerRef.current.offsetHeight,
         });
@@ -107,10 +108,12 @@ const Canvas = React.memo((props: CanvasProps) => {
                 containerSize?.width &&
                 containerSize?.height
             ) {
-                window.handler.eventHandler.resize(
-                    containerSize?.width,
-                    containerSize?.height,
-                );
+                if (containerSize.width >= 600 || containerSize.height >= 600) {
+                    BridgeController.ResizeFromDiv({
+                        width: containerSize.width,
+                        height: containerSize.height,
+                    });
+                }
             }
         },
         [containerSize],

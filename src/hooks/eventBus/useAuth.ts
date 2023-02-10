@@ -1,4 +1,4 @@
-import emitter, { AUTH } from '@/helper/emitter';
+import FunctionEmitter, { AUTH } from '@/helper/function';
 import { useCallback, useEffect } from 'react';
 
 /**
@@ -10,19 +10,19 @@ export default function useAuth() {
      * @name 刷新图形验证码执行
      */
     const refreshCaptchaEmit = useCallback(() => {
-        emitter.emit(AUTH.REFRESH_VC);
+        FunctionEmitter.emit(AUTH.REFRESH_VC);
     }, []);
 
     /**
      * @name 刷新图形验证码监听
      */
     const refreshCaptchaOn = (callback: () => void) => {
-        emitter.on(AUTH.REFRESH_VC, () => callback());
+        FunctionEmitter.on(AUTH.REFRESH_VC, () => callback());
     };
 
     useEffect(() => {
         return () => {
-            emitter.off(AUTH.REFRESH_VC);
+            FunctionEmitter.off(AUTH.REFRESH_VC);
         };
     }, []);
 

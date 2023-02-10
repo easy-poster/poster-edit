@@ -1,5 +1,5 @@
 import * as prjService from '@/services/project';
-import { epProject } from '@/utils/db';
+import { EffectsCommandMap } from '@umijs/max';
 
 export type ProjectModalState = {
     id: string;
@@ -41,11 +41,38 @@ export default {
         },
     },
     effects: {
-        *getPrj({ payload: { id } }, { call, put }) {
+        *getPrj(
+            {
+                payload: { id },
+            }: { payload: { id: Pick<ProjectModalState, 'id'> } },
+            { call, put }: EffectsCommandMap,
+        ): any {
             const prj = yield call(prjService.getProjectDetail, { id });
             yield put({
                 type: 'setState',
                 payload: prj,
+            });
+        },
+        *updatePrj(
+            { payload }: { payload: Omit<ProjectModalState, 'id' | 'uuid'> },
+            { call, put, select }: EffectsCommandMap,
+        ) {
+            let { uuid, id } = yield select(
+                (state: { project: { id: any; uuid: any } }) => ({
+                    id: state.project.id,
+                    uuid: state.project.uuid,
+                }),
+            );
+            let data = {
+                ...payload,
+                id: id,
+            };
+            yield call(prjService.updateProject, data);
+            yield put({
+                type: 'getPrj',
+                payload: {
+                    id: uuid,
+                },
             });
         },
         // *remove({ payload: id }, { call, put }) {

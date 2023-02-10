@@ -3,6 +3,7 @@ import { Slider, Tooltip } from 'antd';
 import { IconFont, MAX_SIZE, MIN_SIZE } from '@/const';
 import './index.less';
 import { useModel } from '@umijs/max';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const SizeBar = () => {
     const { sizeStage, setSizeStage } = useModel('sizeStage');
@@ -13,20 +14,16 @@ const SizeBar = () => {
     };
 
     const handleChangeAutoSize = () => {
-        // 自适应屏幕
-        if (window.handler) {
-            window.handler.zoomHandler.zoomToFit();
-        }
+        BridgeController.ResizeFitStage();
     };
 
     const handleChangeSize = (value: number) => {
         if (!value) return;
         setSizeStage(value);
-
-        if (window.handler) {
-            let zoom = (value / 100).toFixed(2);
-            window.handler.zoomHandler.zoomToNumber(zoom);
-        }
+        let zoom = +(value / 100).toFixed(2);
+        BridgeController.ResizeStage({
+            zoom,
+        });
     };
 
     return (
