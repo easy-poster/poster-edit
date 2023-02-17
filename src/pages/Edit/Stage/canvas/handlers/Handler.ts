@@ -1,7 +1,7 @@
 import { ActiveSelection, Canvas, Gradient, Pattern } from 'fabric/fabric-impl';
 import { fabric } from 'fabric';
 import React from 'react';
-import { union } from 'lodash';
+import { union, isEmpty } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import {
     AlignmentHandler,
@@ -125,7 +125,7 @@ export interface Callback {
      */
     onDbClick?: (canvas: FabricCanvas, target: FabricObject) => void;
     /**
-     * 修改对象后的回调
+     * 修改对象位置，大小，角度等的回调
      */
     onModified?: (target: FabricObject) => void;
     /**
@@ -272,8 +272,8 @@ class Handler implements HandlerOptions {
         this.minZoom = options.minZoom;
         this.maxZoom = options.maxZoom;
         this.zoomEnabled = options.zoomEnabled;
-        this.width = options.width;
-        this.height = options.height;
+        this.width = options.workareaOption.width;
+        this.height = options.workareaOption.height;
         this.objects = [];
 
         initControls();
@@ -317,6 +317,10 @@ class Handler implements HandlerOptions {
         this.eventHandler = new EventHandler(this);
         this.shortcutHandler = new ShortcutHandler(this);
         this.contextmenuHandler = new ContextmenuHandler(this);
+
+        // setTimeout(() => {
+        //     this.initContent();
+        // }, 100)
     };
 
     // 初始化设置---------
@@ -354,21 +358,6 @@ class Handler implements HandlerOptions {
             canvasOption.backgroundColor as string | Pattern | Gradient,
             this.canvas.renderAll.bind(this.canvas),
         );
-        if (
-            typeof canvasOption.width !== 'undefined' &&
-            typeof canvasOption.height !== 'undefined'
-        ) {
-            if (this.eventHandler) {
-                this.eventHandler.resize(
-                    canvasOption.width,
-                    canvasOption.height,
-                );
-            } else {
-                this.canvas
-                    .setWidth(canvasOption.width)
-                    .setHeight(canvasOption.height);
-            }
-        }
 
         if (typeof canvasOption.selection !== 'undefined') {
             this.canvas.selection = canvasOption.selection;
@@ -699,14 +688,69 @@ class Handler implements HandlerOptions {
 
     // 对象增删改开始-------
     /**
-     * @name 添加对象
+     * @name 添加图片前计算大小
      * @param obj
-     * @param centered
-     * @param loaded
-     * @param group
      * @returns
      */
-    public add = async (obj: FabricObjectOption, centered = true) => {
+    public preAdd = (obj: FabricObjectOption) => {
+        let src = obj?.src;
+        if (!src) return;
+        let scaleX = 1;
+        let scaleY = 1;
+        const image = new Image();
+        switch (obj.type) {
+            case FabricObjectType.IMAGE:
+                image.crossOrigin = 'Anonymous';
+                image.src = src;
+                image.onload = () => {
+                    if (this.workarea?.width && this.workarea?.height) {
+                        if (
+                            image.width * image.height >
+                            this.workarea.width * this.workarea.height
+                        ) {
+                            let Maxbd =
+                                image.width / this.workarea.width >
+                                image.height / this.workarea.height
+                                    ? 'width'
+                                    : 'height';
+                            switch (Maxbd) {
+                                case 'width':
+                                    scaleX = this.workarea.width / image.width;
+                                    scaleY = this.workarea.width / image.width;
+                                    break;
+                                case 'height':
+                                    scaleX =
+                                        this.workarea.height / image.height;
+                                    scaleY =
+                                        this.workarea.height / image.height;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    let newObj = {
+                        ...obj,
+                        scaleX: scaleX,
+                        scaleY: scaleY,
+                    };
+                    this.add(newObj, true);
+                };
+                break;
+            default:
+                this.add(obj, true);
+                break;
+        }
+    };
+
+    /**
+     * @name 添加对象
+     * @param obj
+     * @param centered 是否居中
+     * @param loaded 是否是初始化加载的
+     * @returns
+     */
+    public add = (obj: FabricObjectOption, centered = true, loaded = false) => {
         const { editable, onAdd, objectOption } = this;
         const option: any = {
             hasControls: editable,
@@ -731,7 +775,7 @@ class Handler implements HandlerOptions {
         let createObj;
         switch (obj.type) {
             case FabricObjectType.IMAGE:
-                createObj = await this.addImage({
+                createObj = this.addImage({
                     ...newOption,
                     ...{
                         lockUniScaling: true,
@@ -739,13 +783,13 @@ class Handler implements HandlerOptions {
                         absolutePositioned: true,
                     },
                 });
-
                 createObj.setControlsVisibility({
                     mt: false,
                     mb: false,
                     ml: false,
                     mr: false,
                 });
+
                 break;
             case FabricObjectType.TEXTBOX:
                 createObj = this.fabricObjects[obj.type].create({
@@ -761,15 +805,17 @@ class Handler implements HandlerOptions {
         if (!createObj) return;
 
         // 添加默认居中
-        this.centerObject(createObj, centered);
+        if (centered) {
+            this.centerObject(createObj, centered);
+            // 添加选中
+            this.canvas.setActiveObject(createObj);
+        }
 
         this.canvas.add(createObj);
 
-        if (onAdd && editable) {
+        if (onAdd && editable && !loaded) {
             onAdd(createObj);
         }
-        // 添加选中
-        this.canvas.setActiveObject(createObj);
 
         return createObj;
     };
@@ -784,12 +830,14 @@ class Handler implements HandlerOptions {
         obj: FabricImage,
         source: string,
     ): Promise<FabricImage> => {
-        return new Promise((resolve) => {
-            obj.set('file', undefined);
-            obj.set('src', undefined);
+        return new Promise<FabricImage>((resolve, reject) => {
+            if (!source) return;
+            obj.set('src', source);
             resolve(
                 obj.setSrc(source, () => this.canvas.renderAll(), {
                     dirty: true,
+                    /** @warn 这里加跨域才有效果 */
+                    crossOrigin: 'Anonymous',
                 }) as FabricImage,
             );
         });
@@ -802,51 +850,19 @@ class Handler implements HandlerOptions {
      */
     public addImage = (obj: FabricImage) => {
         const { objectOption } = this;
-        const { url, ...otherOption } = obj;
-        return new Promise<FabricImage>((resolve, reject) => {
-            if (!url) return;
-            const image = new Image();
-            image.src = url;
-            image.onload = () => {
-                if (this.workarea?.width && this.workarea?.height) {
-                    let scaleX = 1;
-                    let scaleY = 1;
-                    if (
-                        image.width * image.height >
-                        this.workarea.width * this.workarea.height
-                    ) {
-                        let Maxbd =
-                            image.width / this.workarea.width >
-                            image.height / this.workarea.height
-                                ? 'width'
-                                : 'height';
-                        switch (Maxbd) {
-                            case 'width':
-                                scaleX = this.workarea.width / image.width;
-                                scaleY = this.workarea.width / image.width;
-                                break;
-                            case 'height':
-                                scaleX = this.workarea.height / image.height;
-                                scaleY = this.workarea.height / image.height;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    const createdObj = new fabric.Image(image, {
-                        originX: 'center',
-                        originY: 'center',
-                        scaleX: scaleX,
-                        scaleY: scaleY,
-                        ...objectOption,
-                        ...otherOption,
-                    }) as FabricImage;
+        const { src, ...otherOption } = obj;
+        const image = new Image();
 
-                    this.setImage(createdObj, url);
-                    resolve(createdObj);
-                }
-            };
-        });
+        const createdObj = new fabric.Image(image, {
+            originX: 'center',
+            originY: 'center',
+            ...objectOption,
+            ...otherOption,
+        }) as FabricImage;
+
+        this.setImage(createdObj, src!);
+
+        return createdObj;
     };
 
     /**
@@ -1265,11 +1281,12 @@ class Handler implements HandlerOptions {
         json: any,
         callback?: (canvas: FabricCanvas) => void,
     ) => {
-        if (_.isEmpty(json)) return;
+        if (isEmpty(json)) return;
         if (typeof json === 'string') {
             // eslint-disable-next-line no-param-reassign
             json = JSON.parse(json);
         }
+        console.log('json', json);
         let prevLeft = 0;
         let prevTop = 0;
         const workarea = json.find(
@@ -1282,6 +1299,7 @@ class Handler implements HandlerOptions {
             prevLeft = workarea.left;
             prevTop = workarea.top;
             this.workarea?.set(workarea);
+            // this.handlers?.workareaHandler.setWorkarea(true);
             this.workarea?.setCoords();
         } else {
             this.canvas.centerObject(this.workarea!);
@@ -1301,6 +1319,8 @@ class Handler implements HandlerOptions {
             obj.left! += diffLeft;
             obj.top! += diffTop;
 
+            console.log('---->', obj);
+
             this.add(obj, false);
             this.canvas.renderAll();
         });
@@ -1317,6 +1337,10 @@ class Handler implements HandlerOptions {
      * @returns
      */
     public exportJSON = () => {
+        console.log(
+            'export JSON',
+            this.canvas.toObject(this.propertiesToInclude),
+        );
         return this.canvas.toObject(this.propertiesToInclude)
             .objects as FabricObject[];
     };
@@ -1347,7 +1371,8 @@ class Handler implements HandlerOptions {
         this.eventHandler.destroy();
         this.guidelineHandler.destroy();
         this.contextmenuHandler.destroy();
-        this.clear();
+        this.workareaHandler.destroy();
+        this.canvas.clear();
     };
 }
 

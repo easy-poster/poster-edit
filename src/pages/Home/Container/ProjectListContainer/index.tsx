@@ -44,10 +44,8 @@ const ProjectListContainer = React.memo<React.PropsWithChildren>((props) => {
             });
             let list = res?.list || [];
             let total = res.total;
-            if (list?.length) {
-                setProjectList([...projectList, ...list]);
-                setPageTotal(total);
-            }
+            setProjectList([...projectList, ...list]);
+            setPageTotal(total);
         } catch (error) {
         } finally {
             setIsLoading(false);

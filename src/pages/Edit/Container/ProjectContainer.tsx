@@ -17,6 +17,13 @@ const ProjectContainer = React.memo<React.PropsWithChildren>((props) => {
                 payload: { id: params.id },
             });
         }
+
+        return () => {
+            // 重置project
+            dispatch({
+                type: 'project/resetState',
+            });
+        };
     }, [params?.id]);
 
     return <>{children}</>;

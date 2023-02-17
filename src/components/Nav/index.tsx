@@ -22,6 +22,7 @@ const Nav = () => {
                 title: '未命名的设计',
                 width: 720,
                 height: 680,
+                background: '#FFF',
             });
             let uuid = res?.uuid;
             if (uuid) {

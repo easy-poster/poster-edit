@@ -1,23 +1,30 @@
 import React, { useMemo } from 'react';
 import { useSelector, useModel } from '@umijs/max';
-import Canvas from './canvas/Canvas';
+import Canvas from './canvas';
 import Loading from './loading';
 import { useCallback } from 'react';
 import logger from '@/utils/logger';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
 
-const Stage: React.FC = () => {
-    const projectState = useSelector((state: { project: any }) => {
-        return state.project;
-    });
+const Stage = React.memo(() => {
+    /**
+     * @todo 获取画布信息提取到上层container
+     */
+    const { projectState } = useSelector(
+        (state: { project: any; loading: any }) => {
+            return {
+                projectState: state.project,
+            };
+        },
+    );
+
+    const isRender = useMemo(() => {
+        return !!projectState?.uuid;
+    }, [projectState?.uuid]);
+
     const { setSizeStage } = useModel('sizeStage', (model) => ({
         setSizeStage: model.setSizeStage,
     }));
-    // const content = useMemo(() => {
-    //     return projectState.content;
-    // }, [projectState]);
-
-    console.log('projectState', projectState);
 
     const onLoad = useCallback(() => {
         logger.info('onLoad');
@@ -63,7 +70,7 @@ const Stage: React.FC = () => {
         BridgeEmitter.emit(F2N.INTERACTIONMODE, params);
     }, []);
 
-    return projectState?.uuid ? (
+    return isRender ? (
         <Canvas
             projectInfo={projectState}
             onLoad={onLoad}
@@ -79,6 +86,6 @@ const Stage: React.FC = () => {
     ) : (
         <Loading />
     );
-};
+});
 
 export default Stage;

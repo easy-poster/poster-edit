@@ -14,7 +14,9 @@ export default defineConfig({
     define: {
         ENV,
     },
-    dva: {},
+    dva: {
+        immer: {},
+    },
     theme,
     routes,
     antd: {},

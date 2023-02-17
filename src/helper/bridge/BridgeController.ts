@@ -16,10 +16,10 @@ const BridgeController = {
      * @param params
      */
     AddResource(params: resourceParams) {
-        window.handler.add({
+        window.handler.preAdd({
             id: params.id,
             type: params.type,
-            url: params.url,
+            src: params.url,
         });
     },
 
@@ -57,6 +57,16 @@ const BridgeController = {
      */
     ExportStageJSON() {
         return window.handler.exportJSON();
+    },
+
+    /**
+     * @description 导入数据画布
+     * @param data
+     * @returns
+     */
+    ImportStageJSONString(data: any) {
+        window.handler.clear();
+        window.handler.importJSON(data);
     },
 };
 

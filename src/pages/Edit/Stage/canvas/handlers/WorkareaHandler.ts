@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import { debounce } from 'lodash';
 import { Handler } from '.';
 
 /**
@@ -6,22 +7,36 @@ import { Handler } from '.';
  */
 class WorkareaHandler {
     handler: Handler;
+    workSpaceDOM: HTMLDivElement;
+    resizeAbserve!: ResizeObserver;
 
     constructor(handler: Handler) {
         this.handler = handler;
+        this.workSpaceDOM = this.handler.container;
+
+        this.initBg();
         this.init();
+        this.initResizeObserve();
     }
 
+    /**
+     * @name 初始化画布背景
+     */
+    public initBg() {
+        this.handler.canvas.setBackgroundColor(
+            this.handler.canvasOption.backgroundColor!,
+            this.handler.canvas.renderAll.bind(this.handler.canvas),
+        );
+        this.handler.canvas.setWidth(this.workSpaceDOM.offsetWidth);
+        this.handler.canvas.setHeight(this.workSpaceDOM.offsetHeight);
+    }
+
+    /**
+     * @name 初始化画布工作区
+     */
     public init() {
         const { workareaOption } = this.handler;
         this.handler.workarea = new fabric.Rect({
-            absolutePositioned: true,
-            fill: '#FFF',
-            hasControls: true,
-            transparentCorners: false,
-            borderColor: '#0E98FC',
-            cornerColor: '#0E98FC',
-            selectable: false,
             ...workareaOption,
         }) as WorkareaObject;
         this.handler.canvas.clipPath = this.handler.workarea;
@@ -29,11 +44,78 @@ class WorkareaHandler {
         this.handler.objects = this.handler.getObjects();
         this.handler.canvas.centerObject(this.handler.workarea);
         this.handler.canvas.renderAll();
+
+        /**
+         * @todo 画布渲染完成后才渲染内容，先用定时器，应该有最佳解决办法，后面看
+         */
+        setTimeout(() => {
+            this.initContent();
+        }, 100);
     }
 
     /**
-     * 设置工作区布局
-     * @param {WorkareaLayout} layout
+     * @name 初始化监听包裹画布的div大小变化
+     */
+    private initResizeObserve() {
+        this.resizeAbserve = new ResizeObserver(
+            debounce((entries) => {
+                let width = entries[0].contentRect.width,
+                    height = entries[0].contentRect.height;
+                if (width > 200 && height > 200) {
+                    this.handler.eventHandler.resize(width, height);
+                }
+            }, 16.67),
+        );
+        if (this.workSpaceDOM) {
+            this.resizeAbserve.observe(this.workSpaceDOM);
+        }
+    }
+
+    /**
+     * @name 初始化画布内容
+     * @returns
+     */
+    private initContent() {
+        const { workareaOption } = this.handler;
+        const { content } = workareaOption;
+        let json = [];
+        if (typeof content === 'string') {
+            json = JSON.parse(content as string);
+        }
+        if (!json) return;
+
+        try {
+            let prevLeft = 0;
+            let prevTop = 0;
+            const workarea = json.find(
+                (obj: FabricObjectOption) => obj.id === 'workarea',
+            );
+            if (workarea) {
+                prevLeft = workarea.left;
+                prevTop = workarea.top;
+            }
+
+            json.forEach((obj: FabricObjectOption) => {
+                if (obj.id === 'workarea') {
+                    return;
+                }
+                const { left, top } = this.handler.workarea!;
+                const diffLeft = left! - prevLeft;
+                const diffTop = top! - prevTop;
+                obj.left! += diffLeft;
+                obj.top! += diffTop;
+                this.handler.add(obj, false, true);
+                this.handler.canvas.renderAll();
+                this.handler.objects = this.handler.getObjects();
+            });
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    /**
+     * @name 设置工作区布局
+     * @param {WorkareaLayout} layout "fixed" | "responsive" | "fullscreen"
      * @returns
      */
     public setLayout = (layout: WorkareaLayout) => {
@@ -131,6 +213,59 @@ class WorkareaHandler {
     };
 
     /**
+     * 加载工作区
+     * @param loaded
+     */
+    // public setWorkarea(loaded: boolean) {
+    //     const { canvas, workarea, editable } = this.handler;
+    //     let width = canvas.getWidth();
+    //     let height = canvas.getHeight();
+    //     if (workarea.layout === 'fixed') {
+    //         width = workarea.width * workarea.scaleX;
+    //         height = workarea.height * workarea.scaleY;
+    //     }
+    //     let scaleX = 1;
+    //     let scaleY = 1;
+    //     workarea.set({
+    //         width,
+    //         height,
+    //         scaleX,
+    //         scaleY,
+    //         isElement: false,
+    //         selectable: false,
+    //     });
+    //     canvas.centerObject(workarea);
+    //     if (editable && !loaded) {
+    //         const { layout } = workarea;
+    //         canvas.getObjects().forEach((obj) => {
+    //             const { id } = obj as FabricObject;
+    //             if (id !== 'workarea') {
+    //                 scaleX = layout === 'fullscreen' ? scaleX : obj.scaleX!;
+    //                 scaleY = layout === 'fullscreen' ? scaleY : obj.scaleY!;
+    //                 const el = this.handler.elementHandler.findById(id);
+    //                 this.handler.elementHandler.setSize(el, obj);
+    //                 obj.set({
+    //                     scaleX,
+    //                     scaleY,
+    //                 });
+    //                 obj.setCoords();
+    //             }
+    //         });
+    //     }
+    //     const center = canvas.getCenter();
+    //     const zoom =
+    //         loaded || workarea.layout === 'fullscreen'
+    //             ? 1
+    //             : this.handler.canvas.getZoom();
+    //     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    //     this.handler.zoomHandler.zoomToPoint(
+    //         new fabric.Point(center.left, center.top),
+    //         zoom,
+    //     );
+    //     canvas.renderAll();
+    // }
+
+    /**
      * 计算工作区缩放比例
      * @returns
      */
@@ -154,6 +289,15 @@ class WorkareaHandler {
             }
         }
         return { scaleX, scaleY };
+    };
+
+    /**
+     * @name 销毁所有事件
+     */
+    public destroy = () => {
+        if (this.workSpaceDOM && this.resizeAbserve) {
+            this.resizeAbserve.disconnect();
+        }
     };
 }
 

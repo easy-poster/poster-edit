@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
-import { useDebounceEffect, useSize } from 'ahooks';
 import _ from 'lodash';
 import { defaults } from './const';
 import Handler, { Callback } from './handlers/Handler';
@@ -8,7 +7,6 @@ import { epProject } from '@/utils/db';
 import { MAX_SIZE, MIN_SIZE } from '@/const';
 import styles from './index.less';
 import './styles/contextmenu.less';
-import BridgeController from '@/helper/bridge/BridgeController';
 
 const objectOption: FabricObjectOption = {
     stroke: 'rgba(255, 255, 255, 0)',
@@ -45,25 +43,24 @@ export type CanvasProps = Partial<Callback> & {
 };
 
 const Canvas = React.memo((props: CanvasProps) => {
-    const { projectInfo, onLoad, ...other } = props;
+    const { projectInfo, ...other } = props;
+
+    console.log('canvas', projectInfo, other);
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const containerSize = useSize(containerRef);
     const stageRef = useRef<HTMLCanvasElement>(null);
 
     const initFabric = useCallback(() => {
         if (
             !stageRef?.current ||
             !containerRef?.current ||
-            _.isEmpty(projectInfo)
+            _.isEmpty(projectInfo) ||
+            _.isEmpty(projectInfo.uuid)
         )
             return;
 
-        // 初始化
-        const fabricCanvas = new fabric.Canvas(stageRef.current, {
-            width: containerRef.current.offsetWidth,
-            height: containerRef.current.offsetHeight,
-        });
+        // 初始化Fabric画布对象
+        const fabricCanvas = new fabric.Canvas(stageRef.current);
 
         const canvasOption = {
             ...defaults.canvasOption,
@@ -85,42 +82,18 @@ const Canvas = React.memo((props: CanvasProps) => {
                 ...defaults.workareaOption,
                 ...{
                     name: projectInfo.title,
-                    backgroundColor: projectInfo.background,
+                    fill: projectInfo.background || '#FFF',
                     width: projectInfo.width,
                     height: projectInfo.height,
+                    content: projectInfo.content,
                 },
             },
-            width: projectInfo.width,
-            height: projectInfo.height,
             minZoom: MIN_SIZE,
             maxZoom: MAX_SIZE,
             zoomEnabled: true,
             ...other,
         });
     }, [projectInfo]);
-
-    // 根据div大小调整画布大小
-    useDebounceEffect(
-        () => {
-            if (
-                window.handler &&
-                containerRef.current &&
-                containerSize?.width &&
-                containerSize?.height
-            ) {
-                if (containerSize.width >= 600 || containerSize.height >= 600) {
-                    BridgeController.ResizeFromDiv({
-                        width: containerSize.width,
-                        height: containerSize.height,
-                    });
-                }
-            }
-        },
-        [containerSize],
-        {
-            wait: 16.67,
-        },
-    );
 
     // 初始化
     useEffect(() => {

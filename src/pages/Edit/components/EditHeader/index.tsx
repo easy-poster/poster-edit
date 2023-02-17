@@ -1,17 +1,27 @@
 import React, { useState, useRef } from 'react';
 import { IconFont } from '@/const';
 import HeaderBar from '../HeaderBar';
-import { useModel } from '@umijs/max';
+import { useModel, useDispatch } from '@umijs/max';
 import styles from './index.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const EditHeader = React.memo(() => {
     const { setShowBuy } = useModel('buy');
     const handleUpdate = () => {
         setShowBuy(true);
     };
+    const dispatch = useDispatch();
 
     const handleImgExport = () => {
-        window?.handler?.saveCanvasImage();
+        let resJson = BridgeController.ExportStageJSON();
+        if (!resJson) return;
+        dispatch({
+            type: 'project/updatePrj',
+            payload: {
+                content: JSON.stringify(resJson),
+            },
+        });
+        // window?.handler?.saveCanvasImage();
     };
 
     return (

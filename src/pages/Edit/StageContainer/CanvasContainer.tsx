@@ -14,12 +14,12 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
         console.log('listen handleAddResource');
         let resJson = BridgeController.ExportStageJSON();
         if (!resJson) return;
-        dispatch({
-            type: 'project/updatePrj',
-            payload: {
-                content: JSON.stringify(resJson),
-            },
-        });
+        // dispatch({
+        //     type: 'project/updatePrj',
+        //     payload: {
+        //         content: JSON.stringify(resJson),
+        //     },
+        // });
     }, []);
 
     // 添加后
@@ -30,12 +30,13 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
     // 删除后
     const handleDelResource = useCallback(() => {
         console.log('listen handleDelResource');
+        handleUpdate();
     }, []);
 
     // 改变元素后
     const handleModifiedResource = useCallback(() => {
         console.log('listen handleModifiedResource');
-        handleUpdate();
+        // handleUpdate();
     }, []);
 
     useEffect(() => {

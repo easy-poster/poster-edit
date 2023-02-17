@@ -482,6 +482,11 @@ declare global {
          * @type {WorkareaLayout}
          */
         layout?: WorkareaLayout;
+        /**
+         * 画布内容
+         * @type {string}
+         */
+        content?: string;
     }
 
     type WorkareaObject = FabricImage & {

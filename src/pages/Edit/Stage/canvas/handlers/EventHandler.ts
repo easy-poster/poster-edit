@@ -177,9 +177,10 @@ class EventHandler {
      * @returns
      */
     public resize = (nextWidth: number, nextHeight: number) => {
+        if (!this.handler.canvas) return;
         this.handler.canvas.setWidth(nextWidth).setHeight(nextHeight);
         this.handler.canvas.renderAll.bind(this.handler.canvas);
-        if (!this.handler.workarea && this.handler.canvasOption) {
+        if (!this.handler.workarea) {
             return;
         }
         if (!this.handler.width || !this.handler.height) return;
@@ -203,15 +204,9 @@ class EventHandler {
                         top,
                     });
                     obj.setCoords();
-                    if (obj.superType === 'element') {
-                        const { id } = obj;
-                        const el = this.handler.elementHandler.findById(id);
-                        // update the element
-                        this.handler.elementHandler.setPosition(el, obj);
-                    }
                 }
             });
-            this.handler.canvas.renderAll();
+            this.handler.canvas.requestRenderAll();
             return;
         }
     };

@@ -39,6 +39,11 @@ export default {
                 ...payload,
             };
         },
+        resetState() {
+            return {
+                ...initialState,
+            };
+        },
     },
     effects: {
         *getPrj(
@@ -68,12 +73,12 @@ export default {
                 id: id,
             };
             yield call(prjService.updateProject, data);
-            yield put({
-                type: 'getPrj',
-                payload: {
-                    id: uuid,
-                },
-            });
+            // yield put({
+            //     type: 'getPrj',
+            //     payload: {
+            //         id: uuid,
+            //     },
+            // });
         },
         // *remove({ payload: id }, { call, put }) {
         //   yield call(usersService.remove, id);
