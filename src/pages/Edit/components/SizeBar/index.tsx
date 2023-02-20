@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Slider, Tooltip } from 'antd';
 import { IconFont, MAX_SIZE, MIN_SIZE } from '@/const';
-import './index.less';
-import { useModel } from '@umijs/max';
 import BridgeController from '@/helper/bridge/BridgeController';
+import { SizeContext } from '../../StageContainer/SizeContainer';
+import styles from './index.less';
 
-const SizeBar = () => {
-    const { sizeStage, setSizeStage } = useModel('sizeStage');
+const SizeBar = React.memo(() => {
+    const { sizeStage, setSizeStage } = useContext(SizeContext);
     const [isAutoSize, setIsAutoSize] = useState(false);
 
     const handleAutoSizeOver = () => {
@@ -27,7 +27,7 @@ const SizeBar = () => {
     };
 
     return (
-        <div className="sizebar">
+        <div className={styles.sizebar}>
             <Slider
                 tooltip={{
                     formatter: null,
@@ -38,7 +38,7 @@ const SizeBar = () => {
                 onChange={handleChangeSize}
             />
             <span
-                className="sizemid"
+                className={styles.sizemid}
                 onMouseOver={handleAutoSizeOver}
                 onMouseLeave={() => setIsAutoSize(false)}
                 onClick={handleChangeAutoSize}
@@ -61,6 +61,6 @@ const SizeBar = () => {
             </span>
         </div>
     );
-};
+});
 
 export default SizeBar;

@@ -1,30 +1,29 @@
-import React, { useCallback, useMemo } from 'react';
-import { useSelector } from '@umijs/max';
-import { Button } from 'antd';
+import React, { useContext, useMemo } from 'react';
+import { FabricObjectType } from '@/const';
+import { SelectContext } from '../../StageContainer/SelectContainer';
+import ImageBar from './ImageBar';
+import TextBoxBar from './TextBoxBar';
+import CommonBar from './CommonBar';
 import styles from './index.less';
-import BridgeController from '@/helper/bridge/BridgeController';
+
+const EditTopContainerMap = {
+    [FabricObjectType.IMAGE]: ImageBar,
+    [FabricObjectType.TEXTBOX]: TextBoxBar,
+};
 
 const EditTopBar = React.memo(() => {
-    const { projectState } = useSelector(
-        (state: { project: any; loading: any }) => {
-            return {
-                projectState: state.project,
-            };
-        },
-    );
+    const { selectType } = useContext(SelectContext);
 
-    const jsonStr = useMemo(() => {
-        return projectState?.content;
-    }, [projectState?.content]);
-
-    const handleImport = useCallback(() => {
-        BridgeController.ImportStageJSONString(jsonStr);
-    }, [jsonStr]);
+    const EditTopBarMode = useMemo(() => {
+        return EditTopContainerMap[selectType] || React.Fragment;
+    }, [selectType]);
 
     return (
         <div className={styles.editTopBar}>
-            EditTopBar
-            {/* <Button onClick={handleImport}>导入</Button> */}
+            <div>
+                <EditTopBarMode />
+            </div>
+            {selectType && <CommonBar />}
         </div>
     );
 });

@@ -1,34 +1,39 @@
-.edit-menu {
+.editMenu {
     display: flex;
     width: 72px;
     height: 100vh;
     flex-flow: column nowrap;
     justify-content: space-between;
     overflow-y: auto;
-    background-color: rgb(28, 28, 38);
-    .edit-nav {
+    background-color: rgb(28 28 38);
+
+    .editNav {
         display: flex;
         flex-flow: column nowrap;
         padding-top: 30px;
-        .edit-menu-logo {
+
+        .editMenuLogo {
             min-height: 20px;
             padding: 0 4px;
             cursor: pointer;
         }
-        .edit-menu-list {
+
+        .editMenuList {
             margin-top: 20px;
-            .edit-menu-item {
+
+            .editMenuItem {
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: center;
                 align-items: center;
                 height: 72px;
                 margin-bottom: 4px;
-                color: rgb(234, 234, 250);
+                color: rgb(234 234 250);
                 cursor: pointer;
+
                 &:hover,
                 &:active {
-                    color: rgb(77, 201, 145);
+                    color: rgb(77 201 145);
                 }
 
                 & > span {
@@ -36,9 +41,9 @@
                 }
             }
 
-            .active-item {
-                background-color: rgb(39, 39, 49);
-                color: rgb(20, 120, 126);
+            .activeItem {
+                background-color: rgb(39 39 49);
+                color: rgb(20 120 126);
             }
         }
     }

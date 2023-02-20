@@ -59,7 +59,7 @@ const HeaderBar = React.memo(() => {
     return (
         <div className="header-bar-wrap">
             <div className="bread">
-                <div className="bread-item">
+                {/* <div className="bread-item">
                     <Link to="/">个人空间</Link>
                 </div>
                 <div className="bread-item-separator">
@@ -69,7 +69,7 @@ const HeaderBar = React.memo(() => {
                             fontSize: '14px',
                         }}
                     />
-                </div>
+                </div> */}
                 {!isTitleEdit ? (
                     <div className="bread-item" onClick={() => handleEdit()}>
                         {title}

@@ -394,17 +394,17 @@ class EventHandler {
      * @name 选中时
      * @param opt
      */
-    public selection = (opt: FabricEvent) => {
+    public selection = (opt: { e: FabricEvent; selected?: FabricObject[] }) => {
         const onSelect = this.handler?.onSelect;
-        const activeSelectionOption = this.handler?.activeSelectionOption;
-        const target = opt.target as FabricObject<fabric.ActiveSelection>;
-        if (target && target?.type === 'activeSelection') {
-            target.set({
-                ...activeSelectionOption,
-            });
-        }
+        // const activeSelectionOption = this.handler?.activeSelectionOption;
+        const selected = opt?.selected;
+        // if (target && target?.type === 'activeSelection') {
+        //     target.set({
+        //         ...activeSelectionOption,
+        //     });
+        // }
         if (onSelect) {
-            onSelect(target);
+            onSelect(selected);
         }
     };
 

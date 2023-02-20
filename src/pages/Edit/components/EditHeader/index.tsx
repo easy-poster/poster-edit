@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
+import { useModel, useDispatch } from '@umijs/max';
 import { IconFont } from '@/const';
 import HeaderBar from '../HeaderBar';
-import { useModel, useDispatch } from '@umijs/max';
-import styles from './index.less';
 import BridgeController from '@/helper/bridge/BridgeController';
+import UndoRedo from './UndoRedo';
+import styles from './index.less';
+import Save from './Save';
 
 const EditHeader = React.memo(() => {
     const { setShowBuy } = useModel('buy');
@@ -21,12 +23,14 @@ const EditHeader = React.memo(() => {
                 content: JSON.stringify(resJson),
             },
         });
-        // window?.handler?.saveCanvasImage();
+        window?.handler?.saveCanvasImage();
     };
 
     return (
         <div className={styles.editHeader}>
             <div className={styles.headerLeft}>
+                <UndoRedo />
+                <Save />
                 <HeaderBar />
             </div>
             <div className={styles.headerRight}>

@@ -1,11 +1,6 @@
 import mitt from 'mitt';
 
 /**
- * @description fabric内部调用外部业务的事件
- */
-const BridgeEmitter = mitt();
-
-/**
  * @description 画布相关事件
  */
 enum CMD {
@@ -25,8 +20,18 @@ enum CMD {
     INTERACTIONMODE = 'Canvas.InteractionModeType',
 }
 
+type EventsParams = {
+    [CMD.SELECT]?: FabricObject[];
+    [key: string]: any;
+};
+
 export const F2N = {
     ...CMD,
 };
+
+/**
+ * @description fabric内部调用外部业务的事件
+ */
+const BridgeEmitter = mitt<EventsParams>();
 
 export default BridgeEmitter;

@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { useSelector, useModel } from '@umijs/max';
+import React, { useContext, useCallback, useMemo } from 'react';
+import { useSelector } from '@umijs/max';
 import Canvas from './canvas';
 import Loading from './loading';
-import { useCallback } from 'react';
 import logger from '@/utils/logger';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
+import { SizeContext } from '../StageContainer/SizeContainer';
 
 const Stage = React.memo(() => {
     /**
@@ -22,9 +22,7 @@ const Stage = React.memo(() => {
         return !!projectState?.uuid;
     }, [projectState?.uuid]);
 
-    const { setSizeStage } = useModel('sizeStage', (model) => ({
-        setSizeStage: model.setSizeStage,
-    }));
+    const { setSizeStage } = useContext(SizeContext);
 
     const onLoad = useCallback(() => {
         logger.info('onLoad');
@@ -45,8 +43,8 @@ const Stage = React.memo(() => {
         BridgeEmitter.emit(F2N.DEL_RESOURCE, params);
     }, []);
 
-    const onSelect = useCallback((params: any) => {
-        logger.info('onSelect');
+    const onSelect = useCallback((params?: FabricObject[]) => {
+        logger.info('onSelect', params);
         BridgeEmitter.emit(F2N.SELECT, params);
     }, []);
 

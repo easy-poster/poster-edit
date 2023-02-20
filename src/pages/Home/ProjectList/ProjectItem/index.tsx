@@ -16,13 +16,8 @@ const items = [
         icon: <IconFont type="icon-fuzhi" style={{ fontSize: '22px' }} />,
     },
     {
-        label: '下载',
-        key: 2,
-        icon: <IconFont type="icon-xiazai" style={{ fontSize: '22px' }} />,
-    },
-    {
         label: '删除',
-        key: 3,
+        key: 2,
         icon: <IconFont type="icon-shanchu" style={{ fontSize: '22px' }} />,
     },
 ];
@@ -77,9 +72,6 @@ const ProjectItem = React.memo(
                     console.log('制作副本');
                     break;
                 case 2:
-                    console.log('下载');
-                    break;
-                case 3:
                     console.log('删除');
                     handleDel();
                     break;

@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useModel } from '@umijs/max';
 import EditMenu from '@/pages/Edit/components/EditMenu';
 import { IconFont } from '@/const';
 import UploadPage from '../../Upload';
@@ -15,7 +14,7 @@ const EditLeft = React.memo(() => {
     const lineDropRef = useRef<HTMLDivElement>(null);
     const resouceWrapRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(true);
-    const { activeTab } = useModel('switchEditTab');
+    const [activeTab, setActiveTab] = useState(1);
 
     useEffect(() => {
         const lineDropDOM = lineDropRef.current;
@@ -111,7 +110,7 @@ const EditLeft = React.memo(() => {
 
     return (
         <div className={styles.editLeft}>
-            <EditMenu />
+            <EditMenu activeTab={activeTab} setActiveTab={setActiveTab} />
             <div className={styles.editResouce}>
                 <div className={styles.resouceWrap} ref={resouceWrapRef}>
                     <div className={styles.resouceContent} ref={resouceRef}>

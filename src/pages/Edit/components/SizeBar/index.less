@@ -11,30 +11,32 @@
     padding: 4px 10px;
     background-color: rgb(0 0 0 / 50%);
 
-    .ant-slider {
-        width: 100px;
-        margin-left: 12px;
+    :global {
+        .ant-slider {
+            width: 100px;
+            margin-left: 12px;
 
-        .ant-slider-track {
-            background-image: linear-gradient(
-                to right,
-                rgb(20 120 126),
-                rgb(77 201 145)
-            );
+            .ant-slider-track {
+                background-image: linear-gradient(
+                    to right,
+                    rgb(20 120 126),
+                    rgb(77 201 145)
+                );
+            }
+
+            .ant-slider-rail {
+                background-color: #fff;
+            }
+
+            .ant-slider-handle::after {
+                background-color: #fff;
+                box-shadow: 0 0 0 2px rgb(77 201 145);
+            }
         }
 
-        .ant-slider-rail {
-            background-color: #fff;
+        .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+            border-color: rgb(77 201 145);
         }
-
-        .ant-slider-handle::after {
-            background-color: #fff;
-            box-shadow: 0 0 0 2px rgb(77 201 145);
-        }
-    }
-
-    .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
-        border-color: rgb(77 201 145);
     }
 
     .sizemid {

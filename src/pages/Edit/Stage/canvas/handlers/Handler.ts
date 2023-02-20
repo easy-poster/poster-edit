@@ -131,7 +131,7 @@ export interface Callback {
     /**
      * 选中时的回调
      */
-    onSelect?: (target: FabricObject) => void;
+    onSelect?: (target?: FabricObject[]) => void;
     /**
      * 返回右键上下文
      */
@@ -206,7 +206,7 @@ class Handler implements HandlerOptions {
     public onClick?: (canvas: FabricCanvas, target: FabricObject) => void;
     public onDblClick?: (canvas: FabricCanvas, target: FabricObject) => void;
     public onModified?: (target: FabricObject) => void;
-    public onSelect?: (target: FabricObject) => void;
+    public onSelect?: (target?: FabricObject[]) => void;
     public onRemove?: (target: FabricObject) => void;
     public onTransaction?: (transaction: TransactionEvent) => void;
     public onInteraction?: (interactionMode: InteractionMode) => void;
@@ -317,10 +317,6 @@ class Handler implements HandlerOptions {
         this.eventHandler = new EventHandler(this);
         this.shortcutHandler = new ShortcutHandler(this);
         this.contextmenuHandler = new ContextmenuHandler(this);
-
-        // setTimeout(() => {
-        //     this.initContent();
-        // }, 100)
     };
 
     // 初始化设置---------

@@ -1,43 +1,53 @@
-import React, { useMemo, useState } from 'react';
-import { MENU_EDIT } from '@/const';
-import { Link, history, useModel } from '@umijs/max';
-import { IconFont } from '@/const';
+import React from 'react';
+import cn from 'classnames';
+import { history } from '@umijs/max';
+import { MENU_EDIT, IconFont } from '@/const';
 import LogoColor from '@/assets/logo/color.svg';
-import './index.less';
+import styles from './index.less';
 
-const EditMenu = () => {
-    const { activeTab, setActiveTab } = useModel('switchEditTab');
-
-    return (
-        <div className="edit-menu">
-            <nav className="edit-nav">
-                <div className="edit-menu-logo">
-                    <img src={LogoColor} onClick={() => history.push('/')} />
-                </div>
-                <div className="edit-menu-list">
-                    {MENU_EDIT.map((item) => {
-                        return (
-                            <div
-                                key={item.id}
-                                className={`edit-menu-item ${
-                                    activeTab === item.id ? 'active-item' : ''
-                                }`}
-                                onClick={() => setActiveTab(item.id)}
-                            >
-                                <div className="edit-menu-icon">
-                                    <IconFont
-                                        type={item.icon}
-                                        style={{ fontSize: '18px' }}
-                                    />
+const EditMenu = React.memo(
+    ({
+        activeTab,
+        setActiveTab,
+    }: {
+        activeTab: number;
+        setActiveTab: (index: number) => void;
+    }) => {
+        return (
+            <div className={styles.editMenu}>
+                <nav className={styles.editNav}>
+                    <div className={styles.editMenuLogo}>
+                        <img
+                            src={LogoColor}
+                            onClick={() => history.push('/')}
+                        />
+                    </div>
+                    <div className={styles.editMenuList}>
+                        {MENU_EDIT.map((item) => {
+                            return (
+                                <div
+                                    key={item.id}
+                                    className={cn(styles.editMenuItem, {
+                                        [styles.activeItem]:
+                                            activeTab === item.id,
+                                    })}
+                                    onClick={() => setActiveTab(item.id)}
+                                >
+                                    <div className={styles.editMenuIcon}>
+                                        <IconFont
+                                            type={item.icon}
+                                            style={{ fontSize: '18px' }}
+                                        />
+                                    </div>
+                                    <span>{item.name}</span>
                                 </div>
-                                <span>{item.name}</span>
-                            </div>
-                        );
-                    })}
-                </div>
-            </nav>
-        </div>
-    );
-};
+                            );
+                        })}
+                    </div>
+                </nav>
+            </div>
+        );
+    },
+);
 
 export default EditMenu;
