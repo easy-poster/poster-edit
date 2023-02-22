@@ -43,6 +43,7 @@ class WorkareaHandler {
         this.handler.canvas.add(this.handler.workarea);
         this.handler.objects = this.handler.getObjects();
         this.handler.canvas.centerObject(this.handler.workarea);
+        this.handler.workarea?.setCoords();
         this.handler.canvas.renderAll();
 
         /**
@@ -50,7 +51,7 @@ class WorkareaHandler {
          */
         setTimeout(() => {
             this.initContent();
-        }, 100);
+        }, 1000);
     }
 
     /**
@@ -108,6 +109,14 @@ class WorkareaHandler {
                 this.handler.canvas.renderAll();
                 this.handler.objects = this.handler.getObjects();
             });
+            let transactionState = json.filter((obj: any) => {
+                if (obj.id === 'workarea') {
+                    return false;
+                }
+                return true;
+            });
+            // 初始化撤销状态数据
+            this.handler.transactionHandler.initState(transactionState);
         } catch (error) {
             console.log('error', error);
         }

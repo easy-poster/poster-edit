@@ -16,6 +16,10 @@ enum CMD {
     SELECT = 'Canvas.Select',
     /** @name 右键上下文 */
     CONTEXT = 'Canvas.Context',
+    /** @name 监听撤销重做操作 */
+    TRANSACTION = 'Canvas.Transaction',
+    /** @name 可撤销的操作 */
+    UNDOABLR = 'Canvas.Undoable',
     /** @name 画布模式切换 */
     INTERACTIONMODE = 'Canvas.InteractionModeType',
 }

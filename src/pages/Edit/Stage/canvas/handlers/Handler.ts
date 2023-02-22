@@ -312,11 +312,11 @@ class Handler implements HandlerOptions {
         this.zoomHandler = new ZoomHandler(this);
         this.alignmentHandler = new AlignmentHandler(this);
         this.guidelineHandler = new GuidelineHandler(this);
+        this.contextmenuHandler = new ContextmenuHandler(this);
         this.interactionHandler = new InteractionHandler(this);
         this.transactionHandler = new TransactionHandler(this);
         this.eventHandler = new EventHandler(this);
         this.shortcutHandler = new ShortcutHandler(this);
-        this.contextmenuHandler = new ContextmenuHandler(this);
     };
 
     // 初始化设置---------
@@ -684,58 +684,78 @@ class Handler implements HandlerOptions {
 
     // 对象增删改开始-------
     /**
+     * @name 加载图片
+     * @description 先加载完图片才能add进canvas
+     * @param obj
+     * @returns
+     */
+    public loadImage = (obj: FabricObjectOption) => {
+        return new Promise<any>((resolve, reject) => {
+            let scaleX = 1;
+            let scaleY = 1;
+            try {
+                fabric.Image.fromURL(
+                    obj.src,
+                    (image) => {
+                        if (this.workarea?.width && this.workarea?.height) {
+                            if (
+                                image.width! * image.height! >
+                                this.workarea.width * this.workarea.height
+                            ) {
+                                let Maxbd =
+                                    image.width! / this.workarea.width >
+                                    image.height! / this.workarea.height
+                                        ? 'width'
+                                        : 'height';
+                                switch (Maxbd) {
+                                    case 'width':
+                                        scaleX =
+                                            this.workarea.width / image.width!;
+                                        scaleY =
+                                            this.workarea.width / image.width!;
+                                        break;
+                                    case 'height':
+                                        scaleX =
+                                            this.workarea.height /
+                                            image.height!;
+                                        scaleY =
+                                            this.workarea.height /
+                                            image.height!;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        let newObj = {
+                            ...image,
+                            scaleX: scaleX.toFixed(8),
+                            scaleY: scaleY.toFixed(8),
+                        };
+                        resolve(newObj);
+                    },
+                    {
+                        crossOrigin: 'anonymous',
+                    },
+                );
+            } catch (error) {}
+        });
+    };
+
+    /**
      * @name 添加图片前计算大小
      * @param obj
      * @returns
      */
-    public preAdd = (obj: FabricObjectOption) => {
+    public preAdd = async (obj: FabricObjectOption) => {
         let src = obj?.src;
         if (!src) return;
-        let scaleX = 1;
-        let scaleY = 1;
-        const image = new Image();
-        switch (obj.type) {
-            case FabricObjectType.IMAGE:
-                image.crossOrigin = 'Anonymous';
-                image.src = src;
-                image.onload = () => {
-                    if (this.workarea?.width && this.workarea?.height) {
-                        if (
-                            image.width * image.height >
-                            this.workarea.width * this.workarea.height
-                        ) {
-                            let Maxbd =
-                                image.width / this.workarea.width >
-                                image.height / this.workarea.height
-                                    ? 'width'
-                                    : 'height';
-                            switch (Maxbd) {
-                                case 'width':
-                                    scaleX = this.workarea.width / image.width;
-                                    scaleY = this.workarea.width / image.width;
-                                    break;
-                                case 'height':
-                                    scaleX =
-                                        this.workarea.height / image.height;
-                                    scaleY =
-                                        this.workarea.height / image.height;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    let newObj = {
-                        ...obj,
-                        scaleX: scaleX,
-                        scaleY: scaleY,
-                    };
-                    this.add(newObj, true);
-                };
-                break;
-            default:
-                this.add(obj, true);
-                break;
+        if (obj.type === FabricObjectType.IMAGE) {
+            let newObj = await this.loadImage(obj);
+            newObj = { ...newObj, ...obj };
+            this.add(newObj, true);
+        } else {
+            this.add(obj, true);
         }
     };
 
@@ -808,6 +828,11 @@ class Handler implements HandlerOptions {
         }
 
         this.canvas.add(createObj);
+        this.objects = this.getObjects();
+
+        if (!this.transactionHandler.active && !loaded) {
+            this.transactionHandler.save('add');
+        }
 
         if (onAdd && editable && !loaded) {
             onAdd(createObj);
@@ -1322,6 +1347,14 @@ class Handler implements HandlerOptions {
         });
 
         this.objects = this.getObjects();
+        let a = json.filter((obj: any) => {
+            if (obj.id === 'workarea') {
+                return false;
+            }
+            return true;
+        });
+        console.log('----->', a);
+
         if (callback) {
             callback(this.canvas);
         }
@@ -1337,7 +1370,8 @@ class Handler implements HandlerOptions {
             'export JSON',
             this.canvas.toObject(this.propertiesToInclude),
         );
-        return this.canvas.toObject(this.propertiesToInclude)
+        this.canvas.renderAll();
+        return this.canvas.renderAll().toObject(this.propertiesToInclude)
             .objects as FabricObject[];
     };
 

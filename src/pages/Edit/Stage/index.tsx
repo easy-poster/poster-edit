@@ -65,7 +65,7 @@ const Stage = React.memo(() => {
 
     const onTransaction = useCallback((params: any) => {
         logger.info('onTransaction');
-        BridgeEmitter.emit(F2N.INTERACTIONMODE, params);
+        BridgeEmitter.emit(F2N.TRANSACTION, params);
     }, []);
 
     return isRender ? (

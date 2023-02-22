@@ -7,6 +7,9 @@ interface SizeContextProps {
 
 export const SizeContext = React.createContext<SizeContextProps>(null as any);
 
+/**
+ * @description 画布大小调节
+ */
 const SizeContainer = React.memo<React.PropsWithChildren>((props) => {
     const { children } = props;
 

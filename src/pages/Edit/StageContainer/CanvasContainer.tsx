@@ -11,9 +11,10 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
     const dispatch = useDispatch();
 
     const handleUpdate = useCallback(async () => {
-        console.log('listen handleAddResource');
+        console.log('listen handleUpdate');
         let resJson = BridgeController.ExportStageJSON();
         if (!resJson) return;
+        BridgeEmitter.emit(F2N.UNDOABLR);
         dispatch({
             type: 'project/updatePrj',
             payload: {
@@ -40,15 +41,23 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
         handleUpdate();
     }, []);
 
+    // 撤销重做后
+    const handleTransaction = useCallback(() => {
+        console.log('listen handleTransaction');
+        handleUpdate();
+    }, []);
+
     useEffect(() => {
         BridgeEmitter.on(F2N.ADD_RESOURCE, handleAddResource);
         BridgeEmitter.on(F2N.DEL_RESOURCE, handleDelResource);
         BridgeEmitter.on(F2N.MODIFIED_STAGE, handleModifiedResource);
+        BridgeEmitter.on(F2N.TRANSACTION, handleTransaction);
 
         return () => {
             BridgeEmitter.off(F2N.ADD_RESOURCE, handleAddResource);
             BridgeEmitter.off(F2N.DEL_RESOURCE, handleDelResource);
             BridgeEmitter.off(F2N.MODIFIED_STAGE, handleModifiedResource);
+            BridgeEmitter.off(F2N.TRANSACTION, handleTransaction);
         };
     }, []);
 

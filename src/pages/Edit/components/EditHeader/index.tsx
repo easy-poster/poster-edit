@@ -16,14 +16,15 @@ const EditHeader = React.memo(() => {
 
     const handleImgExport = () => {
         let resJson = BridgeController.ExportStageJSON();
+        console.log('resJson', resJson);
         if (!resJson) return;
-        dispatch({
-            type: 'project/updatePrj',
-            payload: {
-                content: JSON.stringify(resJson),
-            },
-        });
-        window?.handler?.saveCanvasImage();
+        // dispatch({
+        //     type: 'project/updatePrj',
+        //     payload: {
+        //         content: JSON.stringify(resJson),
+        //     },
+        // });
+        // window?.handler?.saveCanvasImage();
     };
 
     return (

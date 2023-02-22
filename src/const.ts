@@ -130,6 +130,6 @@ export const SETTING_MENU_LAYOUT = [
 
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
-        '//at.alicdn.com/t/c/font_2919693_ytcnlwfmksi.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+        '//at.alicdn.com/t/c/font_2919693_dne7wkqplei.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
     ],
 });

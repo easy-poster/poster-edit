@@ -220,6 +220,9 @@ class EventHandler {
         const { target } = opt;
         if (!target) return;
         if (target.type === 'circle' && target.parentId) return;
+        if (!this.handler.transactionHandler.active) {
+            this.handler.transactionHandler.save('add');
+        }
         const onModified = this.handler?.onModified;
         if (onModified) {
             onModified(target);
@@ -273,6 +276,7 @@ class EventHandler {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public moved = (_opt: FabricEvent) => {
+        console.error('>>>>>');
         if (!this.handler.transactionHandler.active) {
             this.handler.transactionHandler.save('moved');
         }

@@ -5,6 +5,9 @@ import edgeIcon from '@/assets/canvas/edgecontrol.svg';
 import rotateIcon from '@/assets/canvas/rotate.png';
 
 const initControls = () => {
+    // 各种大小精度
+    fabric.Object.NUM_FRACTION_DIGITS = 8;
+
     fabric.Canvas.prototype.selectionColor = 'rgba(40, 144, 149, 0.269)';
     fabric.Canvas.prototype.selectionBorderColor = '#209fa5';
     fabric.Canvas.prototype.selectionLineWidth = 1;
