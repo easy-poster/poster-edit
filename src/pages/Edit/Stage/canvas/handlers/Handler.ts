@@ -702,6 +702,8 @@ class Handler implements HandlerOptions {
                                 image.width! * image.height! >
                                 this.workarea.width * this.workarea.height
                             ) {
+                                // 加个误差值
+                                let EXTRA = 1;
                                 let Maxbd =
                                     image.width! / this.workarea.width >
                                     image.height! / this.workarea.height
@@ -710,16 +712,18 @@ class Handler implements HandlerOptions {
                                 switch (Maxbd) {
                                     case 'width':
                                         scaleX =
-                                            this.workarea.width / image.width!;
+                                            (EXTRA + this.workarea.width) /
+                                            image.width!;
                                         scaleY =
-                                            this.workarea.width / image.width!;
+                                            (EXTRA + this.workarea.width) /
+                                            image.width!;
                                         break;
                                     case 'height':
                                         scaleX =
-                                            this.workarea.height /
+                                            (EXTRA + this.workarea.height) /
                                             image.height!;
                                         scaleY =
-                                            this.workarea.height /
+                                            (EXTRA + this.workarea.height) /
                                             image.height!;
                                         break;
                                     default:

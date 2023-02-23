@@ -59,6 +59,25 @@ const EditLeft = React.memo(() => {
         setIsOpen(!isOpen);
     };
 
+    const renderItem = () => {
+        switch (+activeTab) {
+            case 1:
+                return <UploadPage />;
+            case 2:
+                return <ImagePage />;
+            case 3:
+                return <GraphicalPage />;
+            case 4:
+                return <TextPage />;
+            case 5:
+                return <BackgroundPage />;
+            case 6:
+                return <BrandPage />;
+            default:
+                return <UploadPage />;
+        }
+    };
+
     useLayoutEffect(() => {
         const resouceDOM = resouceRef.current;
         if (resouceDOM) {
@@ -88,25 +107,6 @@ const EditLeft = React.memo(() => {
             clearTimeout(timer);
         };
     }, [isOpen]);
-
-    const renderItem = () => {
-        switch (+activeTab) {
-            case 1:
-                return <UploadPage />;
-            case 2:
-                return <ImagePage />;
-            case 3:
-                return <GraphicalPage />;
-            case 4:
-                return <TextPage />;
-            case 5:
-                return <BackgroundPage />;
-            case 6:
-                return <BrandPage />;
-            default:
-                return <UploadPage />;
-        }
-    };
 
     return (
         <div className={styles.editLeft}>

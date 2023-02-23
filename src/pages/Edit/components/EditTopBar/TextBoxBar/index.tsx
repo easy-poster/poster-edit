@@ -1,10 +1,32 @@
 import React from 'react';
+import FontColor from './FontColor';
+import FontFamily from './FontFamily';
+import FontItalic from './FontItalic';
+import FontSize from './FontSize';
+import FontWeight from './FontWeight';
+import TextLine from './TextLine';
+import TextUppercase from './TextUppercase';
+import TextAlign from './TextAlign';
+import FontSpacing from './FontSpacing';
+
+import styles from './index.less';
+import FontVertical from './FontVertical';
+import FontStyle from './FontStyle';
 
 const TextBoxBar = React.memo(() => {
     return (
-        <div>
-            字体、 字体大小、 颜色、 加粗、 斜体、 下划线、 大小写、 文字对齐、
-            间距、 竖版文字、 风格
+        <div className={styles.textBarWrap}>
+            <FontFamily />
+            <FontSize />
+            <FontColor />
+            <FontWeight />
+            <FontItalic />
+            <TextLine />
+            <TextUppercase />
+            <TextAlign />
+            <FontSpacing />
+            <FontVertical />
+            <FontStyle />
         </div>
     );
 });

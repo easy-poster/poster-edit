@@ -1,0 +1,27 @@
+.barButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    border-radius: 6px;
+    padding: 0 12px;
+    color: #ababb8;
+    cursor: pointer;
+
+    &:hover {
+        background: #2c2c38;
+        color: #fff;
+
+        span > svg {
+            fill: #fff;
+
+            path {
+                fill: unset;
+            }
+        }
+    }
+
+    & + & {
+        margin-left: 10px;
+    }
+}

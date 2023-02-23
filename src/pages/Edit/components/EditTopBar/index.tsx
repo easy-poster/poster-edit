@@ -20,9 +20,7 @@ const EditTopBar = React.memo(() => {
 
     return (
         <div className={styles.editTopBar}>
-            <div>
-                <EditTopBarMode />
-            </div>
+            <EditTopBarMode />
             {selectType && <CommonBar />}
         </div>
     );

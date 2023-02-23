@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 import { Handler } from '.';
 
-const LINECOLOR = '#4dc991';
+const LINECOLOR = '#41b349'; //'#4dc991';
 
 /**
  * @description 对齐辅助线
