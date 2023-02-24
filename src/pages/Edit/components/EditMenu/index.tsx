@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import cn from 'classnames';
 import { history } from '@umijs/max';
-import { MENU_EDIT, IconFont } from '@/const';
+import { MENU_EDIT, IconFont, ResourcePageType } from '@/const';
+import {
+    OperatingPanelContext,
+    OperatingPanelType,
+} from '../../Container/OperatingPanelContainer';
 import LogoColor from '@/assets/logo/color.svg';
 import styles from './index.less';
 
@@ -10,9 +14,20 @@ const EditMenu = React.memo(
         activeTab,
         setActiveTab,
     }: {
-        activeTab: number;
-        setActiveTab: (index: number) => void;
+        activeTab: ResourcePageType;
+        setActiveTab: (val: ResourcePageType) => void;
     }) => {
+        const { panelType, setPanelType } = useContext(OperatingPanelContext);
+
+        const isNullPanel = useMemo(() => {
+            return panelType === OperatingPanelType.NONE;
+        }, [panelType]);
+
+        const handleClick = useCallback((id: ResourcePageType) => {
+            setActiveTab(id);
+            setPanelType(OperatingPanelType.NONE);
+        }, []);
+
         return (
             <div className={styles.editMenu}>
                 <nav className={styles.editNav}>
@@ -29,9 +44,10 @@ const EditMenu = React.memo(
                                     key={item.id}
                                     className={cn(styles.editMenuItem, {
                                         [styles.activeItem]:
-                                            activeTab === item.id,
+                                            activeTab === item.id &&
+                                            isNullPanel,
                                     })}
-                                    onClick={() => setActiveTab(item.id)}
+                                    onClick={() => handleClick(item.id)}
                                 >
                                     <div className={styles.editMenuIcon}>
                                         <IconFont

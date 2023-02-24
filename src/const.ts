@@ -67,10 +67,17 @@ export const MENU_LAYOUT = [
 /**
  * @name 编辑页菜单配置
  */
+export enum ResourcePageType {
+    UPLOADPAGE = 'UPLOADPAGE',
+    IMAGEPAGE = 'IMAGEPAGE',
+    GRAPHICALPAGE = 'GRAPHICALPAGE',
+    TEXTPAGE = 'TEXTPAGE',
+    BRANDPAGE = 'BRANDPAGE',
+}
 export const MENU_EDIT = [
     {
         name: '上传',
-        id: 1,
+        id: ResourcePageType.UPLOADPAGE,
         icon: 'icon-icon_tianjia',
         actIcon: 'icon-tianjiatianchong',
         route: '/',
@@ -89,7 +96,7 @@ export const MENU_EDIT = [
     // },
     {
         name: '文字',
-        id: 4,
+        id: ResourcePageType.TEXTPAGE,
         icon: 'icon-wenzi',
         route: '/template',
     },

@@ -1,6 +1,16 @@
 import { FabricObjectType } from '@/const';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
+import {
+    OperatingPanelContext,
+    OperatingPanelType,
+} from './OperatingPanelContainer';
 
 interface SelectContextProps {
     selectType: FabricObjectType | string;
@@ -11,9 +21,13 @@ export const SelectContext = React.createContext<SelectContextProps>(
     null as any,
 );
 
+/**
+ * @description 画布内容选中时
+ */
 const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     const { children } = props;
 
+    const { setPanelType } = useContext(OperatingPanelContext);
     const [selectObjs, setSelectObjs] = useState<FabricObject[]>();
     const [selectType, setSelectType] = useState('');
 
@@ -27,20 +41,24 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     /**
      * @description 选中画布对象时
      */
-    const handleSelect = useCallback((value?: FabricObject[]) => {
-        if (value) {
-            setSelectObjs(value);
-            if (value.length === 1) {
-                setSelectType(value[0]?.type || '');
+    const handleSelect = useCallback(
+        (value?: FabricObject[]) => {
+            if (value) {
+                if (value.length === 1) {
+                    setSelectType(value[0]?.type || '');
+                } else {
+                    setSelectType('');
+                }
+                setSelectObjs(value);
             } else {
+                // 没有选中时
+                setSelectObjs(undefined);
                 setSelectType('');
             }
-        } else {
-            // 没有选中时
-            setSelectObjs(undefined);
-            setSelectType('');
-        }
-    }, []);
+            setPanelType(OperatingPanelType.NONE);
+        },
+        [selectObjs],
+    );
 
     useEffect(() => {
         BridgeEmitter.on(F2N.SELECT, handleSelect);

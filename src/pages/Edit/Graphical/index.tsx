@@ -40,7 +40,7 @@ const searchResult = (query: string) =>
             };
         });
 
-const GraphicalPage = () => {
+const GraphicalPage = React.memo(() => {
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
 
     const handleSearch = (value: string) => {
@@ -149,6 +149,6 @@ const GraphicalPage = () => {
             </div>
         </div>
     );
-};
+});
 
 export default GraphicalPage;

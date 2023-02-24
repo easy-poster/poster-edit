@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import SizeBar from './components/SizeBar';
 import Stage from './Stage';
 import StageContainer from './StageContainer';

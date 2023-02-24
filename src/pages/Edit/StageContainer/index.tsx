@@ -2,12 +2,10 @@ import React, { ComponentType, useMemo } from 'react';
 import ContainerManager from '@/helper/manager/ContainerManager';
 import CanvasContainer from './CanvasContainer';
 import SizeContainer from './SizeContainer';
-import SelectContainer from './SelectContainer';
 
 export const EditContainerManager = new ContainerManager();
 EditContainerManager.register(CanvasContainer);
 EditContainerManager.register(SizeContainer);
-EditContainerManager.register(SelectContainer);
 
 /**
  * @discription 画布舞台管理容器

@@ -1,20 +1,49 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import EditMenu from '@/pages/Edit/components/EditMenu';
-import { IconFont } from '@/const';
+import { IconFont, ResourcePageType } from '@/const';
 import UploadPage from '../../Upload';
 import ImagePage from '../../Image';
 import GraphicalPage from '../../Graphical';
 import TextPage from '../../Text';
-import BackgroundPage from '../../Background';
 import BrandPage from '../../Brand';
+import OperatingPanel from './OperatingPanel';
 import styles from './index.less';
+
+const ResourcePageMap = {
+    [ResourcePageType.UPLOADPAGE]: UploadPage,
+    [ResourcePageType.IMAGEPAGE]: ImagePage,
+    [ResourcePageType.GRAPHICALPAGE]: GraphicalPage,
+    [ResourcePageType.TEXTPAGE]: TextPage,
+    [ResourcePageType.BRANDPAGE]: BrandPage,
+};
 
 const EditLeft = React.memo(() => {
     const resouceRef = useRef<HTMLDivElement>(null);
     const lineDropRef = useRef<HTMLDivElement>(null);
     const resouceWrapRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(true);
-    const [activeTab, setActiveTab] = useState(1);
+    const [activeTab, setActiveTab] = useState(ResourcePageType.UPLOADPAGE);
+
+    const handleClick = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const ResourcePage = useMemo(() => {
+        return ResourcePageMap[activeTab] || React.Fragment;
+    }, [activeTab]);
+
+    useLayoutEffect(() => {
+        const resouceDOM = resouceRef.current;
+        if (resouceDOM) {
+            resouceDOM.style.width = '296px';
+        }
+    }, []);
 
     useEffect(() => {
         const lineDropDOM = lineDropRef.current;
@@ -55,36 +84,6 @@ const EditLeft = React.memo(() => {
         };
     }, [isOpen]);
 
-    const handleClick = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const renderItem = () => {
-        switch (+activeTab) {
-            case 1:
-                return <UploadPage />;
-            case 2:
-                return <ImagePage />;
-            case 3:
-                return <GraphicalPage />;
-            case 4:
-                return <TextPage />;
-            case 5:
-                return <BackgroundPage />;
-            case 6:
-                return <BrandPage />;
-            default:
-                return <UploadPage />;
-        }
-    };
-
-    useLayoutEffect(() => {
-        const resouceDOM = resouceRef.current;
-        if (resouceDOM) {
-            resouceDOM.style.width = '296px';
-        }
-    }, []);
-
     useEffect(() => {
         const resouceWrapDOM = resouceWrapRef.current;
         const resouceDOM = resouceRef.current;
@@ -114,7 +113,8 @@ const EditLeft = React.memo(() => {
             <div className={styles.editResouce}>
                 <div className={styles.resouceWrap} ref={resouceWrapRef}>
                     <div className={styles.resouceContent} ref={resouceRef}>
-                        {renderItem()}
+                        <ResourcePage />
+                        <OperatingPanel />
                     </div>
                     {isOpen && (
                         <div

@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { FabricObjectType } from '@/const';
-import { SelectContext } from '../../StageContainer/SelectContainer';
+import { SelectContext } from '../../Container/SelectContainer';
 import ImageBar from './ImageBar';
 import TextBoxBar from './TextBoxBar';
 import CommonBar from './CommonBar';

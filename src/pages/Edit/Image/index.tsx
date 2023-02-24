@@ -40,7 +40,7 @@ const searchResult = (query: string) =>
             };
         });
 
-const ImagePage = () => {
+const ImagePage = React.memo(() => {
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
 
     const handleSearch = (value: string) => {
@@ -216,6 +216,6 @@ const ImagePage = () => {
             )}
         </div>
     );
-};
+});
 
 export default ImagePage;

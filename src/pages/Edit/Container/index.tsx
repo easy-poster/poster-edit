@@ -1,9 +1,13 @@
 import React, { ComponentType, useMemo } from 'react';
 import ContainerManager from '@/helper/manager/ContainerManager';
 import ProjectContainer from './ProjectContainer';
+import OperatingPanelContainer from './OperatingPanelContainer';
+import SelectContainer from './SelectContainer';
 
 export const EditContainerManager = new ContainerManager();
 EditContainerManager.register(ProjectContainer);
+EditContainerManager.register(OperatingPanelContainer);
+EditContainerManager.register(SelectContainer);
 
 /**
  * @discription 编辑页管理组件

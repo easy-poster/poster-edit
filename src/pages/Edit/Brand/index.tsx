@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.less';
 
-const BrandPage = () => {
+const BrandPage = React.memo(() => {
     return (
         <div className="brand-edit-wrap">
             <div className="brand-item">
@@ -18,6 +18,6 @@ const BrandPage = () => {
             </div>
         </div>
     );
-};
+});
 
 export default BrandPage;

@@ -40,7 +40,7 @@ const searchResult = (query: string) =>
             };
         });
 
-const TextPage = () => {
+const TextPage = React.memo(() => {
     const LIST = useMemo(() => {
         let arr = [];
         for (let i = 0; i < 18; i++) {
@@ -120,6 +120,6 @@ const TextPage = () => {
             </div>
         </div>
     );
-};
+});
 
 export default TextPage;
