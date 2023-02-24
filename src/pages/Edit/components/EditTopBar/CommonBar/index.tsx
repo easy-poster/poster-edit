@@ -1,40 +1,65 @@
-import { IconFont } from '@/const';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import { Tooltip } from 'antd';
-import React, { useCallback } from 'react';
+import { IconFont } from '@/const';
+import BridgeController from '@/helper/bridge/BridgeController';
+import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
 import BarButton from '../components/BarButton';
+import LayerBar from './LayerBar';
 import styles from './index.less';
 
 const CommonBar = React.memo(() => {
-    const handleE = useCallback(() => {}, []);
+    const { selectObj } = useContext(SelectContext);
+    const [isLocked, setIsLocked] = useState(() => !!selectObj?.locked);
+
+    const handlelocked = useCallback(() => {
+        setIsLocked(!isLocked);
+        BridgeController.LayerLock();
+    }, [isLocked]);
+
+    const handleDelActive = useCallback(() => {
+        BridgeController.DelResource();
+    }, []);
+
+    useEffect(() => {
+        setIsLocked(!!selectObj?.locked);
+    }, [selectObj?.locked]);
 
     return (
         <div className={styles.commonBarWrap}>
-            <Tooltip title="图层" placement="bottom">
-                <BarButton onClick={handleE}>
-                    <IconFont
-                        type="icon-023tuceng"
-                        style={{ fontSize: '24px' }}
-                    />
-                </BarButton>
-            </Tooltip>
-            <Tooltip title="透明度" placement="bottom">
-                <BarButton onClick={handleE}>
-                    <IconFont
-                        type="icon-touming"
-                        style={{ fontSize: '24px' }}
-                    />
-                </BarButton>
-            </Tooltip>
+            <LayerBar />
             <Tooltip title="锁定" placement="bottom">
-                <BarButton onClick={handleE}>
+                <BarButton onClick={handlelocked}>
+                    {isLocked ? (
+                        <IconFont
+                            type="icon-jiesuo"
+                            style={{ fontSize: '24px' }}
+                        />
+                    ) : (
+                        <IconFont
+                            type="icon-suoding"
+                            style={{
+                                fontSize: '24px',
+                                transform: 'rotateY(180deg)',
+                            }}
+                        />
+                    )}
+                </BarButton>
+            </Tooltip>
+            <Tooltip title="删除" placement="bottom">
+                <BarButton onClick={handleDelActive}>
                     <IconFont
-                        type="icon-suoding"
+                        type="icon-lajitong"
                         style={{
                             fontSize: '24px',
                             transform: 'rotateY(180deg)',
                         }}
                     />
-                    {/* <IconFont type="icon-jiesuo" style={{ fontSize: '24px' }} /> */}
                 </BarButton>
             </Tooltip>
         </div>

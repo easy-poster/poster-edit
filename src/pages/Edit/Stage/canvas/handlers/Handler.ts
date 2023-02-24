@@ -773,12 +773,10 @@ class Handler implements HandlerOptions {
     public add = (obj: FabricObjectOption, centered = true, loaded = false) => {
         const { editable, onAdd, objectOption } = this;
         const option: any = {
-            hasControls: editable,
-            hasBorders: editable,
-            selectable: editable,
-            lockMovementX: !editable,
-            lockMovementY: !editable,
-            hoverCursor: !editable ? 'pointer' : 'move',
+            hasControls: !obj.locked,
+            lockMovementX: obj.locked,
+            lockMovementY: obj.locked,
+            hoverCursor: obj.locked ? 'pointer' : 'move',
         };
         if (obj.type === FabricObjectType.TEXTBOX) {
             option.editable = true;
@@ -815,6 +813,7 @@ class Handler implements HandlerOptions {
                 createObj = this.fabricObjects[obj.type].create({
                     ...newOption,
                 });
+
                 createObj.setControlsVisibility({
                     mt: false,
                     mb: false,
@@ -1196,6 +1195,23 @@ class Handler implements HandlerOptions {
     };
 
     /**
+     * @description 锁定选中图层
+     */
+    public lockActive() {
+        const activeObject = this.canvas.getActiveObject() as FabricObject;
+        if (activeObject) {
+            this.setObject({
+                lockMovementX: !activeObject.locked,
+                lockMovementY: !activeObject.locked,
+                hasControls: activeObject.locked,
+                hoverCursor: !activeObject.locked ? 'pointer' : 'move',
+                editable: !activeObject.locked,
+                locked: !activeObject.locked,
+            });
+        }
+    }
+
+    /**
      * @name 上移层级
      */
     public bringForward = () => {
@@ -1269,6 +1285,33 @@ class Handler implements HandlerOptions {
     };
 
     /**
+     * @name 图片翻转
+     * @param type
+     */
+    public flipImg = (type: number) => {
+        const activeObject = this.canvas.getActiveObject() as FabricObject;
+        console.log('activeObject', activeObject);
+        if (activeObject && activeObject.type === FabricObjectType.IMAGE) {
+            switch (+type) {
+                case 0:
+                    // 水平翻转
+                    activeObject.set('flipX', !activeObject.flipX).setCoords();
+                    break;
+                case 1:
+                    // 垂直翻转
+                    activeObject.set('flipY', !activeObject.flipY).setCoords();
+                    break;
+                default:
+                    break;
+            }
+            const { onModified } = this;
+            if (onModified) {
+                onModified(activeObject);
+            }
+        }
+    };
+
+    /**
      * @name 保存画面为图片
      * @param {string} [option={ name: 'New Image', format: 'png', quality: 1 }]
      */
@@ -1298,7 +1341,7 @@ class Handler implements HandlerOptions {
     };
 
     /**
-     * @name 导入画布json数据
+     * @name 导入画布json数据 先废弃不用
      * @param json
      * @param callback
      */
@@ -1344,20 +1387,11 @@ class Handler implements HandlerOptions {
             obj.left! += diffLeft;
             obj.top! += diffTop;
 
-            console.log('---->', obj);
-
             this.add(obj, false);
             this.canvas.renderAll();
         });
 
         this.objects = this.getObjects();
-        let a = json.filter((obj: any) => {
-            if (obj.id === 'workarea') {
-                return false;
-            }
-            return true;
-        });
-        console.log('----->', a);
 
         if (callback) {
             callback(this.canvas);

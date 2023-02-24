@@ -1,17 +1,11 @@
 import mitt from 'mitt';
 
-const FunctionEmitter = mitt();
-
 /**
  * @description 画布相关
  */
 export enum CANVAS {
-    /** @name 添加资源 */
-    ADD_RESOURCE = 'Canvas.AddResource',
-    /** @name 删除资源 */
-    DEL_RESOURCE = 'Canvas.delResource',
-    /**  @name 画布大小调节 */
-    SIZE_STAGE = 'Canvas.SizeStage',
+    /** @name 更新资源 */
+    UPDATE_RESOURCE = 'Canvas.UpdateResource',
 }
 
 /**
@@ -33,5 +27,19 @@ export enum USER {}
 export enum BRAND {
     REFRESH_FONT = 'Resfresh.font',
 }
+
+type EventsParams = {
+    [CANVAS.UPDATE_RESOURCE]: FabricObject;
+    [key: string]: any;
+};
+
+export const FUN = {
+    ...CANVAS,
+    ...AUTH,
+    ...USER,
+    ...BRAND,
+};
+
+const FunctionEmitter = mitt<EventsParams>();
 
 export default FunctionEmitter;

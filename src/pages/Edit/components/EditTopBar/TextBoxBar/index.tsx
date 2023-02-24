@@ -5,13 +5,12 @@ import FontItalic from './FontItalic';
 import FontSize from './FontSize';
 import FontWeight from './FontWeight';
 import TextLine from './TextLine';
-import TextUppercase from './TextUppercase';
+// import TextUppercase from './TextUppercase';
 import TextAlign from './TextAlign';
 import FontSpacing from './FontSpacing';
-
-import styles from './index.less';
-import FontVertical from './FontVertical';
+// import FontVertical from './FontVertical';
 import FontStyle from './FontStyle';
+import styles from './index.less';
 
 const TextBoxBar = React.memo(() => {
     return (
@@ -22,10 +21,8 @@ const TextBoxBar = React.memo(() => {
             <FontWeight />
             <FontItalic />
             <TextLine />
-            <TextUppercase />
             <TextAlign />
             <FontSpacing />
-            <FontVertical />
             <FontStyle />
         </div>
     );

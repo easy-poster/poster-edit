@@ -15,6 +15,7 @@ import {
 interface SelectContextProps {
     selectType: FabricObjectType | string;
     selectObjs?: FabricObject[];
+    selectObj?: FabricObject;
 }
 
 export const SelectContext = React.createContext<SelectContextProps>(
@@ -30,13 +31,15 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     const { setPanelType } = useContext(OperatingPanelContext);
     const [selectObjs, setSelectObjs] = useState<FabricObject[]>();
     const [selectType, setSelectType] = useState('');
+    const [selectObj, setSelectObj] = useState<FabricObject>();
 
     const memoCtx = useMemo(() => {
         return {
             selectType,
             selectObjs,
+            selectObj,
         };
-    }, [selectObjs, selectType]);
+    }, [selectObj, selectObjs, selectType]);
 
     /**
      * @description 选中画布对象时
@@ -49,9 +52,11 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
                 } else {
                     setSelectType('');
                 }
+                setSelectObj(value[0]);
                 setSelectObjs(value);
             } else {
                 // 没有选中时
+                setSelectObj(undefined);
                 setSelectObjs(undefined);
                 setSelectType('');
             }

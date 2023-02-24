@@ -9,7 +9,7 @@ const initControls = () => {
     fabric.Object.NUM_FRACTION_DIGITS = 8;
 
     fabric.Canvas.prototype.selectionColor = 'rgba(40, 144, 149, 0.269)';
-    fabric.Canvas.prototype.selectionBorderColor = '#209fa5';
+    fabric.Canvas.prototype.selectionBorderColor = 'rgb(69, 211, 174)'; //'#209fa5';
     fabric.Canvas.prototype.selectionLineWidth = 1;
 
     let imgmlr = document.createElement('img');
@@ -92,7 +92,7 @@ const initControls = () => {
     fabric.Object.prototype.controls.mtr.withConnection = false;
     fabric.Object.prototype.borderScaleFactor = 2.5;
     fabric.Object.prototype.borderOpacityWhenMoving = 1;
-    fabric.Object.prototype.borderColor = '#209fa5';
+    fabric.Object.prototype.borderColor = 'rgb(69, 211, 174)'; //'#209fa5';
     // 修改控制点的形状，默认为`rect`矩形，可选的值还有`circle`圆形
     fabric.Object.prototype.cornerStyle = 'circle';
     // 修改控制点的填充色为白色

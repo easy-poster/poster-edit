@@ -1,5 +1,6 @@
 import BridgeController from '@/helper/bridge/BridgeController';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
+// import FunctionEmitter, { FUN } from '@/helper/function';
 import { useDispatch } from '@umijs/max';
 import React, { useCallback, useEffect } from 'react';
 
@@ -10,11 +11,12 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
     const { children } = props;
     const dispatch = useDispatch();
 
-    const handleUpdate = useCallback(async () => {
+    const handleUpdate = useCallback(async (obj?: FabricObject) => {
         console.log('listen handleUpdate');
         let resJson = BridgeController.ExportStageJSON();
         if (!resJson) return;
         BridgeEmitter.emit(F2N.UNDOABLR);
+        // FunctionEmitter.emit(FUN.UPDATE_RESOURCE, obj);
         dispatch({
             type: 'project/updatePrj',
             payload: {
@@ -36,9 +38,9 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
     }, []);
 
     // 改变元素后
-    const handleModifiedResource = useCallback(() => {
-        console.log('listen handleModifiedResource');
-        handleUpdate();
+    const handleModifiedResource = useCallback((obj: FabricObject) => {
+        console.log('listen handleModifiedResource', obj);
+        handleUpdate(obj);
     }, []);
 
     // 撤销重做后

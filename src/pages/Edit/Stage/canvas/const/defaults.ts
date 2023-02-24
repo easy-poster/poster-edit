@@ -122,6 +122,7 @@ export const objectOption: Partial<FabricObjectOption> = {
     rotation: 0,
     centeredRotation: true,
     strokeUniform: true,
+    locked: false,
 };
 
 export const guidelineOption = {
@@ -138,6 +139,7 @@ export const propertiesToInclude = [
     'width',
     'height',
     'locked',
+    'upperCase',
     'file',
     'src',
     'link',

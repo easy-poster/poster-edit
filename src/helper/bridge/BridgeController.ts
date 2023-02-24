@@ -27,14 +27,8 @@ const BridgeController = {
      * @description 删除画布里的资源
      * @param params
      */
-    DelResource(params: any) {},
-
-    /**
-     * @description 根据div调整画布大小
-     * @param params
-     */
-    ResizeFromDiv(params: { width: number; height: number }) {
-        window.handler.eventHandler.resize(params?.width, params?.height);
+    DelResource(params?: any) {
+        window.handler.remove(params);
     },
 
     /**
@@ -67,6 +61,56 @@ const BridgeController = {
     ImportStageJSONString(data: any) {
         window.handler.clear();
         window.handler.importJSON(data);
+    },
+
+    /**
+     * @description 图片翻转
+     * @param type
+     */
+    FlipImage(type: number) {
+        window.handler.flipImg(type);
+    },
+
+    /**
+     * @description 前移一层
+     */
+    LayerForward() {
+        window.handler.bringForward();
+    },
+
+    /**
+     * @description 移动到最前面
+     */
+    LayerToFront() {
+        window.handler.bringToFront();
+    },
+
+    /**
+     * @description 下移一层
+     */
+    LayerBackwards() {
+        window.handler.sendBackwards();
+    },
+
+    /**
+     * @description 移动到最后面
+     */
+    LayerToBack() {
+        window.handler.sendToBack();
+    },
+
+    /**
+     * @description 锁定图层
+     */
+    LayerLock() {
+        window.handler.lockActive();
+    },
+
+    /**
+     * @description 设置fabric样式
+     */
+    SetFontStyle(obj: Partial<FabricObject<fabric.Object>>) {
+        window.handler.setObject(obj);
     },
 };
 
