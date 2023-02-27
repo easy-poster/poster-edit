@@ -1,16 +1,11 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Tooltip } from 'antd';
 import { IconFont } from '@/const';
 import BridgeController from '@/helper/bridge/BridgeController';
 import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
 import BarButton from '../components/BarButton';
 import LayerBar from './LayerBar';
+import OpacityBar from './OpacityBar';
 import styles from './index.less';
 
 const CommonBar = React.memo(() => {
@@ -33,6 +28,7 @@ const CommonBar = React.memo(() => {
     return (
         <div className={styles.commonBarWrap}>
             <LayerBar />
+            <OpacityBar />
             <Tooltip title="锁定" placement="bottom">
                 <BarButton onClick={handlelocked}>
                     {isLocked ? (

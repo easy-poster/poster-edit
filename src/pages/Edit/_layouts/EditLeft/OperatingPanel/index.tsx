@@ -6,11 +6,13 @@ import {
 import FontFamilyPanel from './FontFamilyPanel';
 import FontStylePanel from './FontStylePanel';
 import ImagePanel from './ImagePanel';
+import FontColorPanel from './FontColorPanel';
 
 const OperatingPanelMap = {
     [OperatingPanelType.IMAGE]: ImagePanel,
     [OperatingPanelType.FONTFAMILY]: FontFamilyPanel,
     [OperatingPanelType.FONTSTYLE]: FontStylePanel,
+    [OperatingPanelType.FONTCOLOR]: FontColorPanel,
     [OperatingPanelType.NONE]: null,
 };
 

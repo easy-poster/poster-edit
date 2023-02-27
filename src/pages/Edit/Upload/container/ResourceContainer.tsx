@@ -50,11 +50,9 @@ const ResourceContainer = React.memo<React.PropsWithChildren>((props) => {
     }, []);
 
     return (
-        <div>
-            <ResourceContext.Provider value={memoCtx}>
-                {children}
-            </ResourceContext.Provider>
-        </div>
+        <ResourceContext.Provider value={memoCtx}>
+            {children}
+        </ResourceContext.Provider>
     );
 });
 

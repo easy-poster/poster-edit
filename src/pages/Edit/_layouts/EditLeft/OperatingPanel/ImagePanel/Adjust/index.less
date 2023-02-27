@@ -1,0 +1,90 @@
+.panelItem {
+    margin-top: 40px;
+
+    .more {
+        cursor: pointer;
+        font-weight: 300;
+        font-size: 12px;
+    }
+
+    .adjustItem {
+        margin-top: 30px;
+
+        & > h2 {
+            font-size: 14px;
+        }
+    }
+
+    .brightness {
+        :global {
+            .ant-slider {
+                .ant-slider-rail {
+                    background-image: linear-gradient(
+                        to right,
+                        rgb(32 32 32),
+                        white
+                    );
+                }
+
+                .ant-slider-track {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    .contrast {
+        :global {
+            .ant-slider {
+                .ant-slider-rail {
+                    background-image: linear-gradient(
+                        to right,
+                        rgb(32 32 32),
+                        white
+                    );
+                }
+
+                .ant-slider-track {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    .saturation {
+        :global {
+            .ant-slider {
+                .ant-slider-rail {
+                    background-image: linear-gradient(
+                        to left,
+                        rgb(104 255 133) 25%,
+                        rgb(128 128 137) 66%,
+                        rgb(64 64 82)
+                    );
+                }
+
+                .ant-slider-track {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    .temperature {
+        :global {
+            .ant-slider {
+                .ant-slider-rail {
+                    background-image: linear-gradient(
+                        to right,
+                        rgb(64 122 253),
+                        rgb(247 107 28)
+                    );
+                }
+
+                .ant-slider-track {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}

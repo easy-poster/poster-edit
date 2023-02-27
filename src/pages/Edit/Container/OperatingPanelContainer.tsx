@@ -4,6 +4,7 @@ export enum OperatingPanelType {
     IMAGE = 'IMAGE',
     FONTFAMILY = 'FONTFAMILY',
     FONTSTYLE = 'FONTSTYLE',
+    FONTCOLOR = 'FONTCOLOR',
     NONE = 'NONE',
 }
 

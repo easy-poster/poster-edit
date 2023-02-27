@@ -1,0 +1,95 @@
+.panelItem {
+    margin-top: 40px;
+
+    .more {
+        cursor: pointer;
+        font-weight: 300;
+        font-size: 12px;
+    }
+
+    .swiperList {
+        margin-top: 10px;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+
+        .swiperContent {
+            display: inline-block;
+
+            .swiperItem {
+                display: inline-block;
+                margin: 2px;
+                cursor: pointer;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                .itemImg {
+                    display: block;
+                    width: 80px;
+                    height: 80px;
+                    padding: 2px;
+                    border: 2px solid transparent;
+                    border-radius: 5px;
+                    object-fit: cover;
+                    position: relative;
+                    overflow: hidden;
+
+                    & > img {
+                        border-radius: 5px;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    &:not(.active):hover {
+                        border-color: #ababb8;
+                    }
+                }
+
+                .active {
+                    border-color: #4dc991;
+                }
+
+                & > p {
+                    padding: 2px;
+                    margin-bottom: 4px;
+                    font-size: 12px;
+                    text-align: center;
+                }
+            }
+        }
+
+        .swiperBtn {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 100%;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .leftBtn {
+            top: 0;
+            left: 0;
+            background: linear-gradient(
+                to right,
+                rgb(23 23 29 / 80%),
+                rgb(39 39 49 / 0%)
+            );
+        }
+
+        .rightBtn {
+            top: 0;
+            right: 0;
+            background: linear-gradient(
+                to left,
+                rgb(23 23 29 / 80%),
+                rgb(39 39 49 / 0%)
+            );
+        }
+    }
+}

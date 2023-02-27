@@ -1,10 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import cn from 'classnames';
+import { IconFont } from '@/const';
 import demoImg from '@/assets/demo.png';
+import { ImagePanelContext, ImagePanelType } from '..';
 import styles from './index.less';
 
-const FontStylePanel = React.memo(() => {
+const DetailPanel = React.memo(() => {
     const [active, setActive] = useState();
+    const { detailType, setDetailType } = useContext(ImagePanelContext);
 
     const LIST = useMemo(() => {
         let arr = [];
@@ -18,13 +21,34 @@ const FontStylePanel = React.memo(() => {
         return arr;
     }, []);
 
+    const DetailMap = {
+        [ImagePanelType.FILTER]: '滤镜',
+        [ImagePanelType.SHADOWS]: '阴影',
+    };
+
+    const title = useMemo(() => {
+        return DetailMap[detailType];
+    }, []);
+
     const handleActive = useCallback((active: any) => {
         setActive(active.id);
     }, []);
 
+    const handleBack = useCallback(() => {
+        setDetailType(ImagePanelType.NONE);
+    }, []);
+
     return (
-        <div className={styles.fontStylePanel}>
-            <h2>风格</h2>
+        <div className={styles.detailPanel}>
+            <span className={styles.header} onClick={handleBack}>
+                <IconFont
+                    type="icon-xiangzuo"
+                    style={{
+                        fontSize: '20px',
+                    }}
+                />
+                <span className={styles.title}>{title}</span>
+            </span>
             <ul className={styles.content}>
                 {LIST.map((item) => {
                     return (
@@ -46,4 +70,4 @@ const FontStylePanel = React.memo(() => {
     );
 });
 
-export default FontStylePanel;
+export default DetailPanel;

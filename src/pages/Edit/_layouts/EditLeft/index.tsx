@@ -1,4 +1,5 @@
 import React, {
+    useContext,
     useEffect,
     useLayoutEffect,
     useMemo,
@@ -13,6 +14,10 @@ import GraphicalPage from '../../Graphical';
 import TextPage from '../../Text';
 import BrandPage from '../../Brand';
 import OperatingPanel from './OperatingPanel';
+import {
+    OperatingPanelContext,
+    OperatingPanelType,
+} from '../../Container/OperatingPanelContainer';
 import styles from './index.less';
 
 const ResourcePageMap = {
@@ -29,6 +34,11 @@ const EditLeft = React.memo(() => {
     const resouceWrapRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(true);
     const [activeTab, setActiveTab] = useState(ResourcePageType.UPLOADPAGE);
+    const { panelType } = useContext(OperatingPanelContext);
+
+    const isShowPanel = useMemo(() => {
+        return panelType !== OperatingPanelType.NONE;
+    }, [panelType]);
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -113,7 +123,13 @@ const EditLeft = React.memo(() => {
             <div className={styles.editResouce}>
                 <div className={styles.resouceWrap} ref={resouceWrapRef}>
                     <div className={styles.resouceContent} ref={resouceRef}>
-                        <ResourcePage />
+                        <div
+                            style={{
+                                display: isShowPanel ? 'none' : 'block',
+                            }}
+                        >
+                            <ResourcePage />
+                        </div>
                         <OperatingPanel />
                     </div>
                     {isOpen && (
