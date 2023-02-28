@@ -1,0 +1,55 @@
+.docColorWrap {
+    padding: 20px;
+    font-size: 18px;
+    color: #eaeafa;
+
+    & > h3 {
+        font-size: 18px;
+        color: #eaeafa;
+        margin-bottom: 20px;
+        z-index: 1;
+    }
+
+    .docContent {
+        display: flex;
+        flex-wrap: wrap;
+
+        .currentWrap {
+            margin: 4px;
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ababb8;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #fff;
+            }
+        }
+
+        .colorWrap {
+            margin: 2px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+
+            .colorItem {
+                margin: 2px;
+                width: 38px;
+                height: 38px;
+                border-radius: 4px;
+            }
+
+            &:not(.active):hover {
+                border-color: #ababb8;
+            }
+        }
+
+        .active {
+            border-color: #4dc991;
+        }
+    }
+}

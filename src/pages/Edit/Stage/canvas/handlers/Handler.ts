@@ -747,14 +747,15 @@ class Handler implements HandlerOptions {
     };
 
     /**
-     * @name 添加图片前计算大小
+     * @name 添加资源前处理
      * @param obj
      * @returns
      */
     public preAdd = async (obj: FabricObjectOption) => {
-        let src = obj?.src;
-        if (!src) return;
         if (obj.type === FabricObjectType.IMAGE) {
+            let src = obj?.src;
+            if (!src) return;
+            // 添加图片前计算大小
             let newObj = await this.loadImage(obj);
             newObj = { ...newObj, ...obj };
             this.add(newObj, true);

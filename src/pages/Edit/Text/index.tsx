@@ -1,44 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import cn from 'classnames';
 import demoImg from '@/assets/demo.png';
-import './index.less';
 import { IconFont } from '@/const';
-import { AutoComplete, message, SelectProps } from 'antd';
+import { Input, message } from 'antd';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
-
-function getRandomInt(max: number, min: number = 0) {
-    return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
-}
-
-const searchResult = (query: string) =>
-    new Array(getRandomInt(5))
-        .join('.')
-        .split('.')
-        .map((_, idx) => {
-            const category = `${query}${idx}`;
-            return {
-                value: category,
-                label: (
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <span>
-                            Found {query} on{' '}
-                            <a
-                                href={`https://s.taobao.com/search?q=${query}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {category}
-                            </a>
-                        </span>
-                        <span>{getRandomInt(200, 100)} results</span>
-                    </div>
-                ),
-            };
-        });
+import styles from './index.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const TextPage = React.memo(() => {
     const LIST = useMemo(() => {
@@ -53,58 +20,84 @@ const TextPage = React.memo(() => {
         return arr;
     }, []);
 
-    console.log('text');
+    const handleChangeSearch = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            console.log('e', e.target.value);
+        },
+        [],
+    );
 
-    const [options, setOptions] = useState<SelectProps<object>['options']>([]);
-
-    const handleSearch = (value: string) => {
-        setOptions(value ? searchResult(value) : []);
-    };
-
-    const onSelect = (value: string) => {
-        console.log('onSelect', value);
-    };
+    const handlePressEnter = useCallback((e: any) => {
+        console.log('e1', e.target.value);
+    }, []);
 
     const handleAdd = (data: any) => {
-        if (!window.handler) {
-            message.warning('项目正在初始化');
-            return;
-        }
-        window.handler.add({ type: FabricObjectType.TEXTBOX, text: data });
+        BridgeController.AddResource({
+            id: data.id,
+            type: FabricObjectType.TEXTBOX,
+            text: data.text,
+            fontSize: data.fontSize,
+        });
     };
 
     return (
-        <div className="text-wrap">
-            <div className="text-search">
-                <AutoComplete
-                    popupClassName="image-search-wrap"
-                    style={{ width: '100%' }}
+        <div className={styles.textWrap}>
+            <div className={styles.textSearch}>
+                <Input
+                    size="large"
+                    placeholder="字体名字"
                     allowClear
-                    backfill
-                    options={options}
-                    onSelect={onSelect}
-                    onSearch={handleSearch}
-                    placeholder="搜索文字"
-                ></AutoComplete>
+                    onChange={handleChangeSearch}
+                    onPressEnter={handlePressEnter}
+                    prefix={
+                        <IconFont
+                            type="icon-sousuo"
+                            style={{ fontSize: '24px' }}
+                        />
+                    }
+                />
+            </div>
+            <div className={styles.textAddWrap}>
                 <div
-                    className="text-nomal"
-                    onClick={() => handleAdd('添加一段文本')}
+                    className={cn(styles.textBtn, styles.textTitle)}
+                    onClick={() =>
+                        handleAdd({ text: '添加标题', fontSize: 52 })
+                    }
+                >
+                    添加标题
+                </div>
+                <div
+                    className={cn(styles.textBtn, styles.textSubTitle)}
+                    onClick={() =>
+                        handleAdd({ text: '添加副标题', fontSize: 36 })
+                    }
+                >
+                    添加副标题
+                </div>
+                <div
+                    className={cn(styles.textBtn, styles.textNomal)}
+                    onClick={() =>
+                        handleAdd({ text: '添加一段文本', fontSize: 24 })
+                    }
                 >
                     添加一段文本
                 </div>
             </div>
-            <div className="text-list">
+            <div className={styles.textList}>
                 {LIST.map((item) => {
                     return (
-                        <div className="img-item" key={item.id}>
-                            <div className="img-wrap">
+                        <div className={styles.imgItem} key={item.id}>
+                            <div className={styles.imgWrap}>
                                 <img
-                                    className="img-cover"
+                                    className={styles.imgCover}
                                     alt="example"
                                     src={item.cover}
                                 />
                                 <div
-                                    className="img-btn edit-add"
+                                    className={cn(
+                                        styles.imgBtn,
+                                        styles.editAdd,
+                                    )}
                                     onClick={() => handleAdd(item)}
                                 >
                                     <IconFont
@@ -113,7 +106,6 @@ const TextPage = React.memo(() => {
                                     />
                                 </div>
                             </div>
-                            <p className="title">{item.title}</p>
                         </div>
                     );
                 })}

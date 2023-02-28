@@ -59,7 +59,9 @@ const DetailPanel = React.memo(() => {
                                 })}
                                 onClick={() => handleActive(item)}
                             >
-                                <img src={item.cover} alt={item.title} />
+                                <div className={styles.imgWrap}>
+                                    <img src={item.cover} alt={item.title} />
+                                </div>
                             </div>
                             <p>{item.title}</p>
                         </li>

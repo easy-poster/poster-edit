@@ -6,8 +6,10 @@ import { FabricObjectType } from '@/const';
 
 interface resourceParams {
     id: string;
-    url: string;
     type: FabricObjectType;
+    url?: string;
+    text?: string;
+    fontSize?: number;
 }
 
 const BridgeController = {
@@ -16,11 +18,7 @@ const BridgeController = {
      * @param params
      */
     AddResource(params: resourceParams) {
-        window.handler.preAdd({
-            id: params.id,
-            type: params.type,
-            src: params.url,
-        });
+        window.handler.preAdd(params);
     },
 
     /**

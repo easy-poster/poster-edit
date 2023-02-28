@@ -23,20 +23,25 @@
                 padding: 2px;
                 border: 2px solid transparent;
                 border-radius: 5px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #000;
-                height: 108px;
-                overflow: hidden;
 
-                & > img {
+                .imgWrap {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: #000;
+                    overflow: hidden;
+                    height: 104px;
+                    margin: 2px;
                     border-radius: 5px;
-                    display: block;
-                    width: auto;
-                    height: auto;
-                    object-fit: cover;
-                    transition: width 0.3s, height 0.3s;
+
+                    & > img {
+                        border-radius: 5px;
+                        display: block;
+                        width: auto;
+                        height: auto;
+                        object-fit: cover;
+                        transition: width 0.3s, height 0.3s;
+                    }
                 }
 
                 &:not(.active):hover {
