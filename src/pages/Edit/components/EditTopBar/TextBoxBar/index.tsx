@@ -23,7 +23,7 @@ const TextBoxBar = React.memo(() => {
             <TextLine />
             <TextAlign />
             <FontSpacing />
-            <FontStyle />
+            {/* <FontStyle /> */}
         </div>
     );
 });

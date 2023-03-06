@@ -1,0 +1,110 @@
+.bgWrap {
+    padding-bottom: 30px;
+
+    .bgSearch {
+        position: sticky;
+        top: 0;
+        padding: 40px 20px 20px;
+        background-color: #272731;
+        z-index: 2;
+
+        :global {
+            .ant-input-affix-wrapper {
+                background-color: transparent;
+                color: rgb(171 171 184);
+                border-color: rgb(171 171 184);
+
+                &:not(.ant-input-affix-wrapper-disabled):hover {
+                    border-color: #3eb1b3;
+                }
+
+                .ant-input {
+                    background-color: transparent;
+                    color: rgb(171 171 184);
+
+                    &::placeholder {
+                        color: rgb(171 171 184);
+                    }
+                }
+
+                .ant-input-clear-icon {
+                    color: rgb(171 171 184);
+                }
+            }
+        }
+    }
+
+    .bgList {
+        margin-top: 20px;
+        padding: 0 20px;
+        display: grid;
+        grid-gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+
+        .imgItem {
+            position: relative;
+            box-sizing: border-box;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+
+            .imgWrap {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: rgb(255 255 255 / 7%);
+                min-height: 112px;
+                overflow: hidden;
+                position: relative;
+
+                .imgCover {
+                    display: block;
+                    width: 90%;
+                    height: auto;
+                    object-fit: cover;
+                    transition: width 0.3s, height 0.3s;
+                }
+
+                .imgBtn {
+                    position: absolute;
+                    right: 4px;
+                    bottom: 4px;
+                    visibility: hidden;
+                    color: #fff;
+                    font-size: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 40px;
+                    height: 30px;
+                    border-radius: 8px;
+                }
+
+                .editAdd {
+                    background: #209fa5;
+
+                    &:hover {
+                        background: #66e9ae;
+                    }
+                }
+
+                &:hover {
+                    .editAdd {
+                        visibility: visible;
+                    }
+                }
+            }
+
+            .title {
+                margin: 0;
+                text-align: left;
+                font-size: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: rgb(171 171 184);
+            }
+        }
+    }
+}

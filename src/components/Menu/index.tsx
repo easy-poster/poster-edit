@@ -58,7 +58,7 @@ const Menu = React.memo(() => {
                     </div>
                     <span>设置</span>
                 </Link>
-                <Divider style={{ marginTop: 6, marginBottom: 6 }} />
+                {/* <Divider style={{ marginTop: 6, marginBottom: 6 }} />
                 <Link
                     to="/trash"
                     className={`setting-btn ${
@@ -72,7 +72,7 @@ const Menu = React.memo(() => {
                         />
                     </div>
                     <span>回收站</span>
-                </Link>
+                </Link> */}
             </div>
         </div>
     );

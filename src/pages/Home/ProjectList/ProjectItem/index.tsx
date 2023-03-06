@@ -5,7 +5,7 @@ import errorImg from '@/assets/common/errorImg.svg';
 import { IconFont } from '@/const';
 import dayjs from 'dayjs';
 import cn from 'classnames';
-import { delProject, ProjectInfo } from '@/services/project';
+import { copyProject, delProject, ProjectInfo } from '@/services/project';
 import { ProjectListContext } from '../../Container/ProjectListContainer';
 import styles from './index.less';
 
@@ -52,6 +52,18 @@ const ProjectItem = React.memo(
             }
         };
 
+        const handleCopy = useCallback(async () => {
+            if (!item.id) return;
+            try {
+                await copyProject({
+                    id: item.id,
+                });
+                await getProject();
+            } catch (error) {
+                console.log('error', error);
+            }
+        }, [item?.id]);
+
         const handleDel = useCallback(async () => {
             if (!item.id) return;
             try {
@@ -70,6 +82,7 @@ const ProjectItem = React.memo(
             switch (+key) {
                 case 1:
                     console.log('制作副本');
+                    handleCopy();
                     break;
                 case 2:
                     console.log('删除');

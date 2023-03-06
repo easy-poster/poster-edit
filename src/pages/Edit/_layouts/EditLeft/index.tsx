@@ -12,6 +12,7 @@ import UploadPage from '../../Upload';
 import ImagePage from '../../Image';
 import GraphicalPage from '../../Graphical';
 import TextPage from '../../Text';
+import BackgroundPage from '../../Background';
 import BrandPage from '../../Brand';
 import OperatingPanel from './OperatingPanel';
 import {
@@ -25,6 +26,7 @@ const ResourcePageMap = {
     [ResourcePageType.IMAGEPAGE]: ImagePage,
     [ResourcePageType.GRAPHICALPAGE]: GraphicalPage,
     [ResourcePageType.TEXTPAGE]: TextPage,
+    [ResourcePageType.BACKGROUND]: BackgroundPage,
     [ResourcePageType.BRANDPAGE]: BrandPage,
 };
 

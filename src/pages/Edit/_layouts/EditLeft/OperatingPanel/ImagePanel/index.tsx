@@ -39,7 +39,7 @@ const ImagePanel = React.memo(() => {
             <div className={styles.imagePanel}>
                 <h2>编辑图像</h2>
                 <Filter />
-                <Shadows />
+                {/* <Shadows /> */}
                 <Adjust />
                 {isShowDetail && <DetailPanel />}
             </div>

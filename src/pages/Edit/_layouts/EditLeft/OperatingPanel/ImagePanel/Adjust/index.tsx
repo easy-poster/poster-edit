@@ -152,7 +152,7 @@ const Adjust = React.memo(() => {
                     onChange={handleSaturationChange}
                 />
             </div>
-            <div className={cn(styles.adjustItem, styles.temperature)}>
+            {/* <div className={cn(styles.adjustItem, styles.temperature)}>
                 <h2>色温</h2>
                 <Slider
                     step={0.01}
@@ -167,7 +167,7 @@ const Adjust = React.memo(() => {
                     value={temperature}
                     onChange={handleTemperatureChange}
                 />
-            </div>
+            </div> */}
         </div>
     );
 });

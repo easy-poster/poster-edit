@@ -50,12 +50,12 @@ export const MENU_LAYOUT = [
         icon: 'icon-home',
         route: '/',
     },
-    {
-        name: '品牌',
-        id: 2,
-        icon: 'icon-pinpai',
-        route: '/brand',
-    },
+    // {
+    //     name: '品牌',
+    //     id: 2,
+    //     icon: 'icon-pinpai',
+    //     route: '/brand',
+    // },
     // {
     //     name: '模板库',
     //     id: 3,
@@ -72,6 +72,7 @@ export enum ResourcePageType {
     IMAGEPAGE = 'IMAGEPAGE',
     GRAPHICALPAGE = 'GRAPHICALPAGE',
     TEXTPAGE = 'TEXTPAGE',
+    BACKGROUND = 'BACKGROUND',
     BRANDPAGE = 'BRANDPAGE',
 }
 export const MENU_EDIT = [
@@ -100,12 +101,12 @@ export const MENU_EDIT = [
         icon: 'icon-wenzi',
         route: '/template',
     },
-    // {
-    //   name: '背景',
-    //   id: 5,
-    //   icon: 'icon-background',
-    //   route: '/template',
-    // },
+    {
+        name: '背景',
+        id: ResourcePageType.BACKGROUND,
+        icon: 'icon-background',
+        route: '/template',
+    },
     // {
     //   name: '品牌',
     //   id: 6,

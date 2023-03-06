@@ -128,3 +128,22 @@ export async function delProject(
         ...(options || {}),
     });
 }
+
+/**
+ * @name 复制一个项目
+ * @param data
+ * @param options
+ * @returns
+ */
+export async function copyProject(
+    data?: {
+        id: string;
+    },
+    options?: { [key: string]: any },
+) {
+    return request(`/app/base/project/copy`, {
+        method: 'POST',
+        data,
+        ...(options || {}),
+    });
+}

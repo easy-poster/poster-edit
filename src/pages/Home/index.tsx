@@ -7,7 +7,7 @@ import styles from './index.less';
 const Home = () => {
     return (
         <div className={styles.home} id="home">
-            <SwiperList />
+            {/* <SwiperList /> */}
             <div className={styles.myProject}>
                 <ProjectListContainer>
                     <PeojectHeader />
