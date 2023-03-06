@@ -20,6 +20,9 @@ import { defaults } from '../const';
 import { defaultFilters, FabricObjectType } from '../const/defaults';
 import initControls from '../utils/controls';
 
+// 滤镜纹理限制了只能使用2k图
+// fabric.textureSize = 8192;
+
 export interface Option {
     /**
      * Canvas id
@@ -683,7 +686,7 @@ class Handler implements HandlerOptions {
     // 对象增删改开始-------
     /**
      * @name 加载图片
-     * @description 先加载完图片才能add进canvas
+     * @description 先加载完图片才能add进canvas,做一个图片压缩，最高支持2k
      * @param obj
      * @returns
      */
@@ -691,6 +694,7 @@ class Handler implements HandlerOptions {
         return new Promise<any>((resolve, reject) => {
             let scaleX = 1;
             let scaleY = 1;
+            let limitSize = 2048;
             try {
                 fabric.Image.fromURL(
                     obj.src,
@@ -882,44 +886,9 @@ class Handler implements HandlerOptions {
             ...objectOption,
             ...otherOption,
         }) as FabricImage;
-        const tileSize = 512; // 每个小图像的大小
-
-        // if(!filters.length) {
-        //     filters = defaultFilters as fabric.IBaseFilter[] & IFilter[];
-        // }
         createdObj.set({
             filters: this.imageHandler.createFilters(filters as IFilter[]),
         });
-        // console.log('????', this.imageHandler.createFilters(filters as IFilter[]))
-        // createdObj.filters = []; // 用于存储滤镜效果
-        // createdObj?.cache(0, 0, createdObj.width, createdObj.height); // 缓存原始图像，以便于之后的操作
-
-        // const tiles = [];
-        // for (let i = 0; i < createdObj.width!; i += tileSize) {
-        //     for (let j = 0; j < createdObj.height!; j += tileSize) {
-        //         const tile = new fabric.Image(createdObj.getElement(), {
-        //             left: i,
-        //             top: j,
-        //             selectable: false,
-        //             hasBorders: false,
-        //             hasControls: false,
-        //             hasRotatingPoint: false
-        //         });
-        //         tile.setCoords();
-        //         tiles.push(tile);
-        //     }
-        // }
-
-        // // 应用滤镜效果
-        // tiles.forEach(tile => {
-        //     tile.filters.push(new fabric.Image.filters.Grayscale());
-        //     tile.applyFilters();
-        // });
-
-        // tiles.forEach(tile => {
-        //     this.canvas.add(tile);
-        // });
-        // console.log('tiles', tiles);
 
         this.setImage(createdObj, src!);
 

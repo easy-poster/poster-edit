@@ -1,6 +1,6 @@
 const envMap = {
     DEV: {
-        base_url: 'http://127.0.0.1:9001',
+        base_url: 'http://192.168.1.10:9001',
         cdn_url: '',
     },
     PROD: {
