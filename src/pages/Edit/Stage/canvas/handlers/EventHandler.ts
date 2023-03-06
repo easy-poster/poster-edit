@@ -1,7 +1,11 @@
 import { fabric } from 'fabric';
 import anime from 'animejs';
 import { Handler } from '.';
-import { InteractionModeType, WorkareaLayoutType } from '../const/defaults';
+import {
+    FabricObjectType,
+    InteractionModeType,
+    WorkareaLayoutType,
+} from '../const/defaults';
 import { code } from '../const';
 
 /**
@@ -244,6 +248,13 @@ class EventHandler {
             this.handler.elementHandler.setSize(el, target);
             this.handler.elementHandler.setPosition(el, target);
         }
+        // console.log('target', target)
+        // if(target?.type === FabricObjectType.TEXTBOX) {
+        //     let newFontSize = Math.round(target.fontSize * (target.scaleY + target.scaleX));
+        //     target.set('fontSize', newFontSize > 12 ? newFontSize : 12);
+        //     target.scaleX = 1;
+        //     target.scaleY = 1;
+        // }
     };
 
     /**
@@ -359,6 +370,7 @@ class EventHandler {
      */
     public mousemove = (opt: FabricEvent) => {
         const event = opt as FabricEvent<MouseEvent>;
+        const editable = this.handler?.editable;
         if (
             this.handler?.interactionMode === InteractionModeType.GRAB &&
             this.panning
@@ -375,6 +387,7 @@ class EventHandler {
      */
     public mouseup = (opt: FabricEvent) => {
         const event = opt as FabricEvent<MouseEvent>;
+        const editable = this.handler?.editable;
         if (this.handler?.interactionMode === 'grab') {
             this.panning = false;
             return;

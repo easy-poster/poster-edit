@@ -387,6 +387,7 @@ declare global {
         | 'brightness'
         | 'contrast'
         | 'saturation'
+        | 'temperature'
         | 'noise'
         | 'vintage'
         | 'pixelate'

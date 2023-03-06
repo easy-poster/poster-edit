@@ -12,9 +12,10 @@ import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';
 import demoImg from '@/assets/demo.png';
 import { useSize } from 'ahooks';
 import cn from 'classnames';
-import { IconFont } from '@/const';
+import { FILTERTYPES, IconFont } from '@/const';
 import { ImagePanelContext, ImagePanelType } from '..';
 import styles from './index.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 let bscrollObj: BScrollConstructor;
 
@@ -29,15 +30,14 @@ const Filter = React.memo(() => {
     const { setDetailType } = useContext(ImagePanelContext);
 
     const LIST = useMemo(() => {
-        let arr = [];
-        for (let i = 0; i < 18; i++) {
-            arr.push({
-                title: `slider${i}`,
+        return Object.keys(FILTERTYPES).map((item, index) => {
+            return {
+                title: item,
+                id: index,
                 cover: demoImg,
-                id: i,
-            });
-        }
-        return arr;
+                type: item,
+            };
+        });
     }, []);
 
     const handleMore = useCallback(() => {
@@ -46,6 +46,7 @@ const Filter = React.memo(() => {
 
     const handleActive = useCallback((active: any) => {
         setActive(active.id);
+        BridgeController.setFilter(active.type);
     }, []);
 
     const handleTransform = (to: string) => {

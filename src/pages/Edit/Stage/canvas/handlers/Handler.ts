@@ -17,7 +17,7 @@ import {
 } from '.';
 import CanvasObject from '../CanvasObject';
 import { defaults } from '../const';
-import { FabricObjectType } from '../const/defaults';
+import { defaultFilters, FabricObjectType } from '../const/defaults';
 import initControls from '../utils/controls';
 
 export interface Option {
@@ -302,8 +302,6 @@ class Handler implements HandlerOptions {
         this.onTransaction = options.onTransaction;
         this.onInteraction = options.onInteraction;
         this.onLoad = options.onLoad;
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        // options.onLoad && this.handlers && options.onLoad(this.handlers, this.canvas);
     };
 
     public initHandler = () => {
@@ -875,7 +873,7 @@ class Handler implements HandlerOptions {
      */
     public addImage = (obj: FabricImage) => {
         const { objectOption } = this;
-        const { src, ...otherOption } = obj;
+        let { src, filters = [], ...otherOption } = obj;
         const image = new Image();
 
         const createdObj = new fabric.Image(image, {
@@ -884,6 +882,44 @@ class Handler implements HandlerOptions {
             ...objectOption,
             ...otherOption,
         }) as FabricImage;
+        const tileSize = 512; // 每个小图像的大小
+
+        // if(!filters.length) {
+        //     filters = defaultFilters as fabric.IBaseFilter[] & IFilter[];
+        // }
+        createdObj.set({
+            filters: this.imageHandler.createFilters(filters as IFilter[]),
+        });
+        // console.log('????', this.imageHandler.createFilters(filters as IFilter[]))
+        // createdObj.filters = []; // 用于存储滤镜效果
+        // createdObj?.cache(0, 0, createdObj.width, createdObj.height); // 缓存原始图像，以便于之后的操作
+
+        // const tiles = [];
+        // for (let i = 0; i < createdObj.width!; i += tileSize) {
+        //     for (let j = 0; j < createdObj.height!; j += tileSize) {
+        //         const tile = new fabric.Image(createdObj.getElement(), {
+        //             left: i,
+        //             top: j,
+        //             selectable: false,
+        //             hasBorders: false,
+        //             hasControls: false,
+        //             hasRotatingPoint: false
+        //         });
+        //         tile.setCoords();
+        //         tiles.push(tile);
+        //     }
+        // }
+
+        // // 应用滤镜效果
+        // tiles.forEach(tile => {
+        //     tile.filters.push(new fabric.Image.filters.Grayscale());
+        //     tile.applyFilters();
+        // });
+
+        // tiles.forEach(tile => {
+        //     this.canvas.add(tile);
+        // });
+        // console.log('tiles', tiles);
 
         this.setImage(createdObj, src!);
 

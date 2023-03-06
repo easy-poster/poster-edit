@@ -18,8 +18,6 @@ const TextAlign = React.memo(() => {
 
     const [actAlign, setActAlign] = useState(() => selectObj?.textAlign);
 
-    console.log('selectObj', actAlign, selectObj);
-
     const IconAlignType = useMemo(() => {
         switch (actAlign) {
             case 'left':

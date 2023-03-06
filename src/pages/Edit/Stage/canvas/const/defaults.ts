@@ -1,5 +1,8 @@
 // import { WorkareaObject } from "typings";
 
+import { FILTERTYPES } from '@/const';
+import { IBaseFilter } from 'fabric/fabric-impl';
+
 // 工作区类型
 export enum WorkareaLayoutType {
     FIXED = 'fixed',
@@ -133,6 +136,9 @@ export const activeSelectionOption = {
     hasControls: true,
 };
 
+/**
+ * @description 永久化属性
+ */
 export const propertiesToInclude = [
     'id',
     'name',
@@ -160,4 +166,19 @@ export const propertiesToInclude = [
     'points',
     'svg',
     'loadType',
+];
+
+export const defaultFilters: IFilter[] = [
+    {
+        type: FILTERTYPES.brightness,
+        brightness: 0,
+    },
+    {
+        type: FILTERTYPES.contrast,
+        contrast: 0,
+    },
+    {
+        type: FILTERTYPES.saturation,
+        saturation: 0,
+    },
 ];

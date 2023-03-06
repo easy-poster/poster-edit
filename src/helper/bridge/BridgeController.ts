@@ -2,12 +2,12 @@
  * @description 外部业务调用fabric内部的事件
  */
 
-import { FabricObjectType } from '@/const';
+import { FabricObjectType, FILTERTYPES } from '@/const';
 
 interface resourceParams {
     id: string;
     type: FabricObjectType;
-    url?: string;
+    src?: string;
     text?: string;
     fontSize?: number;
 }
@@ -109,6 +109,22 @@ const BridgeController = {
      */
     SetFontStyle(obj: Partial<FabricObject<fabric.Object>>) {
         window.handler.setObject(obj);
+    },
+
+    /**
+     * @description 设置滤镜
+     */
+    setFilter(type: FILTERTYPES, apply?: boolean) {
+        window.handler.imageHandler.applyFilterByType(type, apply);
+    },
+
+    /**
+     * @name 修改自定义滤镜
+     * @param type
+     * @param value
+     */
+    changeFilter(type: FILTER_TYPES, value?: any) {
+        window.handler.imageHandler.onChangeFilterByType(type, value);
     },
 };
 

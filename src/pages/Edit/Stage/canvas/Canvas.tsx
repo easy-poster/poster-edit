@@ -45,7 +45,11 @@ export type CanvasProps = Partial<Callback> & {
 const Canvas = React.memo((props: CanvasProps) => {
     const { projectInfo, ...other } = props;
 
-    console.log('canvas', projectInfo, other);
+    console.log(
+        'canvas',
+        projectInfo,
+        JSON.parse(projectInfo?.content || '[]'),
+    );
 
     const containerRef = useRef<HTMLDivElement>(null);
     const stageRef = useRef<HTMLCanvasElement>(null);

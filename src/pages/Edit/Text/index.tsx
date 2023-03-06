@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import React, {
+    ChangeEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import cn from 'classnames';
 import demoImg from '@/assets/demo.png';
 import { IconFont } from '@/const';
@@ -6,8 +12,13 @@ import { Input, message } from 'antd';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
 import styles from './index.less';
 import BridgeController from '@/helper/bridge/BridgeController';
+import { FontItem, getFontGroupList } from '@/services/font';
 
 const TextPage = React.memo(() => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageTotal, setPageTotal] = useState(0);
+    const [textList, setTextList] = useState<FontItem[]>([]);
+
     const LIST = useMemo(() => {
         let arr = [];
         for (let i = 0; i < 18; i++) {
@@ -18,6 +29,21 @@ const TextPage = React.memo(() => {
             });
         }
         return arr;
+    }, []);
+
+    const initText = useCallback(async () => {
+        try {
+            let res = await getFontGroupList({
+                current: currentPage,
+                pageSize: 20,
+            });
+            let list = res?.list || [];
+            let total = res.total;
+            if (list?.length) {
+                setTextList([...textList, ...list]);
+                setPageTotal(total);
+            }
+        } catch (error) {}
     }, []);
 
     const handleChangeSearch = useCallback(
@@ -39,6 +65,10 @@ const TextPage = React.memo(() => {
             fontSize: data.fontSize,
         });
     };
+
+    useEffect(() => {
+        initText();
+    }, []);
 
     return (
         <div className={styles.textWrap}>

@@ -3,6 +3,7 @@ import { List } from 'antd';
 import cn from 'classnames';
 import DocColor from './DocColor';
 import styles from './index.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 export interface colorItemProps {
     id: number;
@@ -38,6 +39,9 @@ const FontColorPanel = React.memo(() => {
 
     const handleClick = useCallback((item: colorItemProps) => {
         setActiveColor(item.value);
+        BridgeController.SetFontStyle({
+            fill: item.value,
+        });
     }, []);
 
     const RenderItem = (item: colorItemProps) => {

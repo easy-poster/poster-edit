@@ -1,9 +1,10 @@
 import { IconFont } from '@/const';
+import { FontItem, getFontGroupList } from '@/services/font';
 import { Input, List } from 'antd';
 import React, {
     ChangeEvent,
-    KeyboardEventHandler,
     useCallback,
+    useEffect,
     useMemo,
     useState,
 } from 'react';
@@ -14,10 +15,29 @@ interface familyItemProps {
     title: string;
     url: string;
     type: string;
+    isVip: boolean;
 }
 
 const FontFamilyPanel = React.memo(() => {
     const [activeFont, setActiveFont] = useState<number>();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageTotal, setPageTotal] = useState(0);
+    const [fontList, setFontList] = useState<FontItem[]>([]);
+
+    const initFont = useCallback(async () => {
+        try {
+            let res = await getFontGroupList({
+                current: currentPage,
+                pageSize: 20,
+            });
+            let list = res?.list || [];
+            let total = res.total;
+            if (list?.length) {
+                setFontList([...fontList, ...list]);
+                setPageTotal(total);
+            }
+        } catch (error) {}
+    }, []);
 
     const LIST = useMemo(() => {
         let arr = [];
@@ -25,8 +45,9 @@ const FontFamilyPanel = React.memo(() => {
             arr.push({
                 id: i,
                 title: `字体名字 slider${i}`,
-                url: `字体地址`,
+                url: `http://localhost:9002/YuGothL.ttf`,
                 type: i < 20 ? 'upload' : 'resouce',
+                isVip: false,
             });
         }
         return arr;
@@ -55,8 +76,18 @@ const FontFamilyPanel = React.memo(() => {
     }, []);
 
     const handleClick = useCallback((item: familyItemProps) => {
+        // 加载字体文件
+        console.log('加载字体文件', item);
         setActiveFont(item.id);
+        let fontFace = new FontFace('YuGothL', item.url);
+        fontFace.load().then(() => {
+            console.log('字体加载完成');
+        });
     }, []);
+
+    // useEffect(() => {
+    //     initFont()
+    // }, []);
 
     const RenderItem = (item: familyItemProps) => {
         return (

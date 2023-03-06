@@ -135,6 +135,39 @@ export const SETTING_MENU_LAYOUT = [
     },
 ];
 
+/**
+ * 滤镜 17个
+ */
+export enum FILTER_CUSTOMIZE {
+    /** @name 亮度*/
+    brightness = 'brightness',
+    /** @name 对比度 */
+    contrast = 'contrast',
+    /** @name 饱和度 */
+    saturation = 'saturation',
+    /** @name 色温 */
+    temperature = 'temperature',
+}
+
+export enum FILTERTYPES {
+    grayscale = 'grayscale',
+    invert = 'invert',
+    sepia = 'sepia',
+    noise = 'noise',
+    pixelate = 'pixelate',
+    sharpen = 'sharpen',
+    emboss = 'emboss',
+    'blend-color' = 'blend-color',
+    'blend-image' = 'blend-image',
+    resize = 'resize',
+    tint = 'tint',
+    mask = 'mask',
+    multiply = 'multiply',
+    sepia2 = 'sepia2',
+}
+
+export const ALLFILTERS = { ...FILTERTYPES, ...FILTER_CUSTOMIZE };
+
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
         '//at.alicdn.com/t/c/font_2919693_zn05mnz7l7d.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi

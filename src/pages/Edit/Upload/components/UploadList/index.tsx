@@ -23,7 +23,7 @@ const UploadList = React.memo(() => {
         BridgeController.AddResource({
             id: data.id,
             type: FabricObjectType.IMAGE,
-            url: data.url,
+            src: data.url,
         });
     };
 

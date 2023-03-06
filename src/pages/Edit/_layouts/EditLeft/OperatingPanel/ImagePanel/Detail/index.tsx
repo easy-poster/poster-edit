@@ -1,25 +1,36 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import cn from 'classnames';
-import { IconFont } from '@/const';
+import { FILTERTYPES, IconFont } from '@/const';
 import demoImg from '@/assets/demo.png';
 import { ImagePanelContext, ImagePanelType } from '..';
 import styles from './index.less';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const DetailPanel = React.memo(() => {
     const [active, setActive] = useState();
     const { detailType, setDetailType } = useContext(ImagePanelContext);
 
     const LIST = useMemo(() => {
-        let arr = [];
-        for (let i = 0; i < 18; i++) {
-            arr.push({
-                id: i,
-                title: `slider${i}`,
-                cover: demoImg,
+        if (detailType === ImagePanelType.FILTER) {
+            return Object.keys(FILTERTYPES).map((item, index) => {
+                return {
+                    title: item,
+                    id: index + 1,
+                    cover: demoImg,
+                    type: item,
+                };
+            });
+        } else {
+            return Object.keys(FILTERTYPES).map((item, index) => {
+                return {
+                    title: item,
+                    id: index,
+                    cover: demoImg,
+                    type: item,
+                };
             });
         }
-        return arr;
-    }, []);
+    }, [detailType]);
 
     const DetailMap = {
         [ImagePanelType.FILTER]: '滤镜',
@@ -30,9 +41,15 @@ const DetailPanel = React.memo(() => {
         return DetailMap[detailType];
     }, []);
 
-    const handleActive = useCallback((active: any) => {
-        setActive(active.id);
-    }, []);
+    const handleActive = useCallback(
+        (active: any) => {
+            setActive(active.id);
+            if (detailType === ImagePanelType.FILTER) {
+                BridgeController.setFilter(active.type);
+            }
+        },
+        [detailType],
+    );
 
     const handleBack = useCallback(() => {
         setDetailType(ImagePanelType.NONE);

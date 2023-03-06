@@ -6,6 +6,7 @@ import styles from './index.less';
 import { IconFont } from '@/const';
 import ColorPicker from '@/pages/Brand/components/ColorPicker';
 import { ColorResult } from 'react-color';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 const CurrentColor = React.memo(() => {
     const [currentColor, setCurrentColor] = useState<string>();
@@ -13,6 +14,9 @@ const CurrentColor = React.memo(() => {
     const handleChangePickerColor = (color: ColorResult) => {
         if (color?.hex) {
             setCurrentColor(color.hex);
+            BridgeController.SetFontStyle({
+                fill: color.hex,
+            });
         }
     };
 
