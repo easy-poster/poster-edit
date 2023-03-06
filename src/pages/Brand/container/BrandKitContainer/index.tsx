@@ -1,4 +1,4 @@
-import { useParams } from '@/.umi/exports';
+import { useParams } from '@umijs/max';
 import { getBrandItemDetail } from '@/services/brand';
 import React, {
     useCallback,
