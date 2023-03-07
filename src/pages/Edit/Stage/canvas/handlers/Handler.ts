@@ -587,6 +587,23 @@ class Handler implements HandlerOptions {
             }
         });
         this.canvas.requestRenderAll();
+    };
+
+    /**
+     * @name 设置对象多个属性之后更新onModified事件去保存
+     * @param option
+     * @returns
+     */
+    public setObjected = (option: Partial<FabricObject>) => {
+        const activeObject = this.canvas.getActiveObject() as FabricObject;
+        if (!activeObject) return;
+        Object.keys(option).forEach((key) => {
+            if (option[key] !== activeObject[key]) {
+                activeObject.set(key, option[key]);
+                activeObject.setCoords();
+            }
+        });
+        this.canvas.requestRenderAll();
         const { onModified } = this;
         if (onModified) {
             onModified(activeObject);
@@ -694,7 +711,6 @@ class Handler implements HandlerOptions {
         return new Promise<any>((resolve, reject) => {
             let scaleX = 1;
             let scaleY = 1;
-            let limitSize = 2048;
             try {
                 fabric.Image.fromURL(
                     obj.src,
@@ -760,9 +776,9 @@ class Handler implements HandlerOptions {
             // 添加图片前计算大小
             let newObj = await this.loadImage(obj);
             newObj = { ...newObj, ...obj };
-            this.add(newObj, true);
+            await this.add(newObj, true);
         } else {
-            this.add(obj, true);
+            await this.add(obj, true);
         }
     };
 

@@ -15,7 +15,7 @@ const FontWeight = React.memo(() => {
 
     const handleClick = useCallback(() => {
         setIsWeight(!isWeight);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             fontWeight: isWeight ? 'normal' : 'bold',
         });
     }, [isWeight]);

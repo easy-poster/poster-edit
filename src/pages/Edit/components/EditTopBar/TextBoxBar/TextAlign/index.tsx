@@ -34,13 +34,13 @@ const TextAlign = React.memo(() => {
     const handleClick = useCallback(() => {
         if (actAlign === 'right') {
             setActAlign(textArr[0]);
-            BridgeController.SetFontStyle({
+            BridgeController.SetedObjectStyle({
                 textAlign: textArr[0],
             });
         } else {
             let nextIndex = textArr.map((item) => item).indexOf(actAlign) + 1;
             setActAlign(textArr[nextIndex]);
-            BridgeController.SetFontStyle({
+            BridgeController.SetedObjectStyle({
                 textAlign: textArr[nextIndex],
             });
         }

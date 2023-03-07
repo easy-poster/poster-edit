@@ -107,8 +107,16 @@ const BridgeController = {
     /**
      * @description 设置fabric样式
      */
-    SetFontStyle(obj: Partial<FabricObject<fabric.Object>>) {
+    SetObjectStyle(obj: Partial<FabricObject<fabric.Object>>) {
         window.handler.setObject(obj);
+    },
+
+    /**
+     * @description 设置fabric样式之后，更新数据
+     * @param obj
+     */
+    SetedObjectStyle(obj: Partial<FabricObject<fabric.Object>>) {
+        window.handler.setObjected(obj);
     },
 
     /**

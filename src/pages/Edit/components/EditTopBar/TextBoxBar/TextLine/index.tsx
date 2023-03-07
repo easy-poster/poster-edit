@@ -13,7 +13,7 @@ const TextLine = React.memo(() => {
 
     const handleClick = useCallback(() => {
         setIsUnderline(!isUnderline);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             underline: !isUnderline,
         });
     }, [isUnderline]);

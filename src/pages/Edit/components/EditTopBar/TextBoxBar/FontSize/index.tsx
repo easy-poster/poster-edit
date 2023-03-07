@@ -50,7 +50,7 @@ const FontSize = React.memo(() => {
 
     const handleChange = useCallback((value: number | null) => {
         setSize(value);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             fontSize: value,
         });
     }, []);

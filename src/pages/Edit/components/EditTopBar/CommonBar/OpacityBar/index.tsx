@@ -6,61 +6,57 @@ import BarButton from '../../components/BarButton';
 import BridgeController from '@/helper/bridge/BridgeController';
 import styles from './index.less';
 
-const OpacityBar = React.memo(() => {
+const SliderOpacity = React.memo(() => {
     const { selectObj } = useContext(SelectContext);
-
-    const [open, setOpen] = useState(false);
-
     const [opacity, setOpacity] = useState(() => selectObj?.opacity);
 
-    const handleOpenChange = (newOpen: boolean) => {
-        setOpen(newOpen);
-    };
-
-    const handleCharSpacing = useCallback((value: number) => {
-        BridgeController.SetFontStyle({
-            opacity: value,
-        });
-    }, []);
-
-    // const handleLineHeight = useCallback((value: number) => {
-    //     setLineHeight(value);
-    // }, []);
-
-    const handleCharSpacingAfter = useCallback((value: number) => {
+    const handleOpacity = useCallback((value: number) => {
         setOpacity(value);
-        BridgeController.SetFontStyle({
+        BridgeController.SetObjectStyle({
             opacity: value,
         });
     }, []);
 
-    const SliderSpacing = () => {
-        return (
-            <div className={styles.sliderWrap}>
-                <div className={styles.sliderIem}>
-                    <p>透明度</p>
-                    <Slider
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={opacity}
-                        tooltip={{ formatter: null }}
-                        // onChange={handleCharSpacing}
-                        onAfterChange={handleCharSpacingAfter}
-                    />
-                </div>
-            </div>
-        );
-    };
+    const handleOpacityAfter = useCallback((value: number) => {
+        setOpacity(value);
+        BridgeController.SetedObjectStyle({
+            opacity: value,
+        });
+    }, []);
 
     useEffect(() => {
         setOpacity(selectObj?.opacity || 0);
     }, [selectObj?.opacity]);
 
     return (
+        <div className={styles.sliderWrap}>
+            <div className={styles.sliderIem}>
+                <p>透明度</p>
+                <Slider
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={opacity}
+                    tooltip={{ formatter: null }}
+                    onChange={handleOpacity}
+                    onAfterChange={handleOpacityAfter}
+                />
+            </div>
+        </div>
+    );
+});
+
+const OpacityBar = React.memo(() => {
+    const [open, setOpen] = useState(false);
+
+    const handleOpenChange = (newOpen: boolean) => {
+        setOpen(newOpen);
+    };
+
+    return (
         <div className={styles.fontSpacingWrap}>
             <Popover
-                content={<SliderSpacing />}
+                content={<SliderOpacity />}
                 trigger="click"
                 open={open}
                 onOpenChange={handleOpenChange}

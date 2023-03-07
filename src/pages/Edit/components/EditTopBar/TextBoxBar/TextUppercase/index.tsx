@@ -16,7 +16,7 @@ const TextUppercase = React.memo(() => {
 
     const handleClick = useCallback(() => {
         setIsUpperCase(!isUpperCase);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             upperCase: !isUpperCase,
         });
     }, [isUpperCase]);

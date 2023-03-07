@@ -15,7 +15,7 @@ const FontItalic = React.memo(() => {
 
     const handleClick = useCallback(() => {
         setIsItalic(!isItalic);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             fontStyle: isItalic ? 'normal' : 'italic',
         });
     }, [isItalic]);

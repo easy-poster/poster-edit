@@ -14,7 +14,7 @@ const CurrentColor = React.memo(() => {
     const handleChangePickerColor = (color: ColorResult) => {
         if (color?.hex) {
             setCurrentColor(color.hex);
-            BridgeController.SetFontStyle({
+            BridgeController.SetedObjectStyle({
                 fill: color.hex,
             });
         }

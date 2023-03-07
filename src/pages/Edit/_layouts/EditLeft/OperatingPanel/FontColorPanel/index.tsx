@@ -39,7 +39,7 @@ const FontColorPanel = React.memo(() => {
 
     const handleClick = useCallback((item: colorItemProps) => {
         setActiveColor(item.value);
-        BridgeController.SetFontStyle({
+        BridgeController.SetedObjectStyle({
             fill: item.value,
         });
     }, []);
