@@ -23,35 +23,21 @@ class ImageHandler {
      */
     public createFilter = (filter: IFilter) => {
         const { type: filterType, ...other } = filter;
-        switch (filterType.toLowerCase()) {
-            case FILTER_CUSTOMIZE.brightness:
-                return new fabric.Image.filters.Brightness({
-                    brightness: other.brightness,
-                });
-            case FILTER_CUSTOMIZE.contrast:
-                return new fabric.Image.filters.Contrast({
-                    contrast: other.contrast,
-                });
-            case FILTER_CUSTOMIZE.saturation:
-                return new fabric.Image.filters.Saturation({
-                    saturation: other.saturation,
-                });
-            // case FILTER_CUSTOMIZE.temperature:
-            //     return new fabric.Image.filters.Temperature({
-            //         temperature: other.temperature || 0,
-            //     });
+        switch (filterType?.toLowerCase()) {
             case FILTERTYPES.grayscale:
                 return new fabric.Image.filters.Grayscale(other);
             case FILTERTYPES.invert:
                 return new fabric.Image.filters.Invert();
             case FILTERTYPES['blend-color']:
                 return new fabric.Image.filters.BlendColor(other);
-            case FILTERTYPES['blend-image']:
-                return new fabric.Image.filters.BlendImage(other);
+            // case FILTERTYPES['blend-image']:
+            //     return new fabric.Image.filters.BlendImage(other);
             case FILTERTYPES.sepia:
                 return new fabric.Image.filters.Sepia();
             case FILTERTYPES.noise:
-                return new fabric.Image.filters.Noise({ noise: other.noise });
+                return new fabric.Image.filters.Noise({
+                    noise: other.noise || 60,
+                });
             case FILTERTYPES.pixelate:
                 return new fabric.Image.filters.Pixelate(other);
             case FILTERTYPES.sharpen:
@@ -62,21 +48,38 @@ class ImageHandler {
                 return new fabric.Image.filters.Convolute({
                     matrix: EMBOSS_MATRIX,
                 });
-            case FILTERTYPES.resize:
-                return new fabric.Image.filters.Resize(other);
-            case FILTERTYPES.mask:
-                return new fabric.Image.filters.Mask({
-                    channel: other.channel,
-                    mask: other.mask,
+            // case FILTERTYPES.resize:
+            //     return new fabric.Image.filters.Resize(other);
+            // case FILTERTYPES.mask:
+            //     return new fabric.Image.filters.Mask({
+            //         channel: other.channel,
+            //         mask: other.mask,
+            //     });
+            // case FILTERTYPES.multiply:
+            //     return new fabric.Image.filters.Multiply({
+            //         color: other.color || '#000',
+            //     });
+            // case FILTERTYPES.sepia2:
+            //     return new fabric.Image.filters.Sepia2(other);
+            // 以下是默认的滤镜
+            case FILTER_CUSTOMIZE.brightness:
+                return new fabric.Image.filters.Brightness({
+                    brightness: other.brightness || 0,
                 });
-            case FILTERTYPES.multiply:
-                return new fabric.Image.filters.Multiply({
-                    color: other.color,
+            case FILTER_CUSTOMIZE.contrast:
+                return new fabric.Image.filters.Contrast({
+                    contrast: other.contrast || 0,
                 });
-            case FILTERTYPES.sepia2:
-                return new fabric.Image.filters.Sepia2(other);
+            case FILTER_CUSTOMIZE.saturation:
+                return new fabric.Image.filters.Saturation({
+                    saturation: other.saturation || 0,
+                });
+            // case FILTER_CUSTOMIZE.temperature:
+            //     return new fabric.Image.filters.Temperature({
+            //         temperature: other.temperature || 0,
+            //     });
             default:
-                return false;
+                return undefined;
         }
     };
 
@@ -85,11 +88,28 @@ class ImageHandler {
      * @param filters
      * @returns
      */
-    public createFilters = (filters: IFilter[]) => {
-        return filters.reduce((prev: any, filter) => {
+    public createFilters = (filters: IFilter[] & any) => {
+        // 如果没没有调节的滤镜则添加
+        const filterOrder = Object.values(FILTER_CUSTOMIZE);
+        for (let i = 0; i < filterOrder.length; i++) {
+            let findIndex = filters.findIndex(
+                (ft: { type: { toLowerCase: () => FILTER_CUSTOMIZE } }) =>
+                    ft?.type?.toLowerCase() === filterOrder[i],
+            );
+            if (findIndex < 0) {
+                filters.push(
+                    this.createFilter({
+                        type: filterOrder[i],
+                    }),
+                );
+            }
+        }
+
+        return filters.reduce((prev: any, filter: IFilter) => {
             let type = filter?.type;
-            const findIndex = Object.keys(ALLFILTERS).findIndex(
-                (filterType) => type.toLowerCase() === filterType,
+            const findIndex = filters.findIndex(
+                (ft: { type: string }) =>
+                    ft?.type?.toLowerCase() === type?.toLowerCase(),
             );
             if (findIndex > -1) {
                 prev[findIndex] = this.createFilter({
@@ -114,21 +134,39 @@ class ImageHandler {
         imageObj?: fabric.Image,
     ): void => {
         const obj = imageObj || (this.handler.canvas.getActiveObject() as any);
-        const findIndex = Object.keys(ALLFILTERS).findIndex(
-            (ft) => ft.toLowerCase() === type,
+        if (!obj?.filters) return;
+
+        let findIndex = obj.filters.findIndex(
+            (ft: { type: string }) =>
+                !Object.keys(FILTER_CUSTOMIZE).includes(
+                    ft?.type?.toLowerCase(),
+                ),
         );
-        if (obj.filters && findIndex > -1) {
-            if (apply) {
+        if (apply) {
+            if (findIndex > 0) {
                 obj.filters[findIndex] = this.createFilter({
                     type,
                     ...value,
                 });
-                obj.applyFilters();
             } else {
-                obj.filters[findIndex] = false;
-                obj.applyFilters();
+                obj.filters.push(
+                    this.createFilter({
+                        type,
+                        ...value,
+                    }),
+                );
             }
-            this.handler.canvas.requestRenderAll();
+        } else {
+            if (findIndex > 0) {
+                obj.filters[findIndex] = false;
+            }
+        }
+        obj.applyFilters();
+        this.handler.canvas.requestRenderAll();
+
+        const onModified = this.handler?.onModified;
+        if (onModified) {
+            onModified(obj);
         }
     };
 
@@ -145,7 +183,7 @@ class ImageHandler {
     ): void => {
         const obj = imageObj || (this.handler.canvas.getActiveObject() as any);
         if (type) {
-            const findIndex = Object.keys(ALLFILTERS).findIndex(
+            const findIndex = Object.keys(FILTER_CUSTOMIZE).findIndex(
                 (ft) => ft.toLowerCase() === type,
             );
             if (obj.filters && findIndex > -1) {

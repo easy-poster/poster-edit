@@ -6,28 +6,35 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import HeaderTitle from '@/components/HeaderTitle';
-import BScroll from '@better-scroll/core';
-import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';
-import demoImg from '@/assets/demo.png';
-import { useSize } from 'ahooks';
 import cn from 'classnames';
+import { useSize } from 'ahooks';
+import BScroll from '@better-scroll/core';
 import { FILTERTYPES, IconFont } from '@/const';
-import { ImagePanelContext, ImagePanelType } from '..';
-import styles from './index.less';
+import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll';
+import HeaderTitle from '@/components/HeaderTitle';
+import demoImg from '@/assets/demo.png';
 import BridgeController from '@/helper/bridge/BridgeController';
+import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
+import FilterDetailPanel from './Detail';
+import styles from './index.less';
 
 let bscrollObj: BScrollConstructor;
 
 const Filter = React.memo(() => {
+    const { selectObj } = useContext(SelectContext);
     const swiperRef = useRef(null);
     const size = useSize(swiperRef);
     const [isEnd, setIsEnd] = useState({
         left: true,
         right: false,
     });
-    const [active, setActive] = useState();
-    const { setDetailType } = useContext(ImagePanelContext);
+    const [isShowDetail, setIsShowDetail] = useState(false);
+
+    const [active, setActive] = useState(() => {
+        return selectObj?.filters?.find((it: { type: FILTERTYPES }) => {
+            return Object.keys(FILTERTYPES).includes(it?.type?.toLowerCase());
+        })?.type;
+    });
 
     const LIST = useMemo(() => {
         return Object.keys(FILTERTYPES).map((item, index) => {
@@ -41,11 +48,11 @@ const Filter = React.memo(() => {
     }, []);
 
     const handleMore = useCallback(() => {
-        setDetailType(ImagePanelType.FILTER);
+        setIsShowDetail(true);
     }, []);
 
     const handleActive = useCallback((active: any) => {
-        setActive(active.id);
+        setActive(active.type);
         BridgeController.setFilter(active.type);
     }, []);
 
@@ -104,6 +111,16 @@ const Filter = React.memo(() => {
         };
     }, []);
 
+    useEffect(() => {
+        setActive(
+            selectObj?.filters?.find((it: { type: FILTERTYPES }) => {
+                return Object.keys(FILTERTYPES).includes(
+                    it?.type?.toLowerCase(),
+                );
+            })?.type,
+        );
+    }, [selectObj]);
+
     return (
         <div className={styles.panelItem}>
             <HeaderTitle
@@ -121,7 +138,8 @@ const Filter = React.memo(() => {
                         <li className={styles.swiperItem} key={item.id}>
                             <div
                                 className={cn(styles.itemImg, {
-                                    [styles.active]: item.id === active,
+                                    [styles.active]:
+                                        item.type === active?.toLowerCase(),
                                 })}
                                 onClick={() => handleActive(item)}
                             >
@@ -152,6 +170,13 @@ const Filter = React.memo(() => {
                     />
                 </div>
             </div>
+            {isShowDetail && (
+                <FilterDetailPanel
+                    active={active}
+                    handleActive={handleActive}
+                    setIsShowDetail={setIsShowDetail}
+                />
+            )}
         </div>
     );
 });

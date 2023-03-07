@@ -120,6 +120,13 @@ const BridgeController = {
     },
 
     /**
+     * @description 手动触发保存
+     */
+    setModified() {
+        window.handler.setModified();
+    },
+
+    /**
      * @description 设置滤镜
      */
     setFilter(type: FILTERTYPES, apply?: boolean) {

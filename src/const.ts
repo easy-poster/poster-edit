@@ -159,12 +159,12 @@ export enum FILTERTYPES {
     sharpen = 'sharpen',
     emboss = 'emboss',
     'blend-color' = 'blend-color',
-    'blend-image' = 'blend-image',
-    resize = 'resize',
-    tint = 'tint',
-    mask = 'mask',
-    multiply = 'multiply',
-    sepia2 = 'sepia2',
+    // 'blend-image' = 'blend-image',
+    // resize = 'resize',
+    // tint = 'tint',
+    // mask = 'mask',
+    // multiply = 'multiply',
+    // sepia2 = 'sepia2',
 }
 
 export const ALLFILTERS = { ...FILTERTYPES, ...FILTER_CUSTOMIZE };

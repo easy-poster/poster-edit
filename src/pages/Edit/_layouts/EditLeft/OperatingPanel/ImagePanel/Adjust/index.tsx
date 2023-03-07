@@ -49,8 +49,6 @@ const Adjust = React.memo(() => {
         );
     }, [selectObj]);
 
-    // const handleMore = useCallback(() => {}, []);
-
     const handleBrightnessChange = useCallback((value: number) => {
         setBrightness(value);
         BridgeController.changeFilter(FILTER_CUSTOMIZE.brightness, {
@@ -79,9 +77,8 @@ const Adjust = React.memo(() => {
         });
     }, []);
 
-    const handleBrightnessAfterChange = useCallback((value: number) => {
-        console.log('');
-        // 滑动完了进行保存
+    const handleAfterChange = useCallback((value: number) => {
+        BridgeController.setModified();
     }, []);
 
     useEffect(() => {
@@ -117,7 +114,7 @@ const Adjust = React.memo(() => {
                     }}
                     value={brightness}
                     onChange={handleBrightnessChange}
-                    onAfterChange={handleBrightnessAfterChange}
+                    onAfterChange={handleAfterChange}
                 />
             </div>
             <div className={cn(styles.adjustItem, styles.contrast)}>
@@ -134,6 +131,7 @@ const Adjust = React.memo(() => {
                     }}
                     value={contrast}
                     onChange={handleContrastChange}
+                    onAfterChange={handleAfterChange}
                 />
             </div>
             <div className={cn(styles.adjustItem, styles.saturation)}>
@@ -150,6 +148,7 @@ const Adjust = React.memo(() => {
                     }}
                     value={saturation}
                     onChange={handleSaturationChange}
+                    onAfterChange={handleAfterChange}
                 />
             </div>
             {/* <div className={cn(styles.adjustItem, styles.temperature)}>

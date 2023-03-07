@@ -19,6 +19,7 @@ import CanvasObject from '../CanvasObject';
 import { defaults } from '../const';
 import { defaultFilters, FabricObjectType } from '../const/defaults';
 import initControls from '../utils/controls';
+import { FILTERTYPES, FILTER_CUSTOMIZE } from '@/const';
 
 // 滤镜纹理限制了只能使用2k图
 // fabric.textureSize = 8192;
@@ -611,6 +612,20 @@ class Handler implements HandlerOptions {
     };
 
     /**
+     * @name 外部触发更新保持
+     * @returns
+     */
+    public setModified() {
+        const activeObject = this.canvas.getActiveObject() as FabricObject;
+        if (!activeObject) return;
+        this.canvas.requestRenderAll();
+        const { onModified } = this;
+        if (onModified) {
+            onModified(activeObject);
+        }
+    }
+
+    /**
      * @name 通过对象设置多个属性
      * @param obj
      * @param option
@@ -894,14 +909,15 @@ class Handler implements HandlerOptions {
     public addImage = (obj: FabricImage) => {
         const { objectOption } = this;
         let { src, filters = [], ...otherOption } = obj;
-        const image = new Image();
 
+        const image = new Image();
         const createdObj = new fabric.Image(image, {
             originX: 'center',
             originY: 'center',
             ...objectOption,
             ...otherOption,
         }) as FabricImage;
+
         createdObj.set({
             filters: this.imageHandler.createFilters(filters as IFilter[]),
         });
