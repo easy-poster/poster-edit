@@ -1,30 +1,63 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button, List, Popover } from 'antd';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
+import { ColorResult } from 'react-color';
+import { Popover } from 'antd';
 import cn from 'classnames';
-import { colorItemProps } from '..';
-import styles from './index.less';
 import { IconFont } from '@/const';
 import ColorPicker from '@/pages/Brand/components/ColorPicker';
-import { ColorResult } from 'react-color';
 import BridgeController from '@/helper/bridge/BridgeController';
+import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
+import { Gradient, Pattern } from 'fabric/fabric-impl';
+import styles from './index.less';
 
-const CurrentColor = React.memo(() => {
-    const [currentColor, setCurrentColor] = useState<string>();
+type colorProps = string | Pattern | Gradient | undefined;
+
+const CurrentColorPicker = React.memo(() => {
+    const { selectObj } = useContext(SelectContext);
+
+    const [currentColor, setCurrentColor] = useState<any>(
+        () => selectObj?.fill ?? '',
+    );
 
     const handleChangePickerColor = (color: ColorResult) => {
         if (color?.hex) {
             setCurrentColor(color.hex);
-            BridgeController.SetedObjectStyle({
+            BridgeController.SetObjectStyle({
                 fill: color.hex,
             });
         }
     };
+
+    const handleOpenChange = useCallback(
+        (open: boolean) => {
+            if (!open) {
+                BridgeController.setModified();
+            }
+        },
+        [selectObj?.fill, currentColor],
+    );
+
+    useEffect(() => {
+        setCurrentColor(selectObj?.fill ?? '');
+    }, [selectObj?.fill]);
+
+    useEffect(() => {
+        return () => {
+            BridgeController.setModified();
+        };
+    }, []);
 
     return (
         <Popover
             autoAdjustOverflow={true}
             destroyTooltipOnHide
             placement="bottomLeft"
+            onOpenChange={handleOpenChange}
             content={
                 <ColorPicker
                     activeColor={currentColor}
@@ -42,51 +75,65 @@ const CurrentColor = React.memo(() => {
     );
 });
 
-/**
- * @description 主题颜色表
- */
-const DocColor = React.memo(() => {
-    const [activeColor, setActiveColor] = useState<string>();
-
-    const LIST = useMemo(() => {
-        let arr = [];
-        for (let i = 0; i < 7; i++) {
-            arr.push({
-                id: i + 1,
-                value: `#E${i < 10 ? '0' + i : i}`,
-                type: '主题颜色',
-            });
-        }
-        return arr;
-    }, []);
-
-    const handleClick = useCallback((item: colorItemProps) => {
-        setActiveColor(item.value);
-    }, []);
-
-    const RenderItem = ({ item }: { item: colorItemProps }) => {
+const RenderItem = React.memo(
+    ({
+        item,
+        activeColor,
+        handleClick,
+    }: {
+        item: colorProps;
+        activeColor: colorProps;
+        handleClick: (item: colorProps) => void;
+    }) => {
         return (
             <div
                 className={cn(styles.colorWrap, {
-                    [styles.active]: item.value === activeColor,
+                    [styles.active]: item === activeColor,
                 })}
                 onClick={() => handleClick(item)}
             >
                 <div
                     className={styles.colorItem}
-                    style={{ backgroundColor: item.value }}
+                    style={{ backgroundColor: item as string }}
                 ></div>
             </div>
         );
-    };
+    },
+);
+
+/**
+ * @description 主题颜色表
+ */
+const DocColor = React.memo(() => {
+    const { selectObj } = useContext(SelectContext);
+    const [activeColor, setActiveColor] = useState<colorProps>();
+
+    const handleClick = useCallback((item: colorProps) => {
+        setActiveColor(item);
+        BridgeController.SetObjectStyle({
+            fill: item,
+        });
+    }, []);
+
+    const colorList = useMemo(() => {
+        let objs = selectObj?.canvas?._objects;
+        return objs?.map((it) => it?.fill) || [];
+    }, [selectObj?.canvas?._objects]);
 
     return (
         <div className={styles.docColorWrap}>
             <h3>主题颜色</h3>
             <div className={styles.docContent}>
-                <CurrentColor />{' '}
-                {LIST.map((item) => {
-                    return <RenderItem item={item} key={item.id} />;
+                <CurrentColorPicker />
+                {colorList.map((item, index) => {
+                    return (
+                        <RenderItem
+                            item={item}
+                            activeColor={activeColor}
+                            handleClick={handleClick}
+                            key={index}
+                        />
+                    );
                 })}
             </div>
         </div>

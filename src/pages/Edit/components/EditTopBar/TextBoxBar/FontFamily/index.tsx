@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import cn from 'classnames';
 import {
     OperatingPanelContext,
@@ -6,9 +6,13 @@ import {
 } from '@/pages/Edit/Container/OperatingPanelContainer';
 import { IconFont } from '@/const';
 import styles from './index.less';
+import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
 
 const FontFamily = React.memo(() => {
-    const [fontFamily, setFontFamily] = useState('微软雅黑');
+    const { selectObj } = useContext(SelectContext);
+    const [fontFamily, setFontFamily] = useState(
+        () => selectObj?.fontFamily ?? '微软雅黑',
+    );
     const { panelType, setPanelType } = useContext(OperatingPanelContext);
 
     const handleClick = useCallback(() => {
@@ -19,6 +23,10 @@ const FontFamily = React.memo(() => {
         );
     }, [panelType]);
 
+    useEffect(() => {
+        setFontFamily(selectObj?.fontFamily);
+    }, [selectObj?.fontFamily]);
+
     return (
         <div
             className={cn(styles.familyWrap, {
@@ -26,7 +34,7 @@ const FontFamily = React.memo(() => {
             })}
             onClick={handleClick}
         >
-            <span>{fontFamily}</span>
+            <p>{fontFamily}</p>
             <IconFont type="icon-xiangxia" style={{ fontSize: '24px' }} />
         </div>
     );

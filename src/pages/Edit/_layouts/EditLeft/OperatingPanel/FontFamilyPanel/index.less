@@ -39,42 +39,48 @@
         }
     }
 
-    .groupWrap {
-        & > h3 {
-            position: sticky;
-            top: 100px;
-            font-size: 26px;
-            color: #fff;
-            margin: 0 20px;
-            background-color: #272731;
-            z-index: 1;
+    .fontItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        font-size: 16px;
+        margin-top: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #3c3c48;
         }
 
-        .fontItem {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            font-size: 16px;
-            margin-top: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
+        .fontImg {
+            position: relative;
+            width: 72px;
+            height: 24px;
 
-            &:hover {
-                background-color: #3c3c48;
-            }
-
-            & > p {
-                padding-right: 20px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+            & > img {
+                position: absolute;
+                left: 0;
+                height: 24px;
             }
         }
     }
 
-    .groupWrap + .groupWrap {
-        border-top: 1px solid rgb(92 92 92);
-        margin-top: 30px;
-    }
+    // .groupWrap {
+    //     & > h3 {
+    //         position: sticky;
+    //         top: 100px;
+    //         font-size: 26px;
+    //         color: #fff;
+    //         margin: 0 20px;
+    //         background-color: #272731;
+    //         z-index: 1;
+    //     }
+
+    // }
+
+    // .groupWrap + .groupWrap {
+    //     border-top: 1px solid rgb(92 92 92);
+    //     margin-top: 30px;
+    // }
 }

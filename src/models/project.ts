@@ -72,13 +72,8 @@ export default {
                 ...payload,
                 id: id,
             };
+            if (!id || !payload) return;
             yield call(prjService.updateProject, data);
-            // yield put({
-            //     type: 'getPrj',
-            //     payload: {
-            //         id: uuid,
-            //     },
-            // });
         },
         // *remove({ payload: id }, { call, put }) {
         //   yield call(usersService.remove, id);

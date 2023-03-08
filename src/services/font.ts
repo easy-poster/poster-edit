@@ -8,11 +8,10 @@ interface listType<T> {
 export interface FontItem {
     id: string;
     uuid: string;
-    name: string;
-    cover: string;
-    size: number;
-    type: number;
-    url: string;
+    fontName: string;
+    fontNormalUrl: string;
+    fontCover: string;
+    isVip: boolean;
     createTime: Date;
     updateTime: Date;
 }
@@ -23,7 +22,7 @@ export interface FontItem {
  * @param options
  * @returns
  */
-export async function getTextList(
+export async function getFontList(
     params: {
         current: number;
         pageSize: number;
@@ -31,28 +30,6 @@ export async function getTextList(
     options?: { [key: string]: any },
 ) {
     return request<listType<FontItem>>('/app/base/font/list', {
-        method: 'GET',
-        params: {
-            ...params,
-        },
-        ...(options || {}),
-    });
-}
-
-/**
- * @name 获取下拉字体列表
- * @param params
- * @param options
- * @returns
- */
-export async function getFontGroupList(
-    params: {
-        current: number;
-        pageSize: number;
-    },
-    options?: { [key: string]: any },
-) {
-    return request<listType<FontItem>>('/app/base/fontGroup/list', {
         method: 'GET',
         params: {
             ...params,

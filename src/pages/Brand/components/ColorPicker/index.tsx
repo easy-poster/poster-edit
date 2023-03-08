@@ -6,10 +6,19 @@ import styles from './index.less';
 interface ColorPickerProps {
     activeColor?: string;
     onChangeColor: ColorChangeHandler;
+    onChangeColorComplete?: ColorChangeHandler;
 }
 
+/**
+ * @description 颜色选择组件
+ * @todo react-color这个库性能不太好，后面优化
+ */
 const ColorPicker = React.memo(
-    ({ activeColor, onChangeColor }: ColorPickerProps) => {
+    ({
+        activeColor,
+        onChangeColor,
+        onChangeColorComplete,
+    }: ColorPickerProps) => {
         const currentColor = useMemo(() => {
             return activeColor || tools.randomColor16();
         }, [activeColor]);
@@ -20,6 +29,7 @@ const ColorPicker = React.memo(
                     className={styles.chromePicker}
                     color={currentColor}
                     onChange={onChangeColor}
+                    onChangeComplete={onChangeColorComplete}
                 />
             </div>
         );

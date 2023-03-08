@@ -2,8 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { List } from 'antd';
 import cn from 'classnames';
 import DocColor from './DocColor';
-import styles from './index.less';
 import BridgeController from '@/helper/bridge/BridgeController';
+import styles from './index.less';
+import { DEFCOLOR } from '@/const';
 
 export interface colorItemProps {
     id: number;
@@ -16,11 +17,11 @@ const FontColorPanel = React.memo(() => {
 
     const LIST = useMemo(() => {
         let arr = [];
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < DEFCOLOR.length; i++) {
             arr.push({
                 id: i,
-                value: `#E${i < 10 ? '0' + i : i}`,
-                type: i < 20 ? '品牌颜色' : '默认颜色',
+                value: DEFCOLOR[i],
+                type: '默认颜色',
             });
         }
         return arr;

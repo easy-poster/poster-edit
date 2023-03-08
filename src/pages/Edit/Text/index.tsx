@@ -13,7 +13,7 @@ import { Input, message } from 'antd';
 import { FabricObjectType } from '../Stage/canvas/const/defaults';
 import styles from './index.less';
 import BridgeController from '@/helper/bridge/BridgeController';
-import { FontItem, getFontGroupList } from '@/services/font';
+import { FontItem } from '@/services/font';
 
 const TextPage = React.memo(() => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -34,16 +34,16 @@ const TextPage = React.memo(() => {
 
     const initText = useCallback(async () => {
         try {
-            let res = await getFontGroupList({
-                current: currentPage,
-                pageSize: 20,
-            });
-            let list = res?.list || [];
-            let total = res.total;
-            if (list?.length) {
-                setTextList([...textList, ...list]);
-                setPageTotal(total);
-            }
+            // let res = await getFontGroupList({
+            //     current: currentPage,
+            //     pageSize: 20,
+            // });
+            // let list = res?.list || [];
+            // let total = res.total;
+            // if (list?.length) {
+            //     setTextList([...textList, ...list]);
+            //     setPageTotal(total);
+            // }
         } catch (error) {}
     }, []);
 
@@ -60,7 +60,7 @@ const TextPage = React.memo(() => {
 
     const handleAdd = (type: number) => {
         let data = {
-            id: uuidv4(),
+            id: '',
             type: FabricObjectType.TEXTBOX,
         };
         switch (type) {
@@ -70,7 +70,6 @@ const TextPage = React.memo(() => {
                     ...{
                         text: '添加标题',
                         fontSize: 52,
-                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
                     },
                 };
                 break;
@@ -80,7 +79,6 @@ const TextPage = React.memo(() => {
                     ...{
                         text: '添加副标题',
                         fontSize: 36,
-                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
                     },
                 };
                 break;
@@ -90,7 +88,6 @@ const TextPage = React.memo(() => {
                     ...{
                         text: '添加一段文本',
                         fontSize: 24,
-                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
                     },
                 };
                 break;

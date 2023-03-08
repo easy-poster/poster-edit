@@ -169,6 +169,61 @@ export enum FILTERTYPES {
 
 export const ALLFILTERS = { ...FILTERTYPES, ...FILTER_CUSTOMIZE };
 
+/**
+ * @description 默认使用颜色
+ */
+export const DEFCOLOR = [
+    '#000000',
+
+    '#545454',
+
+    '#737373',
+
+    '#a6a6a6',
+
+    '#d9d9d9',
+
+    '#ffffff',
+
+    '#ff3131',
+
+    '#ff5757',
+
+    '#ff66c4',
+
+    '#cb6ce6',
+
+    '#8c52ff',
+
+    '#5e17eb',
+
+    '#0097b2',
+
+    '#0cc0df',
+
+    '#5ce1e6',
+
+    '#38b6ff',
+
+    '#5271ff',
+
+    '#004aad',
+
+    '#00bf63',
+
+    '#7ed957',
+
+    '#c1ff72',
+
+    '#ffde59',
+
+    '#ffbd59',
+
+    '#ff914d',
+
+    '#f35900',
+];
+
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
         '//at.alicdn.com/t/c/font_2919693_zn05mnz7l7d.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi

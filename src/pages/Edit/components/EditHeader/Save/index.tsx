@@ -7,7 +7,8 @@ const Save = React.memo(() => {
         <div className={styles.saveWrap}>
             <IconFont
                 type="icon-yunshangchuan"
-                style={{ fontSize: '28px', color: '#FFF' }}
+                // type="icon-ai35"
+                style={{ fontSize: '28px', color: '#ababb8' }}
             />
         </div>
     );
