@@ -847,6 +847,7 @@ class Handler implements HandlerOptions {
                 createObj = this.fabricObjects[obj.type].create({
                     ...newOption,
                 });
+                this.addFont(createObj, obj?.fontUrl);
 
                 createObj.setControlsVisibility({
                     mt: false,
@@ -925,6 +926,26 @@ class Handler implements HandlerOptions {
         this.setImage(createdObj, src!);
 
         return createdObj;
+    };
+
+    public addFont = (obj: any, source: string) => {
+        if (!source) return;
+        let fontFace = new FontFace(obj.id, `url(${source})`, {
+            weight: 'normal',
+        });
+        fontFace
+            .load()
+            .then((loadedFace) => {
+                console.log('加载对应字体');
+                document.fonts.add(loadedFace);
+                // 先设置为空可能是fabric.js set的判断问题，先设置空在重新设置加载（后面再优化）
+                obj.set('fontFamily', '');
+                obj.set('fontFamily', obj.id);
+                this.canvas.renderAll();
+            })
+            .catch((error) => {
+                console.log('err', error);
+            });
     };
 
     /**

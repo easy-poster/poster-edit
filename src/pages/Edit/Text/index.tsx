@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react';
 import cn from 'classnames';
+import { v4 as uuidv4 } from 'uuid';
 import demoImg from '@/assets/demo.png';
 import { IconFont } from '@/const';
 import { Input, message } from 'antd';
@@ -57,13 +58,46 @@ const TextPage = React.memo(() => {
         console.log('e1', e.target.value);
     }, []);
 
-    const handleAdd = (data: any) => {
-        BridgeController.AddResource({
-            id: data.id,
+    const handleAdd = (type: number) => {
+        let data = {
+            id: uuidv4(),
             type: FabricObjectType.TEXTBOX,
-            text: data.text,
-            fontSize: data.fontSize,
-        });
+        };
+        switch (type) {
+            case 1:
+                data = {
+                    ...data,
+                    ...{
+                        text: '添加标题',
+                        fontSize: 52,
+                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
+                    },
+                };
+                break;
+            case 2:
+                data = {
+                    ...data,
+                    ...{
+                        text: '添加副标题',
+                        fontSize: 36,
+                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
+                    },
+                };
+                break;
+            case 3:
+                data = {
+                    ...data,
+                    ...{
+                        text: '添加一段文本',
+                        fontSize: 24,
+                        fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
+                    },
+                };
+                break;
+            default:
+                break;
+        }
+        BridgeController.AddResource(data);
     };
 
     useEffect(() => {
@@ -90,25 +124,19 @@ const TextPage = React.memo(() => {
             <div className={styles.textAddWrap}>
                 <div
                     className={cn(styles.textBtn, styles.textTitle)}
-                    onClick={() =>
-                        handleAdd({ text: '添加标题', fontSize: 52 })
-                    }
+                    onClick={() => handleAdd(1)}
                 >
                     添加标题
                 </div>
                 <div
                     className={cn(styles.textBtn, styles.textSubTitle)}
-                    onClick={() =>
-                        handleAdd({ text: '添加副标题', fontSize: 36 })
-                    }
+                    onClick={() => handleAdd(2)}
                 >
                     添加副标题
                 </div>
                 <div
                     className={cn(styles.textBtn, styles.textNomal)}
-                    onClick={() =>
-                        handleAdd({ text: '添加一段文本', fontSize: 24 })
-                    }
+                    onClick={() => handleAdd(3)}
                 >
                     添加一段文本
                 </div>

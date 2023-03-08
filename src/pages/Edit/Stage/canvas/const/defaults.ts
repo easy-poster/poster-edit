@@ -148,6 +148,7 @@ export const propertiesToInclude = [
     'upperCase',
     'file',
     'src',
+    'fontUrl',
     'link',
     'tooltip',
     'animation',

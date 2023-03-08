@@ -10,6 +10,7 @@ interface resourceParams {
     src?: string;
     text?: string;
     fontSize?: number;
+    fontUrl?: string;
 }
 
 const BridgeController = {
