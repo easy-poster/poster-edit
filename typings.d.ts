@@ -413,6 +413,14 @@ declare global {
         [key: string]: any;
     }
 
+    type FabricGroup = FabricObject<fabric.Group> & {
+        /**
+         * Object that config group
+         * @type {FabricObject[]}
+         */
+        objects?: FabricObject[];
+    };
+
     type FabricImage = FabricObject &
         fabric.Image & {
             /**

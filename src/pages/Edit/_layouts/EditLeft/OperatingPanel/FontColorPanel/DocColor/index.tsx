@@ -117,7 +117,7 @@ const DocColor = React.memo(() => {
 
     const colorList = useMemo(() => {
         let objs = selectObj?.canvas?._objects;
-        return objs?.map((it) => it?.fill) || [];
+        return [...new Set(objs?.map((it) => it?.fill))];
     }, [selectObj?.canvas?._objects]);
 
     return (

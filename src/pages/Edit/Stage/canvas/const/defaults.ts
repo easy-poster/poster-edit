@@ -48,6 +48,7 @@ export enum FabricObjectType {
     IMAGE = 'image',
     ITEXT = 'i-text',
     TEXTBOX = 'textbox',
+    GROUP = 'group',
     SVG = 'svg',
     VIDEO = 'video',
     CIRCLE = 'circle',
@@ -102,7 +103,8 @@ export const workareaOption: Partial<WorkareaObject> = {
     scaleX: 1,
     scaleY: 1,
     absolutePositioned: true,
-    fill: '#FFF',
+    // fill: '#FFF',
+    backgroundColor: '#FFF',
     transparentCorners: false,
     hasBorders: false,
     hasControls: false,
@@ -112,7 +114,7 @@ export const workareaOption: Partial<WorkareaObject> = {
     hoverCursor: 'default',
     name: 'title',
     id: 'workarea', // 这个id很重要，查询画布唯一id不能与其他元素id相同
-    type: FabricObjectType.RECT,
+    type: FabricObjectType.IMAGE,
     layout: WorkareaLayoutType.FIXED, // fixed, responsive, fullscreen
     link: {},
     tooltip: {

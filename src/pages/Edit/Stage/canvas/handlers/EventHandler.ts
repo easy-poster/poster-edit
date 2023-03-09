@@ -415,6 +415,9 @@ class EventHandler {
         const onSelect = this.handler?.onSelect;
         // const activeSelectionOption = this.handler?.activeSelectionOption;
         const selected = opt?.selected;
+        const activeObject = this.handler.canvas.getActiveObject();
+        console.log('activeObject', activeObject);
+        console.log('selected', selected);
         // if (target && target?.type === 'activeSelection') {
         //     target.set({
         //         ...activeSelectionOption,

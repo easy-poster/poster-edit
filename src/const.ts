@@ -10,6 +10,7 @@ export enum FabricObjectType {
     IMAGE = 'image',
     ITEXT = 'i-text',
     TEXTBOX = 'textbox',
+    GROUP = 'group',
     SVG = 'svg',
     VIDEO = 'video',
     CIRCLE = 'circle',

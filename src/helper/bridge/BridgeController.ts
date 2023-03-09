@@ -18,7 +18,7 @@ const BridgeController = {
      * @description 添加资源到画布
      * @param params
      */
-    AddResource(params: resourceParams) {
+    AddResource(params: any) {
         window.handler.preAdd(params);
     },
 

@@ -135,7 +135,7 @@ export interface Callback {
     /**
      * 选中时的回调
      */
-    onSelect?: (target?: FabricObject[]) => void;
+    onSelect?: (target?: FabricObject[] | FabricObject<fabric.Group>) => void;
     /**
      * 返回右键上下文
      */
@@ -210,7 +210,9 @@ class Handler implements HandlerOptions {
     public onClick?: (canvas: FabricCanvas, target: FabricObject) => void;
     public onDblClick?: (canvas: FabricCanvas, target: FabricObject) => void;
     public onModified?: (target: FabricObject) => void;
-    public onSelect?: (target?: FabricObject[]) => void;
+    public onSelect?: (
+        target?: FabricObject[] | FabricObject<fabric.Group>,
+    ) => void;
     public onRemove?: (target: FabricObject) => void;
     public onTransaction?: (transaction: TransactionEvent) => void;
     public onInteraction?: (interactionMode: InteractionMode) => void;
@@ -779,20 +781,31 @@ class Handler implements HandlerOptions {
     };
 
     /**
-     * @name 添加资源前处理
+     * @name 外部添加资源前处理
      * @param obj
      * @returns
      */
     public preAdd = async (obj: FabricObjectOption) => {
-        if (obj.type === FabricObjectType.IMAGE) {
-            let src = obj?.src;
-            if (!src) return;
-            // 添加图片前计算大小
-            let newObj = await this.loadImage(obj);
-            newObj = { ...newObj, ...obj };
-            await this.add(newObj, true);
-        } else {
-            await this.add(obj, true);
+        switch (obj.type) {
+            case FabricObjectType.IMAGE:
+                // eslint-disable-next-line no-case-declarations
+                let src = obj?.src;
+                if (!src) return;
+                // 添加图片前计算大小
+                // eslint-disable-next-line no-case-declarations
+                let newObj = await this.loadImage(obj);
+                newObj = { ...newObj, ...obj };
+                await this.add(newObj, true);
+                break;
+            case FabricObjectType.TEXTBOX:
+                await this.add(obj, true);
+                break;
+            case FabricObjectType.GROUP:
+                await this.add(obj, true, false, true);
+                break;
+            default:
+                await this.add(obj, true);
+                break;
         }
     };
 
@@ -803,7 +816,12 @@ class Handler implements HandlerOptions {
      * @param loaded 是否是初始化加载的
      * @returns
      */
-    public add = (obj: FabricObjectOption, centered = true, loaded = false) => {
+    public add = (
+        obj: FabricObjectOption,
+        centered = true,
+        loaded = false,
+        group = false,
+    ) => {
         const { editable, onAdd, objectOption } = this;
         const option: any = {
             hasControls: !obj.locked,
@@ -852,10 +870,18 @@ class Handler implements HandlerOptions {
                     mt: false,
                     mb: false,
                 });
+                break;
+            case FabricObjectType.GROUP:
+                createObj = this.addGroup(newOption);
+                break;
             default:
                 break;
         }
         if (!createObj) return;
+
+        if (group) {
+            return createObj;
+        }
 
         // 添加默认居中
         if (centered) {
@@ -944,6 +970,77 @@ class Handler implements HandlerOptions {
             .catch((error) => {
                 console.log('err', error);
             });
+    };
+
+    /**
+     * @name 外部添加组
+     * @param obj
+     * @returns
+     */
+    public addGroup = (obj: FabricGroup) => {
+        const { objects = [], ...other } = obj;
+        const _objects = objects.map((child) =>
+            this.add(child, false, true, true),
+        ) as FabricObject[];
+        return new fabric.Group(_objects, other) as FabricGroup;
+    };
+
+    /**
+     * @name 选中设置为组
+     * @param target
+     * @returns
+     */
+    public toGroup = (target?: FabricObject) => {
+        const activeObject =
+            target || (this.canvas.getActiveObject() as fabric.ActiveSelection);
+        if (!activeObject) {
+            return null;
+        }
+        if (activeObject.type !== 'activeSelection') {
+            return null;
+        }
+        const group = activeObject.toGroup() as FabricObject<fabric.Group>;
+        group.set({
+            id: '',
+            name: 'New group',
+            type: 'group',
+            ...this.objectOption,
+        });
+        this.objects = this.getObjects();
+        if (!this.transactionHandler.active) {
+            this.transactionHandler.save('group');
+        }
+        if (this.onSelect) {
+            this.onSelect(group);
+        }
+        this.canvas.renderAll();
+        return group;
+    };
+
+    /**
+     * @name 选中对象拆分组
+     * @param target
+     * @returns
+     */
+    public toActiveSelection = (target?: FabricObject) => {
+        const activeObject =
+            target || (this.canvas.getActiveObject() as fabric.Group);
+        if (!activeObject) {
+            return;
+        }
+        if (activeObject.type !== 'group') {
+            return;
+        }
+        const activeSelection = activeObject.toActiveSelection();
+        this.objects = this.getObjects();
+        if (!this.transactionHandler.active) {
+            this.transactionHandler.save('ungroup');
+        }
+        if (this.onSelect) {
+            this.onSelect(activeSelection);
+        }
+        this.canvas.renderAll();
+        return activeSelection;
     };
 
     /**

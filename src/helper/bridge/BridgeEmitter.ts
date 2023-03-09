@@ -25,7 +25,7 @@ enum CMD {
 }
 
 type EventsParams = {
-    [CMD.SELECT]?: FabricObject[];
+    [CMD.SELECT]?: FabricObject[] | FabricObject<fabric.Group>;
     [key: string]: any;
 };
 

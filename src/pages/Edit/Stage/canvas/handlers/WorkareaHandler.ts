@@ -91,10 +91,9 @@ class WorkareaHandler {
             const workarea = json.find(
                 (obj: FabricObjectOption) => obj.id === 'workarea',
             );
-            if (workarea) {
-                prevLeft = workarea.left;
-                prevTop = workarea.top;
-            }
+            if (!workarea) return;
+            prevLeft = workarea.left;
+            prevTop = workarea.top;
 
             json.forEach((obj: FabricObjectOption) => {
                 if (obj.id === 'workarea') {

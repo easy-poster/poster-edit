@@ -43,10 +43,13 @@ const Stage = React.memo(() => {
         BridgeEmitter.emit(F2N.DEL_RESOURCE, params);
     }, []);
 
-    const onSelect = useCallback((params?: FabricObject[]) => {
-        logger.info('onSelect', params);
-        BridgeEmitter.emit(F2N.SELECT, params);
-    }, []);
+    const onSelect = useCallback(
+        (params?: FabricObject[] | FabricObject<fabric.Group>) => {
+            logger.info('onSelect', params);
+            BridgeEmitter.emit(F2N.SELECT, params);
+        },
+        [],
+    );
 
     const onZoom = useCallback((zoom: number) => {
         logger.info('onZoom', Math.round(zoom * 100));

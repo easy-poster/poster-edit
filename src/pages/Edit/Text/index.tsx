@@ -97,6 +97,39 @@ const TextPage = React.memo(() => {
         BridgeController.AddResource(data);
     };
 
+    const handleGroupClick = useCallback((item: any) => {
+        let data = {
+            type: FabricObjectType.GROUP,
+            objects: [
+                {
+                    id: item.id,
+                    type: FabricObjectType.IMAGE,
+                    src: 'http://192.168.1.10:9002/8.png',
+                    left: 0,
+                    top: 0,
+                },
+                {
+                    id: item.id,
+                    type: FabricObjectType.IMAGE,
+                    src: 'http://192.168.1.10:9002/2.jpg',
+                    left: 10,
+                    top: 10,
+                },
+                // {
+                //     id: item.id,
+                //     type: FabricObjectType.TEXTBOX,
+                //     fontSize: 52,
+                //     text: '我是组内的文本',
+                //     fontFamily: item.id,
+                //     fontUrl: 'http://192.168.1.10:9002/Acy手写体.ttf',
+                //     left: 10,
+                //     top: 10
+                // }
+            ],
+        };
+        BridgeController.AddResource(data);
+    }, []);
+
     useEffect(() => {
         initText();
     }, []);
@@ -153,7 +186,7 @@ const TextPage = React.memo(() => {
                                         styles.imgBtn,
                                         styles.editAdd,
                                     )}
-                                    onClick={() => handleAdd(item)}
+                                    onClick={() => handleGroupClick(item)}
                                 >
                                     <IconFont
                                         type="icon-tianjia_huaban"
