@@ -366,6 +366,13 @@ class EventHandler {
             this.panning = true;
             return;
         }
+
+        // 获取最新辅助线位置
+        if (editable) {
+            this.handler.guidelineHandler.viewportTransform =
+                this.handler.canvas.viewportTransform!;
+            this.handler.guidelineHandler.zoom = this.handler.canvas.getZoom();
+        }
     };
 
     /**
@@ -396,6 +403,7 @@ class EventHandler {
             this.panning = false;
             return;
         }
+        // 重置
         if (this.handler?.editable && this.handler.guidelineOption?.enabled) {
             this.handler.guidelineHandler.verticalLines.length = 0;
             this.handler.guidelineHandler.horizontalLines.length = 0;

@@ -8,10 +8,10 @@ const LINECOLOR = '#41b349'; //'#4dc991';
  */
 class GuidelineHandler {
     handler: Handler;
-    verticalLines: { x: number; y1: number; y2: number }[];
-    horizontalLines: { y: number; x1: number; x2: number }[];
-    ctx: CanvasRenderingContext2D;
-    viewportTransform: number[];
+    verticalLines!: { x: number; y1: number; y2: number }[];
+    horizontalLines!: { y: number; x1: number; x2: number }[];
+    ctx!: CanvasRenderingContext2D;
+    viewportTransform!: number[];
 
     aligningLineOffset = 5;
     aligningLineMargin = 4;
@@ -21,27 +21,7 @@ class GuidelineHandler {
 
     constructor(handler: Handler) {
         this.handler = handler;
-
-        if (this.handler.guidelineOption?.enabled) {
-            // @ts-ignore
-            this.handler.canvas.on({
-                'before:render': this.beforeRender,
-                'after:render': this.afterRender,
-            });
-        } else {
-            this.destroy();
-        }
-
-        this.ctx = this.handler.canvas.getSelectionContext();
-        this.aligningLineOffset = 5;
-        this.aligningLineMargin = 4;
-        this.aligningLineWidth = 1;
-        this.aligningLineColor = LINECOLOR;
-        this.viewportTransform = this.handler.canvas
-            .viewportTransform as number[];
-        this.zoom = 1;
-        this.verticalLines = [];
-        this.horizontalLines = [];
+        this.init();
     }
 
     public init() {
