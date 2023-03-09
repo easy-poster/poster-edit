@@ -24,7 +24,7 @@ const EditHeader = React.memo(() => {
         //         content: JSON.stringify(resJson),
         //     },
         // });
-        // window?.handler?.saveCanvasImage();
+        window?.handler?.saveCanvasImage();
     };
 
     return (

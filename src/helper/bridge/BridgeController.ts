@@ -142,6 +142,15 @@ const BridgeController = {
     changeFilter(type: FILTER_TYPES, value?: any) {
         window.handler.imageHandler.onChangeFilterByType(type, value);
     },
+
+    /**
+     * @name 设置背景
+     * @param type 设置背景类型
+     * @param value type为color则value为#FFF, type为IMAGE则value为地址
+     */
+    setWorkAreaBg(type: 'COLOR' | 'IMAGE', value: string) {
+        window.handler.workareaHandler.setBg(type, value);
+    },
 };
 
 export default BridgeController;

@@ -65,7 +65,7 @@ export const canvasOption = {
     preserveObjectStacking: true, // 选中对象元素时保证层级不变动
     selection: true, // 是否能被选中
     defaultCursor: 'default', // 默认鼠标样式
-    backgroundColor: '#1c1c26', // 背景色
+    backgroundColor: '#1c1c26', // canvas背景色
     controlsAboveOverlay: true, //控制器显示最上层clipPath不会切掉边角控制器
     stopContextMenu: true, // 禁止默认右键菜单
 };
@@ -103,8 +103,8 @@ export const workareaOption: Partial<WorkareaObject> = {
     scaleX: 1,
     scaleY: 1,
     absolutePositioned: true,
-    // fill: '#FFF',
-    backgroundColor: '#FFF',
+    fill: '#FFF',
+    // backgroundColor: '#FFF',
     transparentCorners: false,
     hasBorders: false,
     hasControls: false,
@@ -114,7 +114,7 @@ export const workareaOption: Partial<WorkareaObject> = {
     hoverCursor: 'default',
     name: 'title',
     id: 'workarea', // 这个id很重要，查询画布唯一id不能与其他元素id相同
-    type: FabricObjectType.IMAGE,
+    type: FabricObjectType.RECT,
     layout: WorkareaLayoutType.FIXED, // fixed, responsive, fullscreen
     link: {},
     tooltip: {

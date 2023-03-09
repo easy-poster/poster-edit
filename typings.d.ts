@@ -487,6 +487,11 @@ declare global {
          */
         backgroundColor?: string;
         /**
+         * Workarea Background Image
+         * @type {string}
+         */
+        backgroundImage?: string;
+        /**
          * Workarea Layout Type
          * @type {WorkareaLayout}
          */
@@ -514,6 +519,12 @@ declare global {
          * @type {boolean}
          */
         isElement?: boolean;
+
+        /**
+         * Image URL
+         * @type {string}
+         */
+        backgroundImage?: string;
     };
 }
 

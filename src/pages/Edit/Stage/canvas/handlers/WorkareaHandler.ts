@@ -9,6 +9,7 @@ class WorkareaHandler {
     handler: Handler;
     workSpaceDOM: HTMLDivElement;
     resizeAbserve!: ResizeObserver;
+    bgarea!: fabric.Image;
 
     constructor(handler: Handler) {
         this.handler = handler;
@@ -20,15 +21,27 @@ class WorkareaHandler {
     }
 
     /**
-     * @name 初始化画布背景
+     * @name 初始化画布大小
      */
     public initBg() {
-        this.handler.canvas.setBackgroundColor(
-            this.handler.canvasOption.backgroundColor!,
-            this.handler.canvas.renderAll.bind(this.handler.canvas),
-        );
         this.handler.canvas.setWidth(this.workSpaceDOM.offsetWidth);
         this.handler.canvas.setHeight(this.workSpaceDOM.offsetHeight);
+    }
+
+    /**
+     * @name 初始化背景图元素
+     */
+    public initBgImage() {
+        const { workareaOption } = this.handler;
+        this.bgarea = new fabric.Image('', {
+            ...workareaOption,
+            ...{
+                type: 'backgroundImage',
+                originX: 'center',
+                originY: 'center',
+            },
+        });
+        this.handler.canvas.add(this.bgarea);
     }
 
     /**
@@ -39,6 +52,7 @@ class WorkareaHandler {
         this.handler.workarea = new fabric.Rect({
             ...workareaOption,
         }) as WorkareaObject;
+
         this.handler.canvas.clipPath = this.handler.workarea;
         this.handler.canvas.add(this.handler.workarea);
         this.handler.objects = this.handler.getObjects();
@@ -46,12 +60,73 @@ class WorkareaHandler {
         this.handler.workarea?.setCoords();
         this.handler.canvas.renderAll();
 
+        this.initBgImage();
+
         /**
          * @todo 画布渲染完成后才渲染内容，先用定时器，应该有最佳解决办法，后面看
          */
         setTimeout(() => {
             this.initContent();
         }, 1000);
+    }
+
+    /**
+     * @name 设置背景图片
+     * @param backgroundImage
+     */
+    public setBgImage(backgroundImage: string, loaded = false) {
+        const { workareaOption, canvas, onModified } = this.handler;
+        fabric.Image.fromURL(backgroundImage ?? '', (img) => {
+            if (
+                workareaOption.width &&
+                workareaOption.height &&
+                img.width &&
+                img.height
+            ) {
+                // 加个误差值
+                let EXTRA = 2;
+                const scale = Math.max(
+                    (EXTRA + workareaOption?.width) / img.width,
+                    (EXTRA + workareaOption?.height) / img.height,
+                );
+                this.bgarea.setSrc(img.getSrc());
+                this.bgarea.originX = 'center';
+                this.bgarea.scale(+scale.toFixed(8));
+                canvas.centerObject(this.bgarea);
+                this.bgarea?.setCoords();
+                canvas.requestRenderAll();
+                this.handler.objects = this.handler.getObjects();
+
+                if (!loaded) {
+                    const activeObject =
+                        canvas.getActiveObject() as FabricObject;
+                    setTimeout(() => {
+                        if (onModified) {
+                            onModified(activeObject);
+                        }
+                    }, 0);
+                }
+            }
+        });
+    }
+
+    /**
+     * @name 设置背景
+     * @param type
+     * @param value
+     */
+    public setBg(type: 'IMAGE' | 'COLOR', value: string) {
+        if (!value) return;
+        switch (type) {
+            case 'IMAGE':
+                this.setBgImage(value, false);
+                break;
+            case 'COLOR':
+                this.bgarea.setSrc('');
+                this.handler.workarea?.set('fill', value);
+            default:
+                break;
+        }
     }
 
     /**
@@ -97,6 +172,10 @@ class WorkareaHandler {
 
             json.forEach((obj: FabricObjectOption) => {
                 if (obj.id === 'workarea') {
+                    // 加载背景
+                    if (obj.type === 'backgroundImage') {
+                        this.setBgImage(obj?.src ?? '', true);
+                    }
                     return;
                 }
                 const { left, top } = this.handler.workarea!;

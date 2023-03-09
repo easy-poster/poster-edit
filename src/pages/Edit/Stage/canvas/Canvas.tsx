@@ -86,10 +86,12 @@ const Canvas = React.memo((props: CanvasProps) => {
                 ...defaults.workareaOption,
                 ...{
                     name: projectInfo.title,
-                    fill: projectInfo.background || '#FFF',
+                    fill:
+                        projectInfo.background ?? defaults.workareaOption.fill,
                     width: projectInfo.width,
                     height: projectInfo.height,
                     content: projectInfo.content,
+                    backgroundImage: 'http://192.168.1.10:9002/2.jpg',
                 },
             },
             minZoom: MIN_SIZE,

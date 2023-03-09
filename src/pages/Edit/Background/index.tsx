@@ -56,12 +56,7 @@ const BackgroundPage = React.memo(() => {
     }, []);
 
     const handleAdd = (data: any) => {
-        // BridgeController.AddResource({
-        //     id: data.id,
-        //     type: FabricObjectType.TEXTBOX,
-        //     text: data.text,
-        //     fontSize: data.fontSize,
-        // });
+        BridgeController.setWorkAreaBg('IMAGE', data?.cover);
     };
 
     useEffect(() => {

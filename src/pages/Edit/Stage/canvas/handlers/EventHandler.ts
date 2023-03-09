@@ -195,7 +195,11 @@ class EventHandler {
 
         if (this.handler.workarea!.layout === WorkareaLayoutType.FIXED) {
             this.handler.canvas.centerObject(this.handler.workarea!);
+            this.handler.canvas.centerObject(
+                this.handler.workareaHandler.bgarea!,
+            );
             this.handler.workarea!.setCoords();
+            this.handler.workareaHandler.bgarea!.setCoords();
             if (this.handler.gridOption.enabled) {
                 return;
             }
