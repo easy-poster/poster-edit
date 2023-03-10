@@ -4,11 +4,13 @@ import { SelectContext } from '../../Container/SelectContainer';
 import ImageBar from './ImageBar';
 import TextBoxBar from './TextBoxBar';
 import CommonBar from './CommonBar';
+import GroupBar from './GroupBar';
 import styles from './index.less';
 
 const EditTopContainerMap = {
     [FabricObjectType.IMAGE]: ImageBar,
     [FabricObjectType.TEXTBOX]: TextBoxBar,
+    [FabricObjectType.GROUP]: GroupBar,
 };
 
 const EditTopBar = React.memo(() => {

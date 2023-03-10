@@ -151,6 +151,20 @@ const BridgeController = {
     setWorkAreaBg(type: 'COLOR' | 'IMAGE', value: string) {
         window.handler.workareaHandler.setBg(type, value);
     },
+
+    /**
+     * @name 选中设置为组
+     */
+    setToGroup() {
+        window.handler.toGroup();
+    },
+
+    /**
+     * @name 选中对象拆分组
+     */
+    setToActiveSelection() {
+        window.handler.toActiveSelection();
+    },
 };
 
 export default BridgeController;

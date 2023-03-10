@@ -32,7 +32,7 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     const [selectObjs, setSelectObjs] = useState<
         FabricObject[] | FabricObject<fabric.Group>
     >();
-    const [selectType, setSelectType] = useState('');
+    const [selectType, setSelectType] = useState<FabricObjectType | ''>('');
     const [selectObj, setSelectObj] = useState<FabricObject>();
 
     const memoCtx = useMemo(() => {
@@ -49,10 +49,17 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     const handleSelect = useCallback(
         (value?: FabricObject[] | FabricObject<fabric.Group>) => {
             if (value) {
-                if (value.length === 1) {
-                    setSelectType(value[0]?.type || '');
+                if (value?.length === 1) {
+                    if (value[0].type === FabricObjectType.GROUP) {
+                        // 如果是组合
+                        setSelectType(FabricObjectType.GROUP);
+                    } else {
+                        // 选中一个元素
+                        setSelectType(value[0]?.type || '');
+                    }
                 } else {
-                    setSelectType('');
+                    // 选中多个元素可设置组合
+                    setSelectType(FabricObjectType.GROUP);
                 }
                 setSelectObj(value[0]);
                 setSelectObjs(value);
@@ -64,7 +71,7 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
             }
             setPanelType(OperatingPanelType.NONE);
         },
-        [selectObjs],
+        [],
     );
 
     useEffect(() => {

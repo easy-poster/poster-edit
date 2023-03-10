@@ -1037,7 +1037,7 @@ class Handler implements HandlerOptions {
             this.transactionHandler.save('group');
         }
         if (this.onSelect) {
-            this.onSelect(group);
+            this.onSelect([group]);
         }
         this.canvas.renderAll();
         return group;
@@ -1063,7 +1063,7 @@ class Handler implements HandlerOptions {
             this.transactionHandler.save('ungroup');
         }
         if (this.onSelect) {
-            this.onSelect(activeSelection);
+            this.onSelect(activeSelection?._objects);
         }
         this.canvas.renderAll();
         return activeSelection;

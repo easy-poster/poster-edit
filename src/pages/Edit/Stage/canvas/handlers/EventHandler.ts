@@ -423,18 +423,19 @@ class EventHandler {
      * @name 选中时
      * @param opt
      */
-    public selection = (opt: { e: FabricEvent; selected?: FabricObject[] }) => {
-        const onSelect = this.handler?.onSelect;
-        // const activeSelectionOption = this.handler?.activeSelectionOption;
+    public selection = (opt: FabricEvent) => {
+        const { onSelect, activeSelectionOption } = this.handler;
         const selected = opt?.selected;
-        const activeObject = this.handler.canvas.getActiveObject();
-        console.log('activeObject', activeObject);
-        console.log('selected', selected);
-        // if (target && target?.type === 'activeSelection') {
-        //     target.set({
-        //         ...activeSelectionOption,
-        //     });
-        // }
+        const target = opt.target as FabricObject<fabric.ActiveSelection>;
+        // const activeObject = this.handler.canvas.getActiveObject();
+        // console.log('activeObject', activeObject);
+        // console.log('selected', selected);
+        // console.log('target', target);
+        if (target && target?.type === 'activeSelection') {
+            target.set({
+                ...activeSelectionOption,
+            });
+        }
         if (onSelect) {
             onSelect(selected);
         }
