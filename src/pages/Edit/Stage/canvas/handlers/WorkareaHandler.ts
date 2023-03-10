@@ -94,8 +94,11 @@ class WorkareaHandler {
                 this.bgarea.scale(+scale.toFixed(8));
                 canvas.centerObject(this.bgarea);
                 this.bgarea?.setCoords();
-                canvas.requestRenderAll();
-                this.handler.objects = this.handler.getObjects();
+                // todo 这个刷新背景定时器后面再看
+                setTimeout(() => {
+                    canvas.renderAll();
+                    this.handler.objects = this.handler.getObjects();
+                }, 0);
 
                 if (!loaded) {
                     const activeObject =
