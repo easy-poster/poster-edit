@@ -122,11 +122,13 @@ class WorkareaHandler {
         if (!value) return;
         switch (type) {
             case 'IMAGE':
+                this.handler.workarea?.set('fill', '#FFF');
                 this.setBgImage(value, false);
                 break;
             case 'COLOR':
                 this.bgarea.setSrc('');
                 this.handler.workarea?.set('fill', value);
+                this.handler.canvas.renderAll();
             default:
                 break;
         }
@@ -199,7 +201,7 @@ class WorkareaHandler {
             // 初始化撤销状态数据
             this.handler.transactionHandler.initState(transactionState);
         } catch (error) {
-            console.log('error', error);
+            console.error('error', error);
         }
     }
 

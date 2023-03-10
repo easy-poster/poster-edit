@@ -100,20 +100,22 @@ const TextPage = React.memo(() => {
     const handleGroupClick = useCallback((item: any) => {
         let data = {
             type: FabricObjectType.GROUP,
+            width: 400,
+            height: 400,
             objects: [
                 {
                     id: item.id,
                     type: FabricObjectType.IMAGE,
-                    src: 'http://192.168.1.10:9002/8.png',
+                    src: 'http://192.168.1.10:9002/7.webp',
                     left: 0,
                     top: 0,
                 },
                 {
                     id: item.id,
-                    type: FabricObjectType.IMAGE,
-                    src: 'http://192.168.1.10:9002/2.jpg',
-                    left: 10,
-                    top: 10,
+                    type: FabricObjectType.TEXTBOX,
+                    text: '组内文本',
+                    fontSize: 36,
+                    fontUrl: 'http://192.168.1.10:9002/IPix中文像素字体.ttf',
                 },
                 // {
                 //     id: item.id,

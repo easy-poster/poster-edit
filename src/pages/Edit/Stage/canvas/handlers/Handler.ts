@@ -724,6 +724,7 @@ class Handler implements HandlerOptions {
      * @returns
      */
     public loadImage = (obj: FabricObjectOption) => {
+        if (!obj?.src) return;
         return new Promise<any>((resolve, reject) => {
             let scaleX = 1;
             let scaleY = 1;
@@ -788,23 +789,16 @@ class Handler implements HandlerOptions {
     public preAdd = async (obj: FabricObjectOption) => {
         switch (obj.type) {
             case FabricObjectType.IMAGE:
-                // eslint-disable-next-line no-case-declarations
-                let src = obj?.src;
-                if (!src) return;
-                // 添加图片前计算大小
-                // eslint-disable-next-line no-case-declarations
-                let newObj = await this.loadImage(obj);
-                newObj = { ...newObj, ...obj };
-                await this.add(newObj, true);
+                this.add({ ...(await this.loadImage(obj)), ...obj }, true);
                 break;
             case FabricObjectType.TEXTBOX:
-                await this.add(obj, true);
+                this.add(obj, true);
                 break;
             case FabricObjectType.GROUP:
-                await this.add(obj, true, false, true);
+                this.add(obj, true, false, true);
                 break;
             default:
-                await this.add(obj, true);
+                this.add(obj, true);
                 break;
         }
     };
@@ -844,6 +838,9 @@ class Handler implements HandlerOptions {
         let createObj;
         switch (obj.type) {
             case FabricObjectType.IMAGE:
+                // lockUniScaling: 一个布尔值，表示是否在缩放对象时限制纵横比例，如果为 true，对象将只能按同样的比例缩放，默认为 false。
+                // objectCaching: 一个布尔值，表示是否在对象上缓存渲染信息，如果为 true，对象在绘制后将缓存渲染信息以提高性能，但如果对象的属性在之后发生了更改，需要手动调用 object.setCoords() 来更新缓存，默认为 false。
+                // absolutePositioned: 一个布尔值，表示对象的位置是否是绝对定位，默认为 false，表示相对定位。如果设置为 true，则表示对象的位置相对于画布左上角的绝对位置。
                 createObj = this.addImage({
                     ...newOption,
                     ...{
@@ -858,7 +855,6 @@ class Handler implements HandlerOptions {
                     ml: false,
                     mr: false,
                 });
-
                 break;
             case FabricObjectType.TEXTBOX:
                 createObj = this.fabricObjects[obj.type].create({
@@ -872,7 +868,16 @@ class Handler implements HandlerOptions {
                 });
                 break;
             case FabricObjectType.GROUP:
-                createObj = this.addGroup(newOption);
+                createObj = this.addGroup(newOption, centered, loaded);
+                // createObj = this.fabricObjects[obj.type].create({
+                //     ...newOption,
+                // });
+                createObj.setControlsVisibility({
+                    mt: false,
+                    mb: false,
+                    ml: false,
+                    mr: false,
+                });
                 break;
             default:
                 break;
@@ -884,7 +889,7 @@ class Handler implements HandlerOptions {
         }
 
         // 添加默认居中
-        if (centered) {
+        if (centered && !loaded) {
             this.centerObject(createObj, centered);
             // 添加选中
             this.canvas.setActiveObject(createObj);
@@ -977,12 +982,33 @@ class Handler implements HandlerOptions {
      * @param obj
      * @returns
      */
-    public addGroup = (obj: FabricGroup) => {
+    public addGroup = (obj: FabricGroup, centered = true, loaded = false) => {
+        const { editable, onAdd } = this;
         const { objects = [], ...other } = obj;
         const _objects = objects.map((child) =>
-            this.add(child, false, true, true),
+            this.add(child, centered, loaded, true),
         ) as FabricObject[];
-        return new fabric.Group(_objects, other) as FabricGroup;
+        const createGroupObj = new fabric.Group(_objects, other) as FabricGroup;
+
+        // 添加默认居中
+        if (centered) {
+            this.centerObject(createGroupObj, centered);
+            // 添加选中
+            this.canvas.setActiveObject(createGroupObj);
+        }
+
+        this.canvas.add(createGroupObj);
+        this.objects = this.getObjects();
+
+        if (!this.transactionHandler.active && !loaded) {
+            this.transactionHandler.save('add');
+        }
+
+        if (onAdd && editable && !loaded) {
+            onAdd(createGroupObj);
+        }
+
+        return createGroupObj;
     };
 
     /**

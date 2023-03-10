@@ -14,7 +14,7 @@ import {
 
 interface SelectContextProps {
     selectType: FabricObjectType | string;
-    selectObjs?: FabricObject[];
+    selectObjs?: FabricObject[] | FabricObject<fabric.Group>;
     selectObj?: FabricObject;
 }
 
@@ -29,7 +29,9 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
     const { children } = props;
 
     const { setPanelType } = useContext(OperatingPanelContext);
-    const [selectObjs, setSelectObjs] = useState<FabricObject[]>();
+    const [selectObjs, setSelectObjs] = useState<
+        FabricObject[] | FabricObject<fabric.Group>
+    >();
     const [selectType, setSelectType] = useState('');
     const [selectObj, setSelectObj] = useState<FabricObject>();
 
@@ -45,7 +47,7 @@ const SelectContainer = React.memo<React.PropsWithChildren>((props) => {
      * @description 选中画布对象时
      */
     const handleSelect = useCallback(
-        (value?: FabricObject[]) => {
+        (value?: FabricObject[] | FabricObject<fabric.Group>) => {
             if (value) {
                 if (value.length === 1) {
                     setSelectType(value[0]?.type || '');

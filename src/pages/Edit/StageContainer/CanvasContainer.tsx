@@ -1,3 +1,4 @@
+import { FabricObjectType } from '@/const';
 import BridgeController from '@/helper/bridge/BridgeController';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
 // import FunctionEmitter, { FUN } from '@/helper/function';
@@ -12,15 +13,24 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
     const dispatch = useDispatch();
 
     const handleUpdate = useCallback(async (obj?: FabricObject) => {
-        console.log('listen handleUpdate');
-        let resJson = BridgeController.ExportStageJSON();
+        let resJson = BridgeController.ExportStageJSON() || [];
+        console.log('listen handleUpdate', resJson);
         if (!resJson) return;
+        let bgImg = resJson.find((it: any) => {
+            return it?.id === 'workarea' && it?.type === 'backgroundImage';
+        })?.src;
+        let bgColor = resJson.find((it: any) => {
+            return it?.id === 'workarea' && it?.type === 'rect';
+        })?.fill;
+
         BridgeEmitter.emit(F2N.UNDOABLR);
         // FunctionEmitter.emit(FUN.UPDATE_RESOURCE, obj);
         dispatch({
             type: 'project/updatePrj',
             payload: {
                 content: JSON.stringify(resJson),
+                backgroundImage: bgImg,
+                background: bgColor,
             },
         });
     }, []);

@@ -5,12 +5,13 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { Input } from 'antd';
+import { Divider, Input } from 'antd';
 import { IconFont } from '@/const';
 import cn from 'classnames';
 import demoImg from '@/assets/demo.png';
 import BridgeController from '@/helper/bridge/BridgeController';
 import styles from './index.less';
+import DocColor from './DocColor';
 
 const BackgroundPage = React.memo(() => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -80,6 +81,9 @@ const BackgroundPage = React.memo(() => {
                     }
                 />
             </div>
+            <DocColor />
+            <Divider />
+            <h3>背景图片</h3>
             <div className={styles.bgList}>
                 {LIST.map((item) => {
                     return (
