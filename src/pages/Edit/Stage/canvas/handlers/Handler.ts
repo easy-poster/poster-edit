@@ -983,30 +983,11 @@ class Handler implements HandlerOptions {
      * @returns
      */
     public addGroup = (obj: FabricGroup, centered = true, loaded = false) => {
-        const { editable, onAdd } = this;
         const { objects = [], ...other } = obj;
         const _objects = objects.map((child) =>
             this.add(child, centered, loaded, true),
         ) as FabricObject[];
         const createGroupObj = new fabric.Group(_objects, other) as FabricGroup;
-
-        // 添加默认居中
-        if (centered) {
-            this.centerObject(createGroupObj, centered);
-            // 添加选中
-            this.canvas.setActiveObject(createGroupObj);
-        }
-
-        this.canvas.add(createGroupObj);
-        this.objects = this.getObjects();
-
-        if (!this.transactionHandler.active && !loaded) {
-            this.transactionHandler.save('add');
-        }
-
-        if (onAdd && editable && !loaded) {
-            onAdd(createGroupObj);
-        }
 
         return createGroupObj;
     };
@@ -1040,6 +1021,12 @@ class Handler implements HandlerOptions {
             this.onSelect([group]);
         }
         this.canvas.renderAll();
+
+        const { onModified } = this;
+        if (onModified) {
+            onModified(activeObject);
+        }
+
         return group;
     };
 
@@ -1066,6 +1053,12 @@ class Handler implements HandlerOptions {
             this.onSelect(activeSelection?._objects);
         }
         this.canvas.renderAll();
+
+        const { onModified } = this;
+        if (onModified) {
+            onModified(activeObject);
+        }
+
         return activeSelection;
     };
 
