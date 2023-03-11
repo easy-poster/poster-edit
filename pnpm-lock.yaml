@@ -20,7 +20,7 @@ specifiers:
   dayjs: ^1.11.1
   dexie: ^3.2.1
   dexie-react-hooks: ^1.1.1
-  fabric: ^5.2.4
+  fabric: ^5.3.0
   husky: ^8.0.1
   lint-staged: ^13.0.3
   lodash: ^4.17.21
@@ -48,7 +48,7 @@ dependencies:
   dayjs: 1.11.6
   dexie: 3.2.2
   dexie-react-hooks: 1.1.1_qyiqegorf5prb2kn5nkozuohby
-  fabric: 5.2.4
+  fabric: 5.3.0
   lodash: 4.17.21
   mitt: 3.0.0
   qrcode.react: 3.1.0
@@ -5068,8 +5068,8 @@ packages:
       is-extendable: 0.1.1
     dev: false
 
-  /fabric/5.2.4:
-    resolution: {integrity: sha512-3+oLKvsbSJ76/nvPPrQVuUJDp0kOh8i867PpdrOPIHUyN+eLc+9nY3rmzMmDw6ndRm20f/uULv55G8sN01j9+Q==}
+  /fabric/5.3.0:
+    resolution: {integrity: sha512-AVayKuzWoXM5cTn7iD3yNWBlfEa8r1tHaOe2g8NsZrmWKAHjryTxT/j6f9ncRfOWOF0I1Ci1AId3y78cC+GExQ==}
     engines: {node: '>=14.0.0'}
     optionalDependencies:
       canvas: 2.11.0

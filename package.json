@@ -24,7 +24,7 @@
         "dayjs": "^1.11.1",
         "dexie": "^3.2.1",
         "dexie-react-hooks": "^1.1.1",
-        "fabric": "^5.2.4",
+        "fabric": "^5.3.0",
         "lodash": "^4.17.21",
         "mitt": "^3.0.0",
         "qrcode.react": "^3.0.1",

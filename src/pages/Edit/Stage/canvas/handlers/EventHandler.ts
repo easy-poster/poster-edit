@@ -32,6 +32,7 @@ class EventHandler {
                 'object:moved': this.moved,
                 'object:rotating': this.rotating,
                 'object:rotated': this.rotated,
+                'mouse:dblclick': this.dbclick,
                 'mouse:wheel': this.mousewheel,
                 'mouse:down': this.mousedown,
                 'mouse:move': this.mousemove,
@@ -43,6 +44,7 @@ class EventHandler {
         } else {
             // @ts-ignore
             this.handler.canvas.on({
+                'mouse:dblclick': this.dbclick,
                 'mouse:wheel': this.mousewheel,
                 'mouse:down': this.mousedown,
                 'mouse:move': this.mousemove,
@@ -91,6 +93,7 @@ class EventHandler {
                 'object:moved': this.moved,
                 'object:rotating': this.rotating,
                 'object:rotated': this.rotated,
+                'mouse:dblclick': this.dbclick,
                 'mouse:wheel': this.mousewheel,
                 'mouse:down': this.mousedown,
                 'mouse:move': this.mousemove,
@@ -101,6 +104,7 @@ class EventHandler {
             });
         } else {
             this.handler.canvas.off({
+                'mouse:dblclick': this.dbclick,
                 'mouse:down': this.mousedown,
                 'mouse:move': this.mousemove,
                 'mouse:out': this.mouseout,
@@ -343,6 +347,61 @@ class EventHandler {
         );
         event.e.preventDefault();
         event.e.stopPropagation();
+    };
+
+    /**
+     * @name 双击事件
+     * @param opt
+     */
+    public dbclick = (opt: FabricEvent) => {
+        const event = opt as FabricEvent<MouseEvent>;
+        const editable = this.handler?.editable;
+
+        if (editable) {
+            // todo 组内双击选中对象这个应该单独提一个自定义对象去实现
+            if (
+                event.target instanceof fabric.Group &&
+                event?.subTargets?.length
+            ) {
+                let groupObj = event.target as fabric.Group;
+                let subTargets = event?.subTargets[0] as fabric.Textbox;
+                if (!groupObj && !subTargets) return;
+                // 更新组内元素宽高，防止调节大小后组内元素没更新
+                groupObj.addWithUpdate();
+
+                subTargets.clone((tempText: fabric.Textbox) => {
+                    tempText.left =
+                        groupObj.left! + tempText.left! + groupObj.width! / 2;
+                    tempText.top =
+                        groupObj.top! + tempText.top! + groupObj.height! / 2;
+                    tempText.width = groupObj.width;
+                    tempText.hoverCursor = 'text';
+
+                    tempText.on('editing:exited', () => {
+                        tempText.initDimensions();
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        let { left, top, ...other } = tempText;
+                        subTargets.set({
+                            ...other,
+                            visible: true,
+                        });
+                        subTargets.initDimensions();
+                        groupObj.addWithUpdate();
+                        this.handler.canvas.remove(tempText);
+                        this.handler.canvas.renderAll();
+                    });
+
+                    subTargets.set({
+                        visible: false,
+                    });
+
+                    this.handler.canvas.add(tempText);
+                    this.handler.canvas.setActiveObject(tempText);
+                    tempText.selectAll();
+                    tempText.enterEditing();
+                });
+            }
+        }
     };
 
     /**

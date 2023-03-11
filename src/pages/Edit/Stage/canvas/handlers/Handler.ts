@@ -987,7 +987,12 @@ class Handler implements HandlerOptions {
         const _objects = objects.map((child) =>
             this.add(child, centered, loaded, true),
         ) as FabricObject[];
-        const createGroupObj = new fabric.Group(_objects, other) as FabricGroup;
+        const createGroupObj = new fabric.Group(_objects, {
+            ...other,
+            ...{
+                subTargetCheck: true,
+            },
+        }) as FabricGroup;
 
         return createGroupObj;
     };
@@ -1011,6 +1016,7 @@ class Handler implements HandlerOptions {
             id: '',
             name: 'New group',
             type: 'group',
+            subTargetCheck: true,
             ...this.objectOption,
         });
         this.objects = this.getObjects();
