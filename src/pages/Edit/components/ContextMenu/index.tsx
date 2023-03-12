@@ -188,11 +188,12 @@ const ContextMenu = React.memo(() => {
 
     const handleOnContext = useCallback((params: onContextParams) => {
         const { show, e, target } = params;
+        setIsShow(show);
+        if (!e) return;
         setPosition({
             x: e?.clientX,
-            y: e.clientY,
+            y: e?.clientY,
         });
-        setIsShow(show);
     }, []);
 
     useEffect(() => {

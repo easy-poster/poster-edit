@@ -186,6 +186,7 @@ class EventHandler {
      */
     public resize = (nextWidth: number, nextHeight: number) => {
         if (!this.handler.canvas) return;
+        this.handler.contextmenuHandler.hide();
         this.handler.canvas.setWidth(nextWidth).setHeight(nextHeight);
         this.handler.canvas.renderAll.bind(this.handler.canvas);
         if (!this.handler.workarea) {
@@ -374,7 +375,7 @@ class EventHandler {
                         groupObj.left! + tempText.left! + groupObj.width! / 2;
                     tempText.top =
                         groupObj.top! + tempText.top! + groupObj.height! / 2;
-                    tempText.width = groupObj.width;
+                    // tempText.width = groupObj.width;
                     tempText.hoverCursor = 'text';
 
                     tempText.on('editing:exited', () => {
@@ -566,7 +567,7 @@ class EventHandler {
                 this.handler.canvas.discardActiveObject();
                 this.handler.canvas.renderAll();
             }
-            this.handler.tooltipHandler.hide();
+            // this.handler.tooltipHandler.hide();
         }
         if (this.handler.canvas.wrapperEl !== document.activeElement) {
             return;

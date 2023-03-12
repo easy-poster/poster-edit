@@ -27,7 +27,7 @@ class ContextmenuHandler {
         }
     }, 100);
 
-    public hide = debounce((e) => {
+    public hide = debounce((e?: any) => {
         const { onContext } = this.handler;
         if (onContext) {
             onContext({

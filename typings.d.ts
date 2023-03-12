@@ -529,7 +529,7 @@ declare global {
 
     type onContextParams = {
         show: boolean;
-        e: React.MouseEvent;
+        e?: React.MouseEvent;
         target?: FabricObject;
     };
 }
