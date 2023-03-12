@@ -526,6 +526,12 @@ declare global {
          */
         backgroundImage?: string;
     };
+
+    type onContextParams = {
+        show: boolean;
+        e: React.MouseEvent;
+        target?: FabricObject;
+    };
 }
 
 export {};

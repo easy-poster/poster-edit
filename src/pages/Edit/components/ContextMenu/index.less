@@ -1,0 +1,69 @@
+.contextMenuWrap {
+    position: fixed;
+    display: none;
+    left: 1014px;
+    top: 424px;
+
+    &.show {
+        display: flex;
+    }
+
+    .menuWrap {
+        background: #3c3c48;
+        border: 1px solid rgb(0 0 0 / 20%);
+        border-radius: 5px;
+        color: aliceblue;
+
+        .menuItemWrap {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            .left {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .right {
+                span {
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                    background: rgb(255 255 255 / 10%);
+                }
+
+                span + span {
+                    margin-left: 6px;
+                }
+            }
+        }
+    }
+
+    :global {
+        .ant-menu .ant-menu-item .anticon {
+            transition: none;
+        }
+
+        .ant-menu-light .ant-menu-item-disabled {
+            color: rgb(255 255 255 / 36%) !important;
+        }
+
+        .ant-menu-light:not(.ant-menu-horizontal)
+            .ant-menu-item:not(.ant-menu-item-selected):active {
+            color: #fff;
+            background: rgb(255 255 255 / 6%);
+        }
+
+        .ant-menu-light:not(.ant-menu-horizontal)
+            .ant-menu-item:not(.ant-menu-item-selected):hover {
+            color: #fff;
+            background: rgb(255 255 255 / 6%);
+        }
+
+        .ant-menu-light .ant-menu-item-selected {
+            color: #fff;
+            background: rgb(255 255 255 / 6%);
+        }
+    }
+}

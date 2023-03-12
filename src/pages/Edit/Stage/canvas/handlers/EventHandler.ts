@@ -632,7 +632,7 @@ class EventHandler {
      * @param _e
      */
     public onMouseDown = (_e: MouseEvent) => {
-        this.handler.contextmenuHandler.hide();
+        this.handler.contextmenuHandler.hide(_e);
     };
 
     /**

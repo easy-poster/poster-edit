@@ -139,11 +139,7 @@ export interface Callback {
     /**
      * 返回右键上下文
      */
-    onContext?: (
-        el: HTMLDivElement,
-        e: React.MouseEvent,
-        target?: FabricObject,
-    ) => Promise<any> | any;
+    onContext?: (params: onContextParams) => Promise<any> | any;
     /**
      * 返回tooltip
      */
@@ -197,11 +193,7 @@ class Handler implements HandlerOptions {
     public height?: number;
 
     public onAdd?: (object: FabricObject) => void;
-    public onContext?: (
-        el: HTMLDivElement,
-        e: React.MouseEvent,
-        target?: FabricObject,
-    ) => Promise<any>;
+    public onContext?: (params: onContextParams) => Promise<any>;
     public onTooltip?: (
         el: HTMLDivElement,
         target?: FabricObject,
