@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Menu, MenuProps } from 'antd';
 import cn from 'classnames';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
-import styles from './index.less';
-import { Menu, MenuProps } from 'antd';
-import { IconFont } from '@/const';
 import BridgeController from '@/helper/bridge/BridgeController';
+import { IconFont } from '@/const';
+import styles from './index.less';
 
 /**
  * @description 右键菜单modal
@@ -220,14 +220,11 @@ const ContextMenu = React.memo(() => {
 
     const handleOnContext = useCallback((params: onContextParams) => {
         const { show, e, target } = params;
-        console.log(show, e, target);
         setContextObj(target);
-        // console.log('target', target)
         setIsShow(show);
-        // if (!e) return;
         setPosition({
-            x: e?.clientX,
-            y: e?.clientY,
+            x: e?.clientX ?? 0,
+            y: e?.clientY ?? 0,
         });
     }, []);
 

@@ -45,6 +45,7 @@ const LoginForm = React.memo(
                     storage.setTokenStore(res);
                     await fetchUserInfo();
                     history.push('/');
+                    message.success('登录成功');
                 }
             } catch (error: any) {
                 if (error?.code === 1001) {
