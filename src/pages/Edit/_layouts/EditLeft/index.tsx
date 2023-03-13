@@ -13,7 +13,6 @@ import ImagePage from '../../Image';
 import GraphicalPage from '../../Graphical';
 import TextPage from '../../Text';
 import BackgroundPage from '../../Background';
-import BrandPage from '../../Brand';
 import OperatingPanel from './OperatingPanel';
 import {
     OperatingPanelContext,
@@ -27,7 +26,6 @@ const ResourcePageMap = {
     [ResourcePageType.GRAPHICALPAGE]: GraphicalPage,
     [ResourcePageType.TEXTPAGE]: TextPage,
     [ResourcePageType.BACKGROUND]: BackgroundPage,
-    [ResourcePageType.BRANDPAGE]: BrandPage,
 };
 
 const EditLeft = React.memo(() => {

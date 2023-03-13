@@ -179,7 +179,7 @@ class EventHandler {
     };
 
     /**
-     * 画布大小调节
+     * @name 画布大小调节
      * @param nextWidth
      * @param nextHeight
      * @returns
@@ -188,7 +188,7 @@ class EventHandler {
         if (!this.handler.canvas) return;
         this.handler.contextmenuHandler.hide();
         this.handler.canvas.setWidth(nextWidth).setHeight(nextHeight);
-        this.handler.canvas.renderAll.bind(this.handler.canvas);
+        // this.handler.canvas.renderAll.bind(this.handler.canvas);
         if (!this.handler.workarea) {
             return;
         }
@@ -205,9 +205,6 @@ class EventHandler {
             );
             this.handler.workarea!.setCoords();
             this.handler.workareaHandler.bgarea!.setCoords();
-            if (this.handler.gridOption.enabled) {
-                return;
-            }
             this.handler.canvas.getObjects().forEach((obj: FabricObject) => {
                 if (obj?.id !== 'workarea' && obj.left && obj.top) {
                     const left = obj?.left + diffWidth;

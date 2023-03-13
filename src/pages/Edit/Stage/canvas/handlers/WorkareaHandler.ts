@@ -143,6 +143,8 @@ class WorkareaHandler {
                 let width = entries[0].contentRect.width,
                     height = entries[0].contentRect.height;
                 if (width > 200 && height > 200) {
+                    // 先重置缩放比例
+                    this.handler.zoomHandler.zoomToNumber(1);
                     this.handler.eventHandler.resize(width, height);
                 }
             }, 16.67),

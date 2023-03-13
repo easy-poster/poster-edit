@@ -41,18 +41,18 @@ const EditMenu = React.memo(
                         {MENU_EDIT.map((item) => {
                             return (
                                 <div
-                                    key={item.id}
+                                    key={item.type}
                                     className={cn(styles.editMenuItem, {
                                         [styles.activeItem]:
-                                            activeTab === item.id &&
+                                            activeTab === item.type &&
                                             isNullPanel,
                                     })}
-                                    onClick={() => handleClick(item.id)}
+                                    onClick={() => handleClick(item.type)}
                                 >
                                     <div className={styles.editMenuIcon}>
                                         <IconFont
                                             type={item.icon}
-                                            style={{ fontSize: '18px' }}
+                                            style={{ fontSize: '24px' }}
                                         />
                                     </div>
                                     <span>{item.name}</span>

@@ -99,12 +99,11 @@ class TransactionHandler {
         this.state = objects;
         this.active = true;
         this.handler.canvas.renderOnAddRemove = false;
-        this.handler.canvas.discardActiveObject();
         this.handler.clear();
+        this.handler.canvas.discardActiveObject();
         fabric.util.enlivenObjects(
             objects,
             (enlivenObjects: FabricObject[]) => {
-                console.log('enlivenObjects', enlivenObjects);
                 enlivenObjects.forEach((obj) => {
                     const targetIndex = this.handler.canvas._objects.length;
                     this.handler.canvas.insertAt(obj, targetIndex, false);

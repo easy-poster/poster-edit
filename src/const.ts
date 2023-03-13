@@ -51,12 +51,12 @@ export const MENU_LAYOUT = [
         icon: 'icon-home',
         route: '/',
     },
-    // {
-    //     name: '品牌',
-    //     id: 2,
-    //     icon: 'icon-pinpai',
-    //     route: '/brand',
-    // },
+    {
+        name: '品牌',
+        id: 2,
+        icon: 'icon-pinpai',
+        route: '/brand',
+    },
     // {
     //     name: '模板库',
     //     id: 3,
@@ -71,49 +71,37 @@ export const MENU_LAYOUT = [
 export enum ResourcePageType {
     UPLOADPAGE = 'UPLOADPAGE',
     IMAGEPAGE = 'IMAGEPAGE',
-    GRAPHICALPAGE = 'GRAPHICALPAGE',
     TEXTPAGE = 'TEXTPAGE',
+    GRAPHICALPAGE = 'GRAPHICALPAGE',
     BACKGROUND = 'BACKGROUND',
-    BRANDPAGE = 'BRANDPAGE',
 }
 export const MENU_EDIT = [
     {
         name: '上传',
-        id: ResourcePageType.UPLOADPAGE,
+        type: ResourcePageType.UPLOADPAGE,
         icon: 'icon-icon_tianjia',
         actIcon: 'icon-tianjiatianchong',
-        route: '/',
     },
-    // {
-    //   name: '图片',
-    //   id: 2,
-    //   icon: 'icon-haibaozujian',
-    //   route: '/myproject',
-    // },
-    // {
-    //   name: '图形',
-    //   id: 3,
-    //   icon: 'icon-sucaiku-1',
-    //   route: '/brand',
-    // },
+    {
+        name: '图片',
+        type: ResourcePageType.IMAGEPAGE,
+        icon: 'icon-haibaozujian',
+    },
     {
         name: '文字',
-        id: ResourcePageType.TEXTPAGE,
+        type: ResourcePageType.TEXTPAGE,
         icon: 'icon-wenzi',
-        route: '/template',
+    },
+    {
+        name: '图形',
+        type: ResourcePageType.GRAPHICALPAGE,
+        icon: 'icon-tuxingchakan',
     },
     {
         name: '背景',
-        id: ResourcePageType.BACKGROUND,
+        type: ResourcePageType.BACKGROUND,
         icon: 'icon-background',
-        route: '/template',
     },
-    // {
-    //   name: '品牌',
-    //   id: 6,
-    //   icon: 'icon-pinpai',
-    //   route: '/template',
-    // },
 ];
 
 export const SETTING_MENU_LAYOUT = [
@@ -227,6 +215,6 @@ export const DEFCOLOR = [
 
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
-        '//at.alicdn.com/t/c/font_2919693_j9tef05fhnl.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+        '//at.alicdn.com/t/c/font_2919693_wnqgyec1xr.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
     ],
 });
