@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import BridgeEmitter, { F2N } from '@/helper/bridge/BridgeEmitter';
 import styles from './index.less';
 import { Menu, MenuProps } from 'antd';
 import { IconFont } from '@/const';
+import BridgeController from '@/helper/bridge/BridgeController';
 
 /**
  * @description 右键菜单modal
@@ -15,10 +16,11 @@ const ContextMenu = React.memo(() => {
         y: 0,
     });
 
-    const [contextType, setContextType] = useState('');
+    const [contextObj, setContextObj] = useState<FabricObject | undefined>();
 
-    const items: MenuProps['items'] = [
+    const items = [
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -37,6 +39,7 @@ const ContextMenu = React.memo(() => {
             key: 1,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -60,7 +63,7 @@ const ContextMenu = React.memo(() => {
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
                         <IconFont
-                            type="icon-suoding"
+                            type="icon-jiesuo"
                             style={{ fontSize: '24px' }}
                         />
                         <span>锁定</span>
@@ -74,6 +77,7 @@ const ContextMenu = React.memo(() => {
             key: 3,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -91,6 +95,7 @@ const ContextMenu = React.memo(() => {
             key: 4,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -109,6 +114,7 @@ const ContextMenu = React.memo(() => {
             key: 5,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -127,6 +133,7 @@ const ContextMenu = React.memo(() => {
             key: 6,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -146,6 +153,7 @@ const ContextMenu = React.memo(() => {
             key: 7,
         },
         {
+            disabled: false,
             label: (
                 <div className={styles.menuItemWrap}>
                     <div className={styles.left}>
@@ -166,30 +174,57 @@ const ContextMenu = React.memo(() => {
         },
     ];
 
+    const itemMemo: MenuProps['items'] = useMemo(() => {
+        return items.map((it) => {
+            return {
+                ...it,
+                ...{
+                    disabled: !contextObj && it?.key !== 2 ? true : false,
+                },
+            };
+        });
+    }, [items, contextObj]);
+
     const handleMenuClick: MenuProps['onClick'] = ({ key, domEvent }) => {
         domEvent.stopPropagation();
-        // switch (+key) {
-        //     case 1:
-        //         BridgeController.LayerForward();
-        //         break;
-        //     case 2:
-        //         BridgeController.LayerForward();
-        //         break;
-        //     case 3:
-        //         BridgeController.LayerToFront();
-        //         break;
-        //     case 4:
-        //         BridgeController.LayerToBack();
-        //         break;
-        //     default:
-        //         break;
-        // }
+        switch (+key) {
+            case 1:
+                BridgeController.copyObject();
+                break;
+            case 2:
+                BridgeController.pasteObject();
+                break;
+            case 3:
+                BridgeController.LayerLock();
+                break;
+            case 4:
+                BridgeController.DelResource();
+                break;
+            case 5:
+                BridgeController.LayerForward();
+                break;
+            case 6:
+                BridgeController.LayerForward();
+                break;
+            case 7:
+                BridgeController.LayerToFront();
+                break;
+            case 8:
+                BridgeController.LayerToBack();
+                break;
+            default:
+                break;
+        }
+        setIsShow(false);
     };
 
     const handleOnContext = useCallback((params: onContextParams) => {
         const { show, e, target } = params;
+        console.log(show, e, target);
+        setContextObj(target);
+        // console.log('target', target)
         setIsShow(show);
-        if (!e) return;
+        // if (!e) return;
         setPosition({
             x: e?.clientX,
             y: e?.clientY,
@@ -215,7 +250,8 @@ const ContextMenu = React.memo(() => {
         >
             <Menu
                 className={styles.menuWrap}
-                items={items}
+                selectable={false}
+                items={itemMemo}
                 style={{ width: 260 }}
                 onClick={handleMenuClick}
             />

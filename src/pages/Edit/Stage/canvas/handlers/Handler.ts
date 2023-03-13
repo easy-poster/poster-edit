@@ -1371,7 +1371,7 @@ class Handler implements HandlerOptions {
     public lockActive() {
         const activeObject = this.canvas.getActiveObject() as FabricObject;
         if (activeObject) {
-            this.setObject({
+            this.setObjected({
                 lockMovementX: !activeObject.locked,
                 lockMovementY: !activeObject.locked,
                 hasControls: activeObject.locked,
@@ -1609,7 +1609,6 @@ class Handler implements HandlerOptions {
     public destroy = () => {
         this.eventHandler.destroy();
         this.guidelineHandler.destroy();
-        this.contextmenuHandler.destroy();
         this.workareaHandler.destroy();
         this.canvas.clear();
     };

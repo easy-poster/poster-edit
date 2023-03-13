@@ -12,11 +12,9 @@ class ContextmenuHandler {
     }
 
     /**
-     * @name 销毁上下文菜单
+     * @name 显示右键menu
      */
-    public destroy() {}
-
-    public show = debounce(async (e, target) => {
+    public show = debounce(async (e, target?: FabricObject) => {
         const { onContext } = this.handler;
         if (onContext) {
             onContext({
@@ -27,6 +25,9 @@ class ContextmenuHandler {
         }
     }, 100);
 
+    /**
+     * @name 隐藏右键menu
+     */
     public hide = debounce((e?: any) => {
         const { onContext } = this.handler;
         if (onContext) {

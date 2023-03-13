@@ -15,7 +15,7 @@ interface resourceParams {
 
 const BridgeController = {
     /**
-     * @description 添加资源到画布
+     * @name 添加资源到画布
      * @param params
      */
     AddResource(params: any) {
@@ -23,7 +23,7 @@ const BridgeController = {
     },
 
     /**
-     * @description 删除画布里的资源
+     * @name 删除画布里的资源
      * @param params
      */
     DelResource(params?: any) {
@@ -31,7 +31,7 @@ const BridgeController = {
     },
 
     /**
-     * @description 百分比调节画布大小
+     * @name 百分比调节画布大小
      * @param params
      */
     ResizeStage(params: { zoom: number }) {
@@ -39,21 +39,21 @@ const BridgeController = {
     },
 
     /**
-     * @description 百分比画布大小适应屏幕
+     * @name 百分比画布大小适应屏幕
      */
     ResizeFitStage() {
         window.handler.zoomHandler.zoomToFit();
     },
 
     /**
-     * @description 导出画布为json
+     * @name 导出画布为json
      */
     ExportStageJSON() {
         return window.handler.exportJSON();
     },
 
     /**
-     * @description 导入数据画布
+     * @name 导入数据画布
      * @param data
      * @returns
      */
@@ -63,7 +63,7 @@ const BridgeController = {
     },
 
     /**
-     * @description 图片翻转
+     * @name 图片翻转
      * @param type
      */
     FlipImage(type: number) {
@@ -71,49 +71,63 @@ const BridgeController = {
     },
 
     /**
-     * @description 前移一层
+     * @name 前移一层
      */
     LayerForward() {
         window.handler.bringForward();
     },
 
     /**
-     * @description 移动到最前面
+     * @name 移动到最前面
      */
     LayerToFront() {
         window.handler.bringToFront();
     },
 
     /**
-     * @description 下移一层
+     * @name 下移一层
      */
     LayerBackwards() {
         window.handler.sendBackwards();
     },
 
     /**
-     * @description 移动到最后面
+     * @name 移动到最后面
      */
     LayerToBack() {
         window.handler.sendToBack();
     },
 
     /**
-     * @description 锁定图层
+     * @name 锁定图层
      */
     LayerLock() {
         window.handler.lockActive();
     },
 
     /**
-     * @description 设置fabric样式
+     * @name 复制元素
+     */
+    copyObject() {
+        window.handler.copy();
+    },
+
+    /**
+     * @name 粘贴元素
+     */
+    pasteObject() {
+        window.handler.paste();
+    },
+
+    /**
+     * @name 设置fabric样式
      */
     SetObjectStyle(obj: Partial<FabricObject<fabric.Object>>) {
         window.handler.setObject(obj);
     },
 
     /**
-     * @description 设置fabric样式之后，更新数据
+     * @name 设置fabric样式之后,更新数据
      * @param obj
      */
     SetedObjectStyle(obj: Partial<FabricObject<fabric.Object>>) {
@@ -121,14 +135,14 @@ const BridgeController = {
     },
 
     /**
-     * @description 手动触发保存
+     * @name 手动触发更新并保存
      */
     setModified() {
         window.handler.setModified();
     },
 
     /**
-     * @description 设置滤镜
+     * @name 设置滤镜
      */
     setFilter(type: FILTERTYPES, apply?: boolean) {
         window.handler.imageHandler.applyFilterByType(type, apply);

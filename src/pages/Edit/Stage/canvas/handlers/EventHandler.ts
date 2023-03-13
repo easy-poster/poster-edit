@@ -53,7 +53,7 @@ class EventHandler {
             });
         }
         if (this.handler.canvas.wrapperEl) {
-            this.handler.canvas.wrapperEl.tabIndex = 1000;
+            // this.handler.canvas.wrapperEl.tabIndex = 1000;
             this.handler.canvas.wrapperEl.addEventListener(
                 'keydown',
                 this.keydown,
@@ -549,6 +549,7 @@ class EventHandler {
      */
     public keydown = (e: KeyboardEvent) => {
         const { keyEvent, editable } = this.handler;
+        e.preventDefault();
         if (!Object.keys(keyEvent).length) {
             return;
         }
@@ -620,6 +621,7 @@ class EventHandler {
      * @param e
      */
     public keyup = (e: KeyboardEvent) => {
+        e.preventDefault();
         if (this.handler.interactionHandler.isDrawingMode()) {
             return;
         }
@@ -649,10 +651,14 @@ class EventHandler {
                 e,
                 false,
             ) as FabricObject;
-            if (target && target.type !== 'activeSelection') {
-                this.handler.select(target);
+            if (target && target?.type !== 'activeSelection') {
+                if (target?.id !== 'workarea') {
+                    this.handler.select(target);
+                    this.handler.contextmenuHandler.show(e, target);
+                } else {
+                    this.handler.contextmenuHandler.show(e);
+                }
             }
-            this.handler.contextmenuHandler.show(e, target);
         }
     };
 
