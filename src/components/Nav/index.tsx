@@ -1,36 +1,18 @@
 import React, { useCallback } from 'react';
-import { Link, history, useModel, useSelector } from '@umijs/max';
-import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
+import { Link, history, useModel } from '@umijs/max';
+import { Avatar, Dropdown, MenuProps } from 'antd';
 import { IconFont } from '@/const';
-import SearchHeader from '../SearchHeader';
-import { db, storage } from '@/utils';
-import { v4 as uuidv4 } from 'uuid';
+// import SearchHeader from '../SearchHeader';
+import { storage } from '@/utils';
 import avatarImg from '@/assets/avatar.jpg';
-import './index.less';
 import { logout } from '@/services/user';
 import { saveProject } from '@/services/project';
+import styles from './index.less';
+import CreatePopover from './CreatePopover';
 
 const Nav = () => {
     const { initialState } = useModel('@@initialState');
     const user = initialState?.currentUser;
-    const userId = initialState?.currentUser?.id;
-
-    const handleNewProject = useCallback(async () => {
-        if (!userId) return;
-        try {
-            let res = await saveProject({
-                title: '未命名的设计',
-                width: 720,
-                height: 680,
-            });
-            let uuid = res?.uuid;
-            if (uuid) {
-                history.push(`/edit/${uuid}`);
-            }
-        } catch (error) {
-            console.error('新建失败：', error);
-        }
-    }, [userId]);
 
     // 升级
     const { setShowBuy } = useModel('buy');
@@ -67,29 +49,23 @@ const Nav = () => {
     ];
 
     return (
-        <header className="header">
-            <div className="header-content">
+        <header className={styles.header}>
+            <div className={styles.headerContent}>
                 {/* <SearchHeader /> */}
-                <div className="header-right">
-                    <div className="header-update" onClick={handleUpdate}>
+                <div className={styles.headerRight}>
+                    <div className={styles.headerUpdate} onClick={handleUpdate}>
                         <IconFont
                             type="icon-huiyuan"
                             style={{ fontSize: '28px' }}
                         />
-                        <span className="update-text">升级</span>
+                        <span className={styles.updateText}>升级</span>
                     </div>
-                    <div className="header-create" onClick={handleNewProject}>
-                        <IconFont
-                            type="icon-jiahao"
-                            style={{ fontSize: '28px' }}
-                        />
-                        <span className="create-text">创建设计</span>
-                    </div>
-                    <div className="header-user">
+                    <CreatePopover />
+                    <div className={styles.headerUser}>
                         <Dropdown
                             menu={{ items }}
                             trigger={['click']}
-                            overlayClassName="avatar-dropdown"
+                            overlayClassName={styles.avatarDropdown}
                             placement="bottomRight"
                         >
                             <Avatar src={avatarImg} size={50} />

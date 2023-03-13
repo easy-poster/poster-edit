@@ -6,6 +6,7 @@ import BridgeController from '@/helper/bridge/BridgeController';
 import UndoRedo from './UndoRedo';
 import styles from './index.less';
 import Save from './Save';
+import ExportPopover from './ExportPopover';
 
 const EditHeader = React.memo(() => {
     const { setShowBuy } = useModel('buy');
@@ -42,9 +43,7 @@ const EditHeader = React.memo(() => {
                     />
                     <span className={styles.updateText}>升级</span>
                 </div>
-                <div className={styles.headerExport} onClick={handleImgExport}>
-                    导出
-                </div>
+                <ExportPopover />
             </div>
         </div>
     );

@@ -215,6 +215,6 @@ export const DEFCOLOR = [
 
 export const IconFont = createFromIconfontCN({
     scriptUrl: [
-        '//at.alicdn.com/t/c/font_2919693_wnqgyec1xr.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
+        '//at.alicdn.com/t/c/font_2919693_cyfn6da75d.js', // icon-home icon-haibaozujian icon-pinpai icon-moban icon-shezhi
     ],
 });

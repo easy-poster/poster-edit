@@ -1,0 +1,45 @@
+.headerExport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row nowrap;
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 42px;
+    cursor: pointer;
+    min-width: 80px;
+    background-image: linear-gradient(
+        to right,
+        rgb(20 120 126),
+        rgb(77 201 145)
+    );
+    color: #fff;
+
+    .text {
+        margin-left: 6px;
+    }
+
+    &:hover {
+        background-image: linear-gradient(
+            to right,
+            rgb(32 159 165),
+            rgb(95 213 160)
+        );
+    }
+}
+
+.popoverExportWrap {
+    user-select: none;
+
+    .exportContent {
+        width: 400px;
+        padding: 10px 0;
+
+        .exportList {
+            & > h3 {
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+        }
+    }
+}

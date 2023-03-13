@@ -1,0 +1,81 @@
+.headerCreate {
+    min-width: 80px;
+    background-image: linear-gradient(
+        to right,
+        rgb(20 120 126),
+        rgb(77 201 145)
+    );
+    color: #fff;
+
+    .createText {
+        margin-left: 10px;
+    }
+
+    &:hover {
+        background-image: linear-gradient(
+            to right,
+            rgb(32 159 165),
+            rgb(95 213 160)
+        );
+    }
+}
+
+.popoverCreateWrap {
+    user-select: none;
+
+    :global {
+        .ant-popover-inner {
+            padding: 0;
+        }
+    }
+
+    .createContent {
+        width: 400px;
+
+        .createTop {
+            padding: 20px;
+
+            & > h3 {
+                font-weight: bolder;
+            }
+
+            .createList {
+                height: 300px;
+                padding: 20px 0;
+            }
+        }
+
+        .btmWrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: #eee;
+
+            .btnWrap {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #fff;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                box-shadow: 0 0 0 1px rgb(64 87 109 / 7%),
+                    0 2px 12px rgb(53 71 90 / 20%);
+                transition: background-color 0.1s linear,
+                    border-color 0.1s linear, color 0.1s linear;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(64 87 109 / 7%);
+                }
+            }
+
+            & > p {
+                margin-top: 10px;
+                user-select: none;
+            }
+        }
+    }
+}
