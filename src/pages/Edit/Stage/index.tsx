@@ -54,7 +54,6 @@ const Stage = React.memo(() => {
     const onZoom = useCallback((zoom: number) => {
         logger.info('onZoom', Math.round(zoom * 100));
         setSizeStage(Math.round(zoom * 100));
-        // BridgeEmitter.emit(F2N.SIZE_STAGE, Math.round(zoom * 100))
     }, []);
 
     const onClick = useCallback(() => {

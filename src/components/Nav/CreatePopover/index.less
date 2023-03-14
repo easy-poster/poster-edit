@@ -30,18 +30,42 @@
     }
 
     .createContent {
-        width: 400px;
+        width: 300px;
 
         .createTop {
-            padding: 20px;
-
             & > h3 {
+                padding: 20px 0 0 20px;
                 font-weight: bolder;
             }
 
             .createList {
-                height: 300px;
+                // height: 160px;
                 padding: 20px 0;
+                // overflow-y: scroll;
+
+                .listItem {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    height: 40px;
+                    padding: 0 20px;
+                    cursor: pointer;
+
+                    .size {
+                        display: none;
+                        margin-left: 20px;
+                        color: rgb(13 18 22 / 50%);
+                    }
+
+                    &:hover {
+                        background-color: #eee;
+
+                        .size {
+                            font-size: 14px;
+                            display: flex;
+                        }
+                    }
+                }
             }
         }
 
@@ -76,6 +100,63 @@
                 margin-top: 10px;
                 user-select: none;
             }
+        }
+
+        .customHeader {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            color: #000;
+
+            & > h3 {
+                font-weight: bolder;
+            }
+
+            & > span {
+                cursor: pointer;
+            }
+        }
+
+        .customContent {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+
+            .formWrap {
+                height: 80px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                :global {
+                    .ant-form-item {
+                        margin-bottom: 0;
+                    }
+
+                    .ant-form-item + .ant-form-item {
+                        margin-left: 10px;
+                    }
+
+                    .ant-form-item-explain-error {
+                        font-size: 12px;
+                    }
+                }
+
+                input + input {
+                    margin-left: 10px;
+                }
+            }
+
+            & > span {
+                margin-left: 30px;
+                font-size: 24px;
+                font-weight: 300;
+            }
+        }
+
+        .createBtn {
+            padding: 0 20px 20px;
         }
     }
 }

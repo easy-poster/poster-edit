@@ -24,6 +24,7 @@ export interface ProjectInfo {
     height: number;
     background?: string;
     userId: string;
+    type?: string;
 }
 
 interface listType<T> {
