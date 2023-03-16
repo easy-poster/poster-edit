@@ -1,22 +1,5 @@
-import { request } from '@umijs/max';
-
-interface listType<T> {
-    list: T[];
-    total: number;
-}
-
-export interface Resource {
-    id: string;
-    uuid: string;
-    name: string;
-    cover: string;
-    size: number;
-    // type： 1：图片（默认）， 2：视频
-    type: number;
-    url: string;
-    createTime: Date;
-    updateTime: Date;
-}
+import { db } from '@/utils';
+import { epImage } from '@/utils/db';
 
 /**
  * @name 获取资源列表
@@ -24,20 +7,18 @@ export interface Resource {
  * @param options
  * @returns
  */
-export async function getResourceList(
-    params: {
-        current: number;
-        pageSize: number;
-    },
-    options?: { [key: string]: any },
-) {
-    return request<listType<Resource>>('/app/base/resource/list', {
-        method: 'GET',
-        params: {
-            ...params,
-        },
-        ...(options || {}),
-    });
+export async function getResourceList() {
+    return db.epImage.reverse().sortBy('updateTime');
+}
+
+/**
+ * @name 获取资源详情byId
+ * @param params
+ * @param options
+ * @returns
+ */
+export async function getResourceDetailById(params: { id: number }) {
+    return db.epImage.get(params);
 }
 
 /**
@@ -46,19 +27,8 @@ export async function getResourceList(
  * @param options
  * @returns
  */
-export async function getResourceDetail(
-    params: {
-        id: string;
-    },
-    options?: { [key: string]: any },
-) {
-    return request('/app/base/resource/detail', {
-        method: 'GET',
-        params: {
-            ...params,
-        },
-        ...(options || {}),
-    });
+export async function getResourceDetail(params: { uuid: string }) {
+    return db.epImage.get(params);
 }
 
 /**
@@ -67,15 +37,8 @@ export async function getResourceDetail(
  * @param options
  * @returns
  */
-export async function saveResource(
-    data?: Partial<Resource>,
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/resource/save`, {
-        method: 'POST',
-        data,
-        ...(options || {}),
-    });
+export async function saveResource(data: Omit<epImage, 'id'>) {
+    return db.epImage.add(data);
 }
 
 /**
@@ -84,15 +47,13 @@ export async function saveResource(
  * @param options
  * @returns
  */
-export async function updateResource(
-    data?: Partial<Resource>,
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/resource/update`, {
-        method: 'PUT',
-        data,
-        ...(options || {}),
-    });
+export async function updateResource(data: Partial<epImage>) {
+    const { id, ...other } = data;
+    if (id) {
+        return db.epImage.update(id, {
+            ...other,
+        });
+    }
 }
 
 /**
@@ -101,15 +62,6 @@ export async function updateResource(
  * @param options
  * @returns
  */
-export async function delResource(
-    data?: {
-        id: string;
-    },
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/resource/delete`, {
-        method: 'DELETE',
-        data,
-        ...(options || {}),
-    });
+export async function delResource(data: { id: number }) {
+    return db.epImage.delete(data.id);
 }

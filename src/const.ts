@@ -51,12 +51,12 @@ export const MENU_LAYOUT = [
         icon: 'icon-home',
         route: '/',
     },
-    {
-        name: '品牌',
-        id: 2,
-        icon: 'icon-pinpai',
-        route: '/brand',
-    },
+    // {
+    //     name: '品牌',
+    //     id: 2,
+    //     icon: 'icon-pinpai',
+    //     route: '/brand',
+    // },
     // {
     //     name: '模板库',
     //     id: 3,
@@ -82,21 +82,21 @@ export const MENU_EDIT = [
         icon: 'icon-icon_tianjia',
         actIcon: 'icon-tianjiatianchong',
     },
-    {
-        name: '图片',
-        type: ResourcePageType.IMAGEPAGE,
-        icon: 'icon-haibaozujian',
-    },
+    // {
+    //     name: '图片',
+    //     type: ResourcePageType.IMAGEPAGE,
+    //     icon: 'icon-haibaozujian',
+    // },
     {
         name: '文字',
         type: ResourcePageType.TEXTPAGE,
         icon: 'icon-wenzi',
     },
-    {
-        name: '图形',
-        type: ResourcePageType.GRAPHICALPAGE,
-        icon: 'icon-tuxingchakan',
-    },
+    // {
+    //     name: '图形',
+    //     type: ResourcePageType.GRAPHICALPAGE,
+    //     icon: 'icon-tuxingchakan',
+    // },
     {
         name: '背景',
         type: ResourcePageType.BACKGROUND,

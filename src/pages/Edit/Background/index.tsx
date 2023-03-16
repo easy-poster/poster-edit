@@ -66,7 +66,7 @@ const BackgroundPage = React.memo(() => {
 
     return (
         <div className={styles.bgWrap}>
-            <div className={styles.bgSearch}>
+            {/* <div className={styles.bgSearch}>
                 <Input
                     size="large"
                     placeholder="搜索背景"
@@ -80,10 +80,10 @@ const BackgroundPage = React.memo(() => {
                         />
                     }
                 />
-            </div>
+            </div> */}
             <DocColor />
             <Divider />
-            <h3>背景图片</h3>
+            {/* <h3>背景图片</h3>
             <div className={styles.bgList}>
                 {LIST.map((item) => {
                     return (
@@ -110,7 +110,7 @@ const BackgroundPage = React.memo(() => {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 });

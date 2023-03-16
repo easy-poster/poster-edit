@@ -1,10 +1,10 @@
 import Dexie, { Table } from 'dexie';
 
 interface commonProps {
+    /** @name 自增id */
+    id?: number;
     /** @name 自定义唯一id */
     uuid: string;
-    /** @name 用户id */
-    userId: number;
     /** @name 创建时间 */
     createTime?: Date;
     /** @name 更新时间 */
@@ -16,8 +16,10 @@ export type fromType = 'url' | 'resource';
 export interface epProject extends commonProps {
     /** @name 项目名称*/
     title: string;
+    /** @name 描述 */
+    description?: string;
     /** @name 封面 */
-    cover?: string;
+    cover?: Blob;
     /** @name 项目资源大小 */
     size?: number;
     /** @name 画布宽*/
@@ -26,6 +28,8 @@ export interface epProject extends commonProps {
     height: number;
     /** @name 背景 */
     background: string;
+    /** @name 背景图片 */
+    backgroundImage?: string;
     /** @name 画布内容 */
     content?: string;
 }
@@ -37,12 +41,10 @@ export interface epImage extends commonProps {
     size: number;
     /** @name 图片类型 */
     type: string;
-    /** @name 本地图片blob */
-    src: Blob;
     /** @name 图片封面blob */
     cover?: Blob;
-    /** @name 远程图片资源地址 */
-    url?: string;
+    /** @name 图片地址 */
+    url: Blob;
 }
 
 export class EposterDexie extends Dexie {
@@ -51,11 +53,12 @@ export class EposterDexie extends Dexie {
 
     constructor(name: string) {
         super(name);
+        console.log('init indexDB');
         this.version(1).stores({
             epImage:
-                '++id, &uuid, userId, createTime, updateTime, name, size, type, blob, cover, url',
+                '++id, &uuid, createTime, updateTime, title, size, type, cover, url',
             epProject:
-                '++id, &uuid, userId, createTime, updateTime, title, cover, size, width, height, background, content',
+                '++id, &uuid, createTime, updateTime, title, description, content, cover, width, height, background, backgroundImage',
         });
     }
 }

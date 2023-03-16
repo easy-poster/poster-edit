@@ -23,9 +23,6 @@ export default defineConfig({
     model: {},
     access: {},
     initialState: {},
-    request: {
-        dataField: '',
-    },
     layout: false,
     alias: {
         assets: resolve(__dirname, '../src/assets'),

@@ -114,30 +114,41 @@ const ExportContent = React.memo(() => {
 });
 
 const ExportPopover = React.memo(() => {
-    const { initialState } = useModel('@@initialState');
-    const userId = initialState?.currentUser?.id;
-
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
     const handleOpenChange = (newOpen: boolean) => {
         setOpen(newOpen);
     };
 
+    const handleImgExport = () => {
+        let resJson = BridgeController.ExportStageJSON();
+        console.log('resJson', resJson);
+        if (!resJson) return;
+        dispatch({
+            type: 'project/updatePrj',
+            payload: {
+                content: JSON.stringify(resJson),
+            },
+        });
+        window?.handler?.saveCanvasImage();
+    };
+
     return (
-        <Popover
-            content={<ExportContent />}
-            trigger="click"
-            open={open}
-            onOpenChange={handleOpenChange}
-            showArrow={false}
-            placement="bottomRight"
-            overlayClassName={styles.popoverExportWrap}
-        >
-            <div className={styles.headerExport}>
-                <IconFont type="icon-daochu" style={{ fontSize: '24px' }} />
-                <span className={styles.text}>导出</span>
-            </div>
-        </Popover>
+        // <Popover
+        //     content={<ExportContent />}
+        //     trigger="click"
+        //     open={open}
+        //     onOpenChange={handleOpenChange}
+        //     showArrow={false}
+        //     placement="bottomRight"
+        //     overlayClassName={styles.popoverExportWrap}
+        // >
+        // </Popover>
+        <div className={styles.headerExport} onClick={handleImgExport}>
+            <IconFont type="icon-daochu" style={{ fontSize: '24px' }} />
+            <span className={styles.text}>导出</span>
+        </div>
     );
 });
 

@@ -138,7 +138,7 @@ const TextPage = React.memo(() => {
 
     return (
         <div className={styles.textWrap}>
-            <div className={styles.textSearch}>
+            {/* <div className={styles.textSearch}>
                 <Input
                     size="large"
                     placeholder="字体名字"
@@ -152,7 +152,7 @@ const TextPage = React.memo(() => {
                         />
                     }
                 />
-            </div>
+            </div> */}
             <div className={styles.textAddWrap}>
                 <div
                     className={cn(styles.textBtn, styles.textTitle)}
@@ -173,7 +173,7 @@ const TextPage = React.memo(() => {
                     添加一段文本
                 </div>
             </div>
-            <div className={styles.textList}>
+            {/* <div className={styles.textList}>
                 {LIST.map((item) => {
                     return (
                         <div className={styles.imgItem} key={item.id}>
@@ -199,7 +199,7 @@ const TextPage = React.memo(() => {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 });

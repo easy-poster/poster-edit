@@ -9,11 +9,11 @@ import { ColorResult } from 'react-color';
 import { Popover } from 'antd';
 import cn from 'classnames';
 import { IconFont } from '@/const';
-import ColorPicker from '@/pages/Brand/components/ColorPicker';
 import BridgeController from '@/helper/bridge/BridgeController';
 import { SelectContext } from '@/pages/Edit/Container/SelectContainer';
 import { Gradient, Pattern } from 'fabric/fabric-impl';
 import styles from './index.less';
+import ColorPicker from '@/components/ColorPicker';
 
 type colorProps = string | Pattern | Gradient | undefined;
 

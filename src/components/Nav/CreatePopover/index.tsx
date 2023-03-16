@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Form, Input, Popover } from 'antd';
-import { history, useModel } from '@umijs/max';
+import { v4 as uuidv4 } from 'uuid';
+import { history } from '@umijs/max';
 import { saveProject } from '@/services/project';
 import { IconFont } from '@/const';
 import styles from './index.less';
+import { db } from '@/utils';
 
 type Values = { width: number; height: number };
 
 const CreateContent = React.memo(() => {
-    const { initialState } = useModel('@@initialState');
-    const userId = initialState?.currentUser?.id;
     const [isCustom, setCustom] = useState(false);
     const [form] = Form.useForm();
     const [disable, setDisable] = useState(true);
@@ -57,45 +57,56 @@ const CreateContent = React.memo(() => {
 
     const handleNewTypeProject = useCallback(
         async (it: Values & { type: string }) => {
-            if (!userId) return;
             try {
-                let res = await saveProject({
-                    type: it.type,
+                let count = await db.epProject.count();
+                let uuid = uuidv4();
+                let id = await saveProject({
+                    uuid: uuid,
+                    title: `未命名的设计_${count + 1}`,
+                    createTime: new Date(),
+                    updateTime: new Date(),
                     width: it.width,
                     height: it.height,
+                    background: '#FFF',
                 });
-                let uuid = res?.uuid;
-                if (uuid) {
+                if (id) {
                     history.push(`/edit/${uuid}`);
                 }
             } catch (error) {
                 console.error('新建失败：', error);
             }
         },
-        [userId],
+        [],
     );
 
     const handleCustomProject = useCallback(() => {
-        if (!userId) return;
         form.validateFields()
             .then(async (resForm) => {
+                let count = await db.epProject.count();
+                let uuid = uuidv4();
                 const dimension = {
+                    title: `未命名的设计_${count + 1}`,
+                    uuid: uuid,
+                    createTime: new Date(),
+                    updateTime: new Date(),
+                    background: '#FFF',
                     width: resForm?.width?.trim(),
                     height: resForm?.height?.trim(),
                 };
-                let res = await saveProject({
+                let id = await saveProject({
                     ...dimension,
                 });
-                let uuid = res?.uuid;
-                if (uuid) {
+                if (id) {
                     history.push(`/edit/${uuid}`);
                 }
             })
             .catch(() => {});
-    }, [form, userId]);
+    }, [form]);
 
     const handleCustom = useCallback((value: boolean) => {
-        setCustom(value);
+        setTimeout(() => {
+            setCustom(value);
+        }, 100);
     }, []);
 
     return (

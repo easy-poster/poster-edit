@@ -1,6 +1,5 @@
 import store from 'store2';
 import { history } from '@umijs/max';
-import { refreshToken } from '@/services/user';
 
 interface TokenStoreProp {
     token: string;
@@ -106,24 +105,6 @@ class EStorage {
 
         // 刷新token
         this.set('refreshToken', data.refreshToken, data.refreshExpire);
-    }
-
-    /**
-     * @name 刷新标识
-     * @returns
-     */
-    refreshTokenStore(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            refreshToken()
-                .then((res) => {
-                    this.setTokenStore(res);
-                    resolve(res?.token);
-                })
-                .catch((err) => {
-                    this.logout();
-                    reject(err);
-                });
-        });
     }
 
     /**

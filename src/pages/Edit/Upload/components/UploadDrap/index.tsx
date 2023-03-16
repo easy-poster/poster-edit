@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import React, {
     ChangeEvent,
     useCallback,
@@ -6,10 +5,13 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { message } from 'antd';
 import cn from 'classnames';
 import styles from './index.less';
 import { saveResource } from '@/services/resource';
+import { v4 as uuidv4 } from 'uuid';
 import { ResourceContext } from '../../container/ResourceContainer';
+import { tools } from '@/utils';
 
 const UploadDrop = React.memo(() => {
     const inputImgRef = useRef<HTMLInputElement>(null);
@@ -19,10 +21,20 @@ const UploadDrop = React.memo(() => {
     const addImage = useCallback(async (file: File) => {
         if (file) {
             try {
+                let images = {
+                    type: file.type,
+                    blob: new Blob([file], { type: file.type }),
+                };
+                let coverBlob = await tools.compressImg(images, 240, 140);
                 let result = await saveResource({
+                    uuid: uuidv4(),
+                    createTime: new Date(),
+                    updateTime: new Date(),
                     name: file.name,
                     size: file.size,
-                    url: 'https://media-public.canva.cn/RH7O0/MADVfBRH7O0/4/s.jpg',
+                    type: file.type,
+                    url: images.blob,
+                    cover: coverBlob,
                 });
                 return result;
             } catch (error) {

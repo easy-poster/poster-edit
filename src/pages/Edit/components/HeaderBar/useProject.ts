@@ -10,7 +10,7 @@ export default function useProject() {
         if (params?.id) {
             dispatch({
                 type: 'project/getPrj',
-                payload: { id: params.id },
+                payload: { uuid: params.id },
             });
         }
     }, []);

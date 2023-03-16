@@ -1,35 +1,9 @@
-import db from '@/utils/db';
-import { request } from '@umijs/max';
-
-export function getProject({ uuid }: { uuid: string }) {
-    return db.epProject.get({ uuid });
-}
+import db, { epProject } from '@/utils/db';
 
 export enum OrderTypes {
     TIME = 'time',
     NAME = 'name',
     SIZE = 'size',
-}
-
-export interface ProjectInfo {
-    id: string;
-    uuid: string;
-    createTime: Date;
-    updateTime: Date;
-    title: string;
-    description: string;
-    content: string;
-    cover?: string;
-    width: number;
-    height: number;
-    background?: string;
-    userId: string;
-    type?: string;
-}
-
-interface listType<T> {
-    list: T[];
-    total: number;
 }
 
 /**
@@ -38,22 +12,8 @@ interface listType<T> {
  * @param options
  * @returns
  */
-export async function getProjectList(
-    params: {
-        current: number;
-        pageSize: number;
-        search?: string;
-        orderType?: OrderTypes;
-    },
-    options?: { [key: string]: any },
-) {
-    return request<listType<ProjectInfo>>('/app/base/project/list', {
-        method: 'GET',
-        params: {
-            ...params,
-        },
-        ...(options || {}),
-    });
+export async function getProjectList() {
+    return db.epProject.reverse().sortBy('updateTime');
 }
 
 /**
@@ -62,19 +22,8 @@ export async function getProjectList(
  * @param options
  * @returns
  */
-export async function getProjectDetail(
-    params: {
-        id: string;
-    },
-    options?: { [key: string]: any },
-) {
-    return request('/app/base/project/detail', {
-        method: 'GET',
-        params: {
-            ...params,
-        },
-        ...(options || {}),
-    });
+export async function getProjectDetail(params: { uuid: string }) {
+    return db.epProject.get(params);
 }
 
 /**
@@ -83,15 +32,8 @@ export async function getProjectDetail(
  * @param options
  * @returns
  */
-export async function saveProject(
-    data?: Partial<ProjectInfo>,
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/project/save`, {
-        method: 'POST',
-        data,
-        ...(options || {}),
-    });
+export async function saveProject(data: Omit<epProject, 'id'>) {
+    return db.epProject.add(data);
 }
 
 /**
@@ -100,15 +42,13 @@ export async function saveProject(
  * @param options
  * @returns
  */
-export async function updateProject(
-    data?: Partial<ProjectInfo>,
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/project/update`, {
-        method: 'PUT',
-        data,
-        ...(options || {}),
-    });
+export async function updateProject(data: Partial<epProject>) {
+    const { id, ...other } = data;
+    if (id) {
+        return db.epProject.update(id, {
+            ...other,
+        });
+    }
 }
 
 /**
@@ -117,17 +57,8 @@ export async function updateProject(
  * @param options
  * @returns
  */
-export async function delProject(
-    data?: {
-        id: string;
-    },
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/project/delete`, {
-        method: 'DELETE',
-        data,
-        ...(options || {}),
-    });
+export async function delProject(data: { id: number }) {
+    return db.epProject.delete(data.id);
 }
 
 /**
@@ -136,15 +67,7 @@ export async function delProject(
  * @param options
  * @returns
  */
-export async function copyProject(
-    data?: {
-        id: string;
-    },
-    options?: { [key: string]: any },
-) {
-    return request(`/app/base/project/copy`, {
-        method: 'POST',
-        data,
-        ...(options || {}),
-    });
+export async function copyProject(data: epProject) {
+    const { id, ...other } = data;
+    return db.epProject.add(other);
 }

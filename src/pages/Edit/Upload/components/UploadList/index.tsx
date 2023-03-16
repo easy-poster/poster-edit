@@ -1,29 +1,34 @@
 import React, { useContext } from 'react';
-import { message } from 'antd';
 import cn from 'classnames';
 import BridgeController from '@/helper/bridge/BridgeController';
 import { FabricObjectType, IconFont } from '@/const';
-import styles from './index.less';
-import { Resource } from '@/services/resource';
 import { ResourceContext } from '../../container/ResourceContainer';
+import { epImage } from '@/utils/db';
+import { delResource } from '@/services';
+import styles from './index.less';
 
 const UploadList = React.memo(() => {
-    const { resourceList } = useContext(ResourceContext);
+    const { resourceList, getResource } = useContext(ResourceContext);
 
     const handleDel = async (item: any) => {
         if (item.id) {
             try {
+                await delResource({
+                    id: item.id,
+                }).finally(() => {
+                    getResource();
+                });
             } catch (error) {
                 console.log('error', error);
             }
         }
     };
 
-    const handleAdd = (data: Resource) => {
+    const handleAdd = (data: epImage) => {
         BridgeController.AddResource({
             id: data.id,
             type: FabricObjectType.IMAGE,
-            src: data.url,
+            src: URL.createObjectURL(data.url),
         });
     };
 
@@ -36,7 +41,7 @@ const UploadList = React.memo(() => {
                             <img
                                 className={styles.imgCover}
                                 alt={item.name}
-                                src={item.cover || item.url}
+                                src={URL.createObjectURL(item.cover!)}
                             />
                             <div className={styles.editWrap}>
                                 <div

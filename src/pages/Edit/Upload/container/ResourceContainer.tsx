@@ -1,11 +1,10 @@
-import { getResourceList, Resource } from '@/services/resource';
+import { getResourceList } from '@/services/resource';
+import { epImage } from '@/utils/db';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 interface ResourceContextProps {
-    resourceList: Resource[];
+    resourceList: epImage[];
     getResource: () => void;
-    currentPage: number;
-    setCurrentPage: (val: number) => void;
 }
 
 export const ResourceContext = React.createContext<ResourceContextProps>(
@@ -17,33 +16,21 @@ export const ResourceContext = React.createContext<ResourceContextProps>(
  */
 const ResourceContainer = React.memo<React.PropsWithChildren>((props) => {
     const { children } = props;
-    const [resourceList, setResourceList] = useState<Resource[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageTotal, setPageTotal] = useState(0);
+    const [resourceList, setResourceList] = useState<epImage[]>([]);
 
     const getResource = useCallback(async () => {
         try {
-            let res = await getResourceList({
-                current: currentPage,
-                pageSize: 20,
-            });
-            let list = res?.list || [];
-            let total = res.total;
-            if (list?.length) {
-                setResourceList([...resourceList, ...list]);
-                setPageTotal(total);
-            }
+            let res = await getResourceList();
+            setResourceList(res || []);
         } catch (error) {}
-    }, [currentPage]);
+    }, []);
 
     const memoCtx = useMemo(() => {
         return {
             resourceList,
             getResource,
-            currentPage,
-            setCurrentPage,
         };
-    }, [resourceList, getResource, currentPage, setCurrentPage]);
+    }, [resourceList, getResource]);
 
     useEffect(() => {
         getResource();

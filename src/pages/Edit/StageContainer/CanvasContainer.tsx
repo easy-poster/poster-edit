@@ -29,6 +29,7 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
             type: 'project/updatePrj',
             payload: {
                 content: JSON.stringify(resJson),
+                updateTime: new Date(),
                 backgroundImage: bgImg,
                 background: bgColor,
             },

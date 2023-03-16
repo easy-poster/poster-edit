@@ -1,22 +1,13 @@
-import React, {
-    useState,
-    useEffect,
-    useMemo,
-    useRef,
-    useCallback,
-    useContext,
-} from 'react';
-import { Button, Divider, List, Skeleton } from 'antd';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { IconFont } from '@/const';
+import React, { useState, useContext } from 'react';
+import { List } from 'antd';
 import { ProjectListContext } from '../Container/ProjectListContainer';
 import ProjectItem from './ProjectItem';
 import styles from './index.less';
 
 const ProjectList = React.memo(() => {
-    const { projectList, pageTotal, currentPage, setCurrentPage } =
-        useContext(ProjectListContext);
-    const [activeCard, setActiveCard] = useState('');
+    const { projectList } = useContext(ProjectListContext);
+    const [activeCard, setActiveCard] = useState<number>();
+    console.log('projectList', projectList);
 
     return (
         <div className={styles.projectContent}>

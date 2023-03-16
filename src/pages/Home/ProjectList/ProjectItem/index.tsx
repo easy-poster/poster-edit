@@ -5,8 +5,10 @@ import errorImg from '@/assets/common/errorImg.svg';
 import { IconFont } from '@/const';
 import dayjs from 'dayjs';
 import cn from 'classnames';
-import { copyProject, delProject, ProjectInfo } from '@/services/project';
+import { v4 as uuidv4 } from 'uuid';
+import { copyProject, delProject } from '@/services/project';
 import { ProjectListContext } from '../../Container/ProjectListContainer';
+import { epProject } from '@/utils/db';
 import styles from './index.less';
 
 const items = [
@@ -28,9 +30,9 @@ const ProjectItem = React.memo(
         activeCard,
         setActiveCard,
     }: {
-        item: ProjectInfo;
-        activeCard: string;
-        setActiveCard: (str: string) => void;
+        item: epProject;
+        activeCard?: number;
+        setActiveCard: (str?: number) => void;
     }) => {
         const { getProject } = useContext(ProjectListContext);
 
@@ -40,7 +42,7 @@ const ProjectItem = React.memo(
 
         const handleEdit = (
             e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-            id: string,
+            id: number,
         ) => {
             e.stopPropagation();
             setActiveCard(id);
@@ -48,16 +50,16 @@ const ProjectItem = React.memo(
 
         const handleOpenChange = (open: boolean) => {
             if (!open) {
-                setActiveCard('');
+                setActiveCard(undefined);
             }
         };
 
         const handleCopy = useCallback(async () => {
             if (!item.id) return;
             try {
-                await copyProject({
-                    id: item.id,
-                });
+                item.uuid = uuidv4();
+                item.title = item.title + '（副本）';
+                await copyProject(item);
                 await getProject();
             } catch (error) {
                 console.log('error', error);
@@ -78,7 +80,7 @@ const ProjectItem = React.memo(
 
         const handleMenuClick: MenuProps['onClick'] = ({ key, domEvent }) => {
             domEvent.stopPropagation();
-            setActiveCard('');
+            setActiveCard(undefined);
             switch (+key) {
                 case 1:
                     console.log('制作副本');
@@ -112,7 +114,7 @@ const ProjectItem = React.memo(
                         className={cn(styles.cardEdit, {
                             [styles.activeEdit]: activeCard === item?.id,
                         })}
-                        onClick={(e) => handleEdit(e, item.id)}
+                        onClick={(e) => handleEdit(e, item.id!)}
                     >
                         <IconFont
                             type="icon-gengduo"

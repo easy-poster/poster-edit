@@ -9,10 +9,10 @@ import Save from './Save';
 import ExportPopover from './ExportPopover';
 
 const EditHeader = React.memo(() => {
-    const { setShowBuy } = useModel('buy');
-    const handleUpdate = () => {
-        setShowBuy(true);
-    };
+    // const { setShowBuy } = useModel('buy');
+    // const handleUpdate = () => {
+    //     setShowBuy(true);
+    // };
     const dispatch = useDispatch();
 
     const handleImgExport = () => {
@@ -36,13 +36,13 @@ const EditHeader = React.memo(() => {
                 <HeaderBar />
             </div>
             <div className={styles.headerRight}>
-                <div className={styles.headerUpdate} onClick={handleUpdate}>
+                {/* <div className={styles.headerUpdate} onClick={handleUpdate}>
                     <IconFont
                         type="icon-huiyuan"
                         style={{ fontSize: '28px' }}
                     />
                     <span className={styles.updateText}>升级</span>
-                </div>
+                </div> */}
                 <ExportPopover />
             </div>
         </div>

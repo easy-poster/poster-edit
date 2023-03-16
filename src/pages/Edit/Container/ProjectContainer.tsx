@@ -14,7 +14,7 @@ const ProjectContainer = React.memo<React.PropsWithChildren>((props) => {
         if (params?.id) {
             dispatch({
                 type: 'project/getPrj',
-                payload: { id: params.id },
+                payload: { uuid: params.id },
             });
         }
 
