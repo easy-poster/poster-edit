@@ -90,8 +90,8 @@ const CreateContent = React.memo(() => {
                     createTime: new Date(),
                     updateTime: new Date(),
                     background: '#FFF',
-                    width: resForm?.width?.trim(),
-                    height: resForm?.height?.trim(),
+                    width: +resForm?.width?.trim(),
+                    height: +resForm?.height?.trim(),
                 };
                 let id = await saveProject({
                     ...dimension,
