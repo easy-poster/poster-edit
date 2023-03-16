@@ -188,13 +188,16 @@ class EventHandler {
         if (!this.handler.canvas) return;
         this.handler.contextmenuHandler.hide();
         this.handler.canvas.setWidth(nextWidth).setHeight(nextHeight);
-        // this.handler.canvas.renderAll.bind(this.handler.canvas);
         if (!this.handler.workarea) {
             return;
         }
         if (!this.handler.width || !this.handler.height) return;
         const diffWidth = nextWidth / 2 - this.handler.width / 2;
         const diffHeight = nextHeight / 2 - this.handler.height / 2;
+        // 有问题要改
+        if (diffWidth !== 0) {
+            this.handler.zoomHandler.zoomToNumber(1);
+        }
         this.handler.width = nextWidth;
         this.handler.height = nextHeight;
 
