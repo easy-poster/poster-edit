@@ -14,6 +14,7 @@ import './index.less';
 import { useModel } from '@umijs/max';
 import { updateUserInfo } from '@/services/user';
 import { flushSync } from 'react-dom';
+import UploadAvatar from './UploadAvatar';
 
 const Account = () => {
     const [form] = Form.useForm();
@@ -119,15 +120,16 @@ const Account = () => {
         <div className="accountWrap">
             <h2 className="title">你的账户</h2>
             <div className="account">
-                <div className="avatar-wrap">
+                <UploadAvatar />
+                {/* <div className="avatar-wrap">
                     <Avatar size={90} src={avatar} />
                     <div className="text">上传你的个人头像</div>
-                </div>
-                <Upload {...uploadImgProps}>
+                </div> */}
+                {/* <Upload {...uploadImgProps}>
                     <Button size="large" shape="round">
                         上传照片
                     </Button>
-                </Upload>
+                </Upload> */}
             </div>
             <Divider />
             <div className="name-wrap">

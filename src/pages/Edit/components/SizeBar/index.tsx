@@ -46,7 +46,6 @@ const SizeBar = React.memo(() => {
                 {isAutoSize ? (
                     <Tooltip
                         title="适应屏幕"
-                        color="rgba(255, 255, 255, 0.1)"
                         overlayInnerStyle={{ borderRadius: '18px' }}
                         open={true}
                     >

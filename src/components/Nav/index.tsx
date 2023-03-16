@@ -68,7 +68,7 @@ const Nav = () => {
                             overlayClassName={styles.avatarDropdown}
                             placement="bottomRight"
                         >
-                            <Avatar src={avatarImg} size={50} />
+                            <Avatar src={user?.headImg} size={50} />
                         </Dropdown>
                     </div>
                 </div>

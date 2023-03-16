@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/eventBus';
-import { getImgCaptcha } from '@/services/user';
+import { getImgCaptcha } from '@/services';
 import { storage } from '@/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
