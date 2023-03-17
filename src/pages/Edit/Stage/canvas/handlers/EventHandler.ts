@@ -195,9 +195,9 @@ class EventHandler {
         const diffWidth = nextWidth / 2 - this.handler.width / 2;
         const diffHeight = nextHeight / 2 - this.handler.height / 2;
         // 有问题要改
-        if (diffWidth !== 0) {
-            this.handler.zoomHandler.zoomToNumber(1);
-        }
+        // if (diffWidth !== 0) {
+        //     this.handler.zoomHandler.zoomToNumber(1);
+        // }
         this.handler.width = nextWidth;
         this.handler.height = nextHeight;
 

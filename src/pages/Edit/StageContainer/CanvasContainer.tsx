@@ -23,6 +23,8 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
             return it?.id === 'workarea' && it?.type === 'rect';
         })?.fill;
 
+        let coverUrl = await window.handler.saveCanvasImageCover();
+
         BridgeEmitter.emit(F2N.UNDOABLR);
         // FunctionEmitter.emit(FUN.UPDATE_RESOURCE, obj);
         dispatch({
@@ -32,6 +34,7 @@ const CanvasContainer = React.memo<React.PropsWithChildren>((props) => {
                 updateTime: new Date(),
                 backgroundImage: bgImg,
                 background: bgColor,
+                cover: coverUrl,
             },
         });
     }, []);

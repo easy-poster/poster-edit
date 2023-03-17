@@ -19,7 +19,7 @@ export interface epProject extends commonProps {
     /** @name 描述 */
     description?: string;
     /** @name 封面 */
-    cover?: Blob;
+    cover?: string;
     /** @name 项目资源大小 */
     size?: number;
     /** @name 画布宽*/

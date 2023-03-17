@@ -1512,6 +1512,56 @@ class Handler implements HandlerOptions {
     };
 
     /**
+     * @name 保存画布封面
+     * @param option
+     */
+    public saveCanvasImageCover = async (
+        option = { name: 'New Image', format: 'png', quality: 1 },
+    ) => {
+        this.zoomHandler.zoomOneToOne();
+
+        const { left, top, width, height } = this.workarea!;
+        const dataUrl = this.canvas.toDataURL({
+            ...option,
+            left,
+            top,
+            width,
+            height,
+            enableRetinaScaling: true,
+        });
+
+        return new Promise<string>((resolve, reject) => {
+            let img = new Image();
+            img.src = dataUrl;
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                let imgAspectRatio = img.width / img.height;
+                let Maxbd =
+                    img.width / 400 > img.height / 400 ? 'width' : 'height';
+                switch (Maxbd) {
+                    case 'width':
+                        canvas.width = 400;
+                        canvas.height = canvas.width / imgAspectRatio;
+                        break;
+                    case 'height':
+                        canvas.height = 400;
+                        canvas.width = canvas.height * imgAspectRatio;
+                        break;
+                    default:
+                        break;
+                }
+                if (ctx) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                }
+                let coverUrl = canvas.toDataURL();
+                resolve(coverUrl);
+            };
+        });
+    };
+
+    /**
      * @name 导入画布json数据 先废弃不用
      * @param json
      * @param callback

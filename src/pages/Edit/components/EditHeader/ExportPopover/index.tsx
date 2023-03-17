@@ -25,7 +25,7 @@ const ExportContent = React.memo(() => {
         //         content: JSON.stringify(resJson),
         //     },
         // });
-        // window?.handler?.saveCanvasImage();
+        window?.handler?.saveCanvasImage();
     };
     return (
         <div className={styles.exportContent}>
