@@ -1,30 +1,54 @@
-name: Docker Image CI # Actions名称
+name: eposter_web CI/CD  # Actions名称
 
 on: # 执行时机
   push:
-    branches:
-      - master
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  # 手动触发部署
+  workflow_dispatch:
 
 jobs:
   build:
     # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
+    name: 基于ubuntu-latest构建
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x] # 配置所需node版本
+
     steps:
       # 拉取代码
-      - name: checkout # 步骤名字
+      - name: 切换分支 # 步骤名字
         # 使用action库  actions/checkout拉取源码
-        uses: actions/checkout@master
-
+        uses: actions/checkout@v3
+      
+      #缓存依赖路径
+      - name: 获取缓存路径
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+        
       # 安装依赖
-      - name: install
-        run: npm install pnpm -g && pnpm install
-
-      # 打包
-      - name: build project
-        run: pnpm run build
+      - name: 安装yarn
+        run: |
+          npm i -g yarn
+      - name: 下载依赖包
+        run: |
+          yarn --prefer-offline
+      - name: 打包项目到dist
+        run: |
+          yarn build --if-present
+          echo "项目打包完成, 准备打包docker镜像" 
 
       # 登录阿里云镜像容器服务，打包镜像，推送镜像
-      - name: Build the Docker image
+      - name: 构建阿里云镜像
         run: |
           # 登录阿里云镜像容器服务
           docker login --username=${{ secrets.DOCKER_USERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKER_PASSWORD }}
@@ -34,11 +58,19 @@ jobs:
           docker tag espoter_web registry.cn-hangzhou.aliyuncs.com/momo_eposter/eposter_web:latest
           # 推送到阿里云镜像容器服务
           docker push registry.cn-hangzhou.aliyuncs.com/momo_eposter/eposter_web:latest
-      # 登录服务器执行脚本
-      - name: ssh docker login
+          echo 镜像上传成功
+  pull-docker:
+    # 登录服务器执行脚本
+    needs: [build]
+    name: '部署镜像'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 部署
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: cd /home/eposter_web/ && sh dockerBootstrap.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_PASSWORD }}
+
+

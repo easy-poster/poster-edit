@@ -1,0 +1,9 @@
+version: '3'
+services: 
+  lark_web:
+    restart: always
+    build: .
+    image: eposter_web
+    container_name: eposter_web
+    ports:
+      - 8080:80
