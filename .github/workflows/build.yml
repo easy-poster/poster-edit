@@ -23,28 +23,13 @@ jobs:
         # 使用action库  actions/checkout拉取源码
         uses: actions/checkout@v3
       
-      #缓存依赖路径
-      - name: 获取缓存路径
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v1
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-        
       # 安装依赖
-      - name: 安装yarn
-        run: |
-          npm i -g yarn
-      - name: 下载依赖包
-        run: |
-          yarn --prefer-offline
-      - name: 打包项目到dist
-        run: |
-          yarn build --if-present
+      - name: install
+        run: npm install pnpm -g && pnpm install
+
+      # 打包
+      - name: build project
+        run: pnpm run build
           echo "项目打包完成, 准备打包docker镜像" 
 
       # 登录阿里云镜像容器服务，打包镜像，推送镜像
