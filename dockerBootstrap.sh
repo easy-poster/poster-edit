@@ -1,3 +1,5 @@
+# 这个文件放在服务器 /home/espoter_web/ 下执行
+
 echo -e "---------登录镜像容器服务--------"
 # 登录阿里云镜像容器服务
 docker login --username=$1 registry.cn-hangzhou.aliyuncs.com --password=$2
