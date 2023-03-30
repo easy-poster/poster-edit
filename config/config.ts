@@ -33,4 +33,7 @@ export default defineConfig({
     alias: {
         assets: resolve(__dirname, '../src/assets'),
     },
+    analytics: {
+        baidu: 'a0c3309375cc83c6e3dd1e376d1b1496',
+    },
 });
