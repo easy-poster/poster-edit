@@ -9,7 +9,9 @@ const EditLayout = React.memo(() => {
         <div className={styles.editWrap}>
             <EditContainer>
                 <EditLeft />
-                <Outlet />
+                <div className={styles.editRight}>
+                    <Outlet />
+                </div>
             </EditContainer>
         </div>
     );

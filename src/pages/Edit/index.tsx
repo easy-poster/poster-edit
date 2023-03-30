@@ -10,20 +10,18 @@ import styles from './index.less';
 
 const Edit = React.memo(() => {
     return (
-        <div className={styles.editRight}>
-            <StageContainer>
-                <EditHeader />
-                <div className={styles.editContent}>
-                    <EditTopBar />
-                    <div className={styles.editMain}>
-                        <Stage />
-                        <SizeBar />
-                        <ContextMenu />
-                    </div>
-                    {/* <EditFooter /> */}
+        <StageContainer>
+            <EditHeader />
+            <div className={styles.editContent}>
+                <EditTopBar />
+                <div className={styles.editMain}>
+                    <Stage />
+                    <SizeBar />
+                    <ContextMenu />
                 </div>
-            </StageContainer>
-        </div>
+                {/* <EditFooter /> */}
+            </div>
+        </StageContainer>
     );
 });
 
