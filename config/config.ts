@@ -8,6 +8,12 @@ const ENV = process.argv[3] || 'DEV';
 const BASE = '/';
 
 export default defineConfig({
+    title: 'epsoter图片编辑器',
+    metas: [
+        { name: 'keywords', content: 'eposter 海报编辑器' },
+        { name: 'description', content: 'eposter 是一个本地的海报编辑器' },
+    ],
+    favicons: ['./color.ico'],
     npmClient: 'pnpm',
     base: BASE,
     fastRefresh: true,
