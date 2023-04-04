@@ -24,12 +24,10 @@ export default defineConfig({
         immer: {},
     },
     targets: {
-        chrome: 51,
+        chrome: 80,
         firefox: 45,
         safari: 10,
         edge: 13,
-        ios: 9,
-        ie: 11,
     },
     theme,
     routes,
