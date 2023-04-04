@@ -23,12 +23,6 @@ export default defineConfig({
     dva: {
         immer: {},
     },
-    targets: {
-        chrome: 80,
-        firefox: 45,
-        safari: 10,
-        edge: 13,
-    },
     theme,
     routes,
     antd: {},
