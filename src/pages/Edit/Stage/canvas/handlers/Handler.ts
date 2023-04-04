@@ -1518,8 +1518,6 @@ class Handler implements HandlerOptions {
     public saveCanvasImageCover = async (
         option = { name: 'New Image', format: 'png', quality: 1 },
     ) => {
-        this.zoomHandler.zoomOneToOne();
-
         const { left, top, width, height } = this.workarea!;
         const dataUrl = this.canvas.toDataURL({
             ...option,
