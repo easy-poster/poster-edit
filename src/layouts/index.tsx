@@ -1,6 +1,7 @@
 import { Outlet } from '@umijs/max';
 import Menu from '@/components/Menu';
 import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 import './index.less';
 
 const Layout = () => {
@@ -10,6 +11,7 @@ const Layout = () => {
             <div className="content">
                 <Nav />
                 <Outlet />
+                <Footer />
             </div>
         </div>
     );
